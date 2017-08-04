@@ -10,6 +10,7 @@
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
+    "react-native-charts-wrapper": "^0.2.10",
     "react-native-router-flux": "^4.0.0-beta.16"
   },
   "devDependencies": {
