@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, AppRegistry } from 'react-native';
+import { AppRegistry } from 'react-native';
+import Splash from './src/screens/Splash';
 
 const App = () => (
-    <Text>Hello, world!</Text>
+    <Splash />
   );
 
 AppRegistry.registerComponent('budgie', () => App);
