@@ -10,19 +10,14 @@ router.get('/receipts/:receipt_id/items', (req, res, next) => {
 });
 
 router.post('/receipts/:receipt_id/items', (req, res, next) => {
-  // if (req.body.tag_id) {
-  //   insertTag(req).then((tagID) => {
-  //     addItem(parseInt(req.params.receipt_id), tagID[0], req).then((item) => {
-  //       res.json(item);
-  //     });
-  //   }).catch(err => next(err));
-  // } else {
-  knex('items').insert({ name: req.body.name, receipt_id: req.params.receipt_id, price: req.body.price }).returning('*').then((item) => {
+  const tagID = (req.body.tag_id
+    ? req.body.tag_id
+    : '');
+  knex('items').insert({ name: req.body.name, price: req.body.price, tag_id: tagID, receipt_id: req.params.receipt_id }).returning('*').then((item) => {
     res.json(item);
   }).catch((err) => {
     next(err);
   });
-  // }
 });
 
 router.get('/receipts/:receipt_id/items/:id', (req, res, next) => {
