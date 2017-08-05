@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import Footer from '../components/Footer';
 
 const Splash = () => (
     <View style={styles.splashView}>
@@ -9,14 +8,9 @@ const Splash = () => (
           source={{ uri: 'https://via.placeholder.com/215x215' }}
           style={styles.splashImage}
         />
-      <Footer links={footerLinks} />
     </View>
   );
 
-const footerLinks = [
-  'Sign up',
-  'Login'
-];
 
 const styles = {
   splashView: {
