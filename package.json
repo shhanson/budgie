@@ -4,17 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "android-linux": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
-<<<<<<< Updated upstream
-    "react-native-router-flux": "^4.0.0-beta.16"
-=======
     "react-native-extended-stylesheet": "^0.6.0",
     "react-navigation": "^1.0.0-beta.11"
->>>>>>> Stashed changes
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
