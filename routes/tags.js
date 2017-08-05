@@ -7,11 +7,15 @@ router.get('/tags', (req, res, next) => {
   knex('tags').then(tags => res.json(tags)).catch(err => next(err));
 });
 
-router.post('/tags', validate, (req, res, next) => {
+router.post('/tags', (req, res, next) => {
   knex('tags').insert({ name: req.body.name }).returning('*').then(tag => res.json(tag)).catch(err => next(err));
 });
 
-router.patch('/tags/:id', validate, (req, res, next) => {
+router.get('/tags/:id', (req, res, next) => {
+  knex('tags').where({ id: req.params.id }).then(tags => res.json(tags)).catch(err => next(err));
+});
+
+router.patch('/tags/:id', (req, res, next) => {
   knex('tags').update({ name: req.body.name }).where({ id: req.params.id }).returning('*').then(tag => res.json(tag)).catch(err => next(err));
 });
 

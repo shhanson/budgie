@@ -7,11 +7,15 @@ router.get('/locations', (req, res, next) => {
   knex('locations').then(locations => res.json(locations)).catch(err => next(err));
 });
 
-router.post('/locations', validate, (req, res, next) => {
+router.post('/locations', (req, res, next) => {
   knex('locations').insert({ location: req.body.location }).returning('id').then(id => res.json(id)).catch(err => next(err));
 });
 
-router.patch('/locations/:id', validate, (req, res, next) => {
+router.get('/locations/:id', (req, res, next) => {
+  knex('locations').where({ id: req.params.id }).then(location => res.json(location)).catch(err => next(err));
+});
+
+router.patch('/locations/:id', (req, res, next) => {
   knex('locations').update({ location: req.body.location }).where({ id: req.params.id }).returning('*').then(location => res.json(location[0])).catch(err => next(err));
 });
 
