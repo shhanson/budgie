@@ -5,6 +5,10 @@ module.exports = {
       database: 'budgie',
     },
   },
+  test: {
+    client: 'pg',
+    connection: 'postgres://localhost/budgie_test',
+  },
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,

@@ -4,11 +4,10 @@ exports.seed = function (knex, Promise) {
   // Inserts seed entries
   knex('users').insert([
     {
-      id: 1,
-      first: 'bob',
-      last: 'shopper',
-      email: 'bob@aol.com',
-      password: 'bob',
+      first: 'Amanda',
+      last: 'Allen',
+      email: 'ahhhh@dev.am',
+      password: '123456',
     },
   ]));
 };

@@ -1,6 +1,6 @@
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return knex('tags').del().then(() =>
+  return knex('items').del().then(() => knex('tags').del().then(() =>
   // Inserts seed entries
   knex('tags').insert([
     {
@@ -20,5 +20,5 @@ exports.seed = function (knex, Promise) {
     }, {
       name: 'dairy',
     },
-  ]));
+  ])));
 };
