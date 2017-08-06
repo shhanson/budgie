@@ -25,9 +25,9 @@ describe('routes : locations', () => {
     });
   });
 
-  describe('GET /locations', () => {
+  describe('GET /locations/users/:user_id', () => {
     it('should return all locations', (done) => {
-      chai.request(server).get('/locations').end((err, res) => {
+      chai.request(server).get('/locations/users/1').end((err, res) => {
         res.status.should.equal(200);
         console.log(res.text);
         done();
@@ -35,9 +35,9 @@ describe('routes : locations', () => {
     });
   });
 
-  describe('POST /locations', () => {
+  describe('POST /locations/users/:user_id', () => {
     it('should respond with 200 and return a new item details', (done) => {
-      chai.request(server).post('/locations').send({ location: 'Fresas' }).end((err, res) => {
+      chai.request(server).post('/locations/users/1').send({location: 'Fresas', user_id: '1'}).end((err, res) => {
         res.status.should.equal(200);
         console.log(res.text);
         done();
@@ -56,7 +56,7 @@ describe('routes : locations', () => {
 
   describe('PATCH /locations/:id', () => {
     it('should respond with 200 and return updated data in json', (done) => {
-      chai.request(server).patch('/locations/1').send({ location: 'Trader Joe\'s' }).end((err, res) => {
+      chai.request(server).patch('/locations/1').send({location: 'Trader Joe\'s'}).end((err, res) => {
         res.status.should.equal(200);
         done();
       });

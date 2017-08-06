@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 require('dotenv').config();
 
-const port = 8000;
-
+const port = process.env.PORT || 8000;
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Routes to go here...
 const users = require('./routes/users');
@@ -15,6 +16,7 @@ const items = require('./routes/items');
 const tags = require('./routes/tags');
 const locations = require('./routes/locations');
 
+app.use(cors());
 app.use(users);
 app.use(receipts);
 app.use(items);

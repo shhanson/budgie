@@ -1,9 +1,15 @@
 const users = require('../db/users');
 const express = require('express');
+const cors = require('cors');
 
 const router = express.Router();
 
-router.post('/users', (req, res, next) => {
+const corsOptions = {
+  origin: 'http://localhost:8100',
+  optionsSuccessStatus: 200
+};
+
+router.post('/users', cors(corsOptions), (req, res, next) => {
   users.authenticateUser(req.body.email, req.body.password, (err, user) => {
     if (err) {
       res.status(400);
@@ -14,7 +20,7 @@ router.post('/users', (req, res, next) => {
   });
 });
 
-router.post('/users/signup', (req, res, next) => {
+router.post('/users/signup', cors(corsOptions), (req, res, next) => {
   // Joi.validate(req.body, schema, (err, value) => {
   // if (err) {
   //   res.status(400);

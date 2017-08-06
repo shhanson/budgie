@@ -2,6 +2,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('tags', (table) => {
     table.increments('id');
     table.string('name').notNullable().unique();
+    table.integer('user_id');
     table.timestamps(true, true);
   }).createTable('items', (table) => {
     table.increments('id');
