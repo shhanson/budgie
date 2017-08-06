@@ -15,7 +15,7 @@ router.post('/users', cors(corsOptions), (req, res, next) => {
       res.status(400);
       res.send(err);
     } else {
-      res.send(JSON.stringify(user));
+      res.json(user);
     }
   });
 });
@@ -31,7 +31,7 @@ router.post('/users/signup', cors(corsOptions), (req, res, next) => {
       res.status(400);
       res.send(error);
     } else {
-      res.send(JSON.stringify(user));
+      res.json(user);
     }
   });
   // }
