@@ -63,10 +63,20 @@ Receipts.getOne = (receiptId, callback) => {
 };
 
 Receipts.updateReceipt = (receiptId, data, callback) => {
-  Receipts().update(data).where({id: receiptId}).returning('*').then((receipt) => {
-    callback(undefined, receipt[0]);
-  }).catch((err) => {
-    callback(err);
+  Receipts().update(data).where({id: receiptId}).then(() => {
+    Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.id', receiptId).first().returning('*').then((receipt) => {
+      if (!receipt) {
+        const error = new Error('Item does not exist.');
+        error.status = 400;
+        return callback(error);
+      }
+      knex('items').leftJoin('tags', 'items.tag_id', 'tags.id').where('items.receipt_id', receipt.id).then((items) => {
+        receipt['items'] = items || [];
+        callback(undefined, receipt);
+      })
+    }).catch((err) => {
+      callback(err);
+    });
   });
 };
 

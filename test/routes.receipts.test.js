@@ -29,7 +29,6 @@ describe('routes : receipts', () => {
     it('should return all receipts for user id', (done) => {
       chai.request(server).get('/receipts/users/1').end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
@@ -53,7 +52,6 @@ describe('routes : receipts', () => {
         ]
       }).end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
@@ -63,7 +61,6 @@ describe('routes : receipts', () => {
     it('should respond with 200 and return all list items for receipt', (done) => {
       chai.request(server).get('/receipts/2').end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
