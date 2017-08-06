@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 const server = require('../app');
 
-describe('routes : tags', () => {
+describe('routes : locations', () => {
   beforeEach((done) => {
     knex.migrate.latest().then(() => {
       knex.seed.run().then(() => {
@@ -25,9 +25,9 @@ describe('routes : tags', () => {
     });
   });
 
-  describe('GET /tags/users/:user_id', () => {
-    it('should return all tags', (done) => {
-      chai.request(server).get('/tags/users/1').end((err, res) => {
+  describe('GET /locations/users/:user_id', () => {
+    it('should return all locations', (done) => {
+      chai.request(server).get('/locations/users/1').end((err, res) => {
         res.status.should.equal(200);
         console.log(res.text);
         done();
@@ -35,9 +35,9 @@ describe('routes : tags', () => {
     });
   });
 
-  describe('POST /tags/users/:user_id', () => {
+  describe('POST /locations/users/:user_id', () => {
     it('should respond with 200 and return a new item details', (done) => {
-      chai.request(server).post('/tags/users/1').send({name: 'cheese', user_id: '1'}).end((err, res) => {
+      chai.request(server).post('/locations/users/1').send({location: 'Fresas', user_id: '1'}).end((err, res) => {
         res.status.should.equal(200);
         console.log(res.text);
         done();
@@ -47,25 +47,25 @@ describe('routes : tags', () => {
 
   describe('GET /location/:id', () => {
     it('should respond with 200 and return single location', (done) => {
-      chai.request(server).get('/tags/3').end((err, res) => {
+      chai.request(server).get('/locations/3').end((err, res) => {
         res.status.should.equal(200);
         done();
       });
     });
   });
 
-  describe('PATCH /tags/:id', () => {
+  describe('PATCH /locations/:id', () => {
     it('should respond with 200 and return updated data in json', (done) => {
-      chai.request(server).patch('/tags/1').send({name: 'cheese'}).end((err, res) => {
+      chai.request(server).patch('/locations/1').send({location: 'Trader Joe\'s'}).end((err, res) => {
         res.status.should.equal(200);
         done();
       });
     });
   });
 
-  describe('DELETE /tags/:id', () => {
+  describe('DELETE /locations/:id', () => {
     it('should respond with 200 and return deleted receipt data', (done) => {
-      chai.request(server).delete('/tags/2').end((err, res) => {
+      chai.request(server).delete('/locations/2').end((err, res) => {
         res.status.should.equal(200);
         done();
       });

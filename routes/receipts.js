@@ -1,4 +1,3 @@
-const knex = require('../db/db');
 const Receipts = require('../db/receipts');
 const express = require('express');
 const cors = require('cors');

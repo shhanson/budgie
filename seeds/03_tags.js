@@ -1,32 +1,32 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
   return knex('items').del().then(() => knex('tags').del().then(() =>
   // Inserts seed entries
   knex('tags').insert([
     {
-      name: 'dessert',
-      user_id: 1
+      tag: 'dessert',
+      user_id: 1,
     }, {
-      name: 'coffee',
-      user_id: 1
+      tag: 'coffee',
+      user_id: 1,
     }, {
-      name: 'vegetables',
-      user_id: 1
+      tag: 'vegetables',
+      user_id: 1,
     }, {
-      name: 'dining out',
-      user_id: 1
+      tag: 'dining out',
+      user_id: 1,
     }, {
-      name: 'meat',
-      user_id: 1
+      tag: 'meat',
+      user_id: 1,
     }, {
-      name: 'bread',
-      user_id: 1
+      tag: 'bread',
+      user_id: 1,
     }, {
-      name: 'fruits',
-      user_id: 1
+      tag: 'fruits',
+      user_id: 1,
     }, {
-      name: 'dairy',
-      user_id: 1
-    }
+      tag: 'dairy',
+      user_id: 1,
+    },
   ])));
 };
