@@ -29,17 +29,17 @@ router.delete('/tags/:id', cors(corsOptions), (req, res, next) => {
   knex('tags').del().where({ id: req.params.id }).then(() => res.end()).catch(err => next(err));
 });
 
-function validate(req, res, next) {
-  const errors = [];
-  ['content'].forEach((field) => {
-    if (!req.body[field] || req.body[field].trim() === '') {
-      errors.push({ field, messages: ['cannot be blank'] });
-    }
-  });
-  if (errors.length) {
-    return res.status(422).json({ errors });
-  }
-  next();
-}
+// function validate(req, res, next) {
+//   const errors = [];
+//   ['content'].forEach((field) => {
+//     if (!req.body[field] || req.body[field].trim() === '') {
+//       errors.push({ field, messages: ['cannot be blank'] });
+//     }
+//   });
+//   if (errors.length) {
+//     return res.status(422).json({ errors });
+//   }
+//   next();
+// }
 
 module.exports = router;

@@ -56,7 +56,6 @@ describe('routes : items', () => {
     it('should respond with 200 and return updated data in json', (done) => {
       chai.request(server).patch('/receipts/3/items/7').send({ name: 'almond milk' }).end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
