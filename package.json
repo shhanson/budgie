@@ -1,15 +1,49 @@
 {
-  "name": "budgie",
-  "version": "0.0.1",
-  "description": "An Ionic project",
-  "devDependencies": {
-    "@ionic/cli-plugin-cordova": "1.6.2",
-    "@ionic/cli-plugin-gulp": "1.1.1",
-    "@ionic/cli-plugin-ionic1": "2.1.1",
-    "gulp": "^3.5.6",
-    "gulp-clean-css": "^3.7.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-sass": "^3.1.0",
-    "ionic": "3.7.0"
-  }
+    "name": "budgie",
+    "version": "0.0.1",
+    "description": "## Synopsis Budgie is a mobile app which allows users to scan their grocery and restaurant receipts and provides data visualization about expenses.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shhanson/budgie.git"
+    },
+    "author": "sham",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/shhanson/budgie/issues"
+    },
+    "homepage": "https://github.com/shhanson/budgie#readme",
+    "devDependencies": {
+        "@ionic/cli-plugin-cordova": "1.6.2",
+        "@ionic/cli-plugin-gulp": "1.1.1",
+        "@ionic/cli-plugin-ionic1": "2.1.1",
+        "gulp": "^3.5.6",
+        "gulp-clean-css": "^3.7.0",
+        "gulp-rename": "^1.2.0",
+        "gulp-sass": "^3.1.0",
+        "ionic": "3.7.0"
+    },
+    "dependencies": {
+        "cordova-android": "^6.2.3",
+        "cordova-ios": "^4.4.0",
+        "cordova-plugin-console": "^1.0.5",
+        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "^2.2.1",
+        "cordova-plugin-whitelist": "^1.3.1",
+        "ionic-plugin-keyboard": "^2.2.1"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-console": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-whitelist": {},
+            "ionic-plugin-keyboard": {}
+        },
+        "platforms": [
+            "android",
+            "ios"
+        ]
+    }
 }

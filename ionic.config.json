@@ -1,5 +1,8 @@
 {
   "name": "budgie",
-  "app_id": "",
-  "type": "ionic1"
+  "app_id": "9018adba",
+  "type": "ionic1",
+  "watchPatterns": [
+    "scss/**/*"
+  ]
 }
