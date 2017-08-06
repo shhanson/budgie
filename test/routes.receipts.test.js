@@ -44,13 +44,13 @@ describe('routes : receipts', () => {
           {
             name: 'mango',
             price: 3.01,
-            tag_id: 7,
+            tag_id: 7
           }, {
             name: 'chocolate',
             price: 0.99,
-            tag_id: 1,
-          },
-        ],
+            tag_id: 1
+          }
+        ]
       }).end((err, res) => {
         res.status.should.equal(200);
         console.log(res.text);
@@ -63,6 +63,7 @@ describe('routes : receipts', () => {
     it('should respond with 200 and return all list items for receipt', (done) => {
       chai.request(server).get('/receipts/2').end((err, res) => {
         res.status.should.equal(200);
+        console.log(res.text);
         done();
       });
     });
@@ -70,7 +71,7 @@ describe('routes : receipts', () => {
 
   describe('PATCH /receipts/:id', () => {
     it('should respond with 200 and return updated receipt data in json', (done) => {
-      chai.request(server).patch('/receipts/3').send({ date: '2017-06-02' }).end((err, res) => {
+      chai.request(server).patch('/receipts/3').send({date: '2017-06-02'}).end((err, res) => {
         res.status.should.equal(200);
         done();
       });

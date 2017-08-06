@@ -46,19 +46,19 @@ Receipts.addNew = (data, userId, callback) => {
   });
 };
 
-Receipts.getOne = (userId, callback) => {
-  Receipts().where({id: userId}).first().returning('*').then((receipt) => {
+Receipts.getOne = (receiptId, callback) => {
+  Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.id', receiptId).first().returning('*').then((receipt) => {
     if (!receipt) {
       const error = new Error('Item does not exist.');
       error.status = 400;
       return callback(error);
     }
-    knex('locations').where({id: receipt.id}).then((location) => {
-      receipt.location_name = location.location;
+    knex('items').leftJoin('tags', 'items.tag_id', 'tags.id').where('items.receipt_id', receipt.id).then((items) => {
+      receipt['items'] = items || [];
+      callback(undefined, receipt);
+    }).catch((err) => {
+      callback(err);
     });
-    callback(undefined, receipt);
-  }).catch((err) => {
-    callback(err);
   });
 };
 
