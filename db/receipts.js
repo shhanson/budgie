@@ -5,13 +5,13 @@ function Receipts() {
 }
 
 Receipts.getAll = (userId, callback) => {
-  Receipts().where({ user_id: userId }).then((receipts) => {
+  Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.user_id', userId).then((receipts) => {
     if (!receipts) {
       const error = new Error('No receipts found for user.');
       error.status = 400;
       return callback(error);
     }
-    knex('items').whereIn('receipt_id', receipts.map(r => r.id)).then((items) => {
+    knex('items').leftJoin('tags', 'items.tag_id', 'tags.id').whereIn('items.receipt_id', receipts.map(r => r.id)).then((items) => {
       const itemsByReceiptId = items.reduce((result, item) => {
         result[item.receipt_id] = result[item.receipt_id] || [];
         result[item.receipt_id].push(item);
@@ -47,13 +47,13 @@ Receipts.addNew = (data, userId, callback) => {
 };
 
 Receipts.getOne = (userId, callback) => {
-  Receipts().where({ id: userId }).first().returning('*').then((receipt) => {
+  Receipts().where({id: userId}).first().returning('*').then((receipt) => {
     if (!receipt) {
       const error = new Error('Item does not exist.');
       error.status = 400;
       return callback(error);
     }
-    knex('locations').where({ id: receipt.id }).then((location) => {
+    knex('locations').where({id: receipt.id}).then((location) => {
       receipt.location_name = location.location;
     });
     callback(undefined, receipt);
@@ -63,7 +63,7 @@ Receipts.getOne = (userId, callback) => {
 };
 
 Receipts.updateReceipt = (receiptId, data, callback) => {
-  Receipts().update(data).where({ id: receiptId }).returning('*').then((receipt) => {
+  Receipts().update(data).where({id: receiptId}).returning('*').then((receipt) => {
     callback(undefined, receipt[0]);
   }).catch((err) => {
     callback(err);
@@ -71,7 +71,7 @@ Receipts.updateReceipt = (receiptId, data, callback) => {
 };
 
 Receipts.deleteReceipt = (receiptId, callback) => {
-  Receipts().del().where({ id: receiptId }).then(() => {
+  Receipts().del().where({id: receiptId}).then(() => {
     callback(undefined, 'Item successfully deleted.');
   }).catch((err) => {
     callback(err);
