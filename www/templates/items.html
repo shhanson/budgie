@@ -1,12 +1,12 @@
 <ion-modal-view>
   <ion-header-bar>
-    <button ng-click="closeModal()"><</button>
+    <button class="button button-light" ng-click="closeModal()"><i class="icon ion-ios-arrow-back"></i></button>
     <h1 class="title">{{receipt.location}}</h1>
   </ion-header-bar>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="item in receipt.items" href="#receipts/items/{{item.id}}">
-        {{item.name}} {{item.price}}
+      <ion-item ng-repeat="item in receipt.items">
+        {{item.name}} {{item.price}} {{item.tag}}
       </ion-item>
     </ion-list>
   </ion-content>
