@@ -1,13 +1,40 @@
-angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService) {
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, $cordovaCamera) {
 
+  $scope.imgURI;
+  
   $scope.getReceipts = function getReceipts(userID){
       ReceiptsService.getReceipts(userID).then(()=>{
         $scope.receipts = ReceiptsService.receipts;
       });
   };
 
+
   //CALLED IN TEMPLATE ???
   $scope.getReceipts(1);
+
+  $scope.takePicture = function() {
+    console.log('making it here');
+    var options = {
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+      $cordovaCamera.getPicture(options).then(function(imageData) {
+        console.log('got picture?');
+          $scope.imgURI = "data:image/jpeg;base64," + imageData;
+          console.log($scope.imgURI);
+      }, function(err) {
+        console.log('error');
+          // An error occured. Show a message to the user
+      });
+  }
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
@@ -23,7 +50,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   $scope.closeModal = function closeModal() {
     $scope.modal.hide();
   }
-
 
 }).controller('ItemsCtrl', function($scope, $stateParams, ItemsService ) {
   $scope.items = [];
@@ -97,8 +123,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     }
   ];
   $scope.getReceiptData = function() {
-
-
 
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       res.data.forEach(function(receipt) {

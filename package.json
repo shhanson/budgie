@@ -13,7 +13,10 @@
         "ionic": "3.7.0"
     },
     "dependencies": {
-        "cordova-ios": "^4.4.0",
+        "cordova-android": "^6.2.3",
+        "cordova-ios": "^4.3.0",
+        "cordova-plugin-camera": "^2.4.1",
+        "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.5",
         "cordova-plugin-device": "^1.1.4",
         "cordova-plugin-splashscreen": "^4.0.3",
@@ -28,9 +31,14 @@
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
-            "ionic-plugin-keyboard": {}
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-camera": {
+                "CAMERA_USAGE_DESCRIPTION": "your usage message",
+                "PHOTOLIBRARY_USAGE_DESCRIPTION": "your usage message"
+            }
         },
         "platforms": [
+            "android",
             "ios"
         ]
     }
