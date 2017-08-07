@@ -1,24 +1,29 @@
+const API_URL = "http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001";
+
 angular.module('starter.services', [])
   .service('ReceiptsService', ['$http', function service($http) {
     const self = this;
+
     self.receipts = [];
 
     self.getReceipts = function getReceipts(userID){
-      return  $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/${userID}`).then((response) => {
-        self.receipts = response.data;
-      }).catch((err) => {
+     return $http.get(`${API_URL}/receipts/users/${userID}`)
+     .then((response) => {
+       self.receipts = response.data;
+     })
+     .catch((err) => {
         console.error(err);
       });
     };
 
     self.getReceipt = function getReceipt(receiptID){
-      return $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${receiptID}`).catch((err) => {
+      return $http.get(`${API_URL}/receipts/${receiptID}`).catch((err) => {
         console.error(err);
       });
     }
 
     self.deleteReceipt = function deleteReceipt(receiptID){
-       $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${receiptID}`).then(() => {
+       $http.delete(`${API_URL}/receipts/${receiptID}`).then(() => {
 
         for(let i = 0; i < self.receipts.length; i++){
           if(self.receipts[i].id === receiptID){
@@ -32,7 +37,7 @@ angular.module('starter.services', [])
     };
 
     self.addReceipt = function addReceipt(userID, newReceipt){
-      $http.post(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/${userID}`, newReceipt).then((response) => {
+      $http.post(`${API_URL}/receipts/users/${userID}`, newReceipt).then((response) => {
         self.receipts.push(response.data);
       }).catch((err) => {
         console.error(err);
@@ -41,7 +46,7 @@ angular.module('starter.services', [])
     };
 
     self.editReceipt = function editReceipt(receiptID, editedReceipt){
-      $http.patch(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${receiptID}`, editedReceipt).then((response)=>{
+      $http.patch(`${API_URL}/receipts/${receiptID}`, editedReceipt).then((response)=>{
         for(let i = 0; i < self.receipts.length; i++){
           if(self.receipts[i].id === receiptID){
             self.receipts[i] = response.data;
@@ -52,6 +57,60 @@ angular.module('starter.services', [])
         console.error(err);
       });
 
+    };
+
+  }])
+  .service('ItemsService', ['$http', function service($http) {
+    const self = this;
+
+    self.items = [];
+
+    self.getItems = function getItems(receiptID) {
+      return $http.get(`${API_URL}/${receiptID}/items`).then((response) => {
+        self.items = response.data;
+      }).catch((err) => {
+        console.error(err);
+      });
+    };
+
+    self.getItem = function getItem(receiptID, itemID) {
+      return $http.get(`${API_URL}/${receiptID}/items/${itemID}`).catch((err) => {
+        console.error(err);
+      });
+    };
+
+    self.addItem = function addItem(receiptID, newItem) {
+      $http.post(`${API_URL}/${receiptID}/items`, newItem).then((response) => {
+        self.receipts.push(response.data);
+      }).catch((err) => {
+        console.error(err);
+      });
+    };
+
+    self.deleteItem = function deleteItem(receiptID, itemID) {
+      $http.delete(`${API_URL}/${receiptID}/items/${itemID}`).then(()=>{
+        for(let i = 0; i < self.items.length; i++){
+          if(self.items[i].id === itemID){
+            self.items.splice(i, 1);
+            return;
+          }
+        }
+      }).catch((err) => {
+        console.error(err);
+      });
+    };
+
+    self.editItem = function editItem(receiptID, itemID, editedItem) {
+      $http.patch(`${API_URL}/${receiptID}/items/${itemID}`, editedReceipt).then((response)=>{
+        for(let i = 0; i < self.items.length; i++){
+          if(self.items[i].id === itemID){
+            self.items[i] = response.data;
+            return;
+          }
+        }
+      }).catch((err) => {
+        console.error(err);
+      });
     };
 
   }]);

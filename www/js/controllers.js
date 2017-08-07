@@ -1,6 +1,4 @@
-angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, ReceiptsService) {
-
-  $scope.receipts = [];
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService) {
 
   $scope.getReceipts = function getReceipts(userID){
       ReceiptsService.getReceipts(userID).then(()=>{
@@ -9,7 +7,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   };
 
   //CALLED IN TEMPLATE ???
-  //$scope.getReceipts(1);
+  $scope.getReceipts(1);
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
@@ -27,15 +25,21 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   }
 
 
-}).controller('ItemsCtrl', function($scope, $stateParams, $http) {
-  $scope.items;
+}).controller('ItemsCtrl', function($scope, $stateParams, ItemsService ) {
+  $scope.items = [];
 
-  $scope.getItems = function() {
-    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
-      $scope.items = res.data;
+  // $scope.getItems = function() {
+  //   $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
+  //     $scope.items = res.data;
+  //   });
+  // };
+  $scope.getItems = function getItems(receiptID){
+    ItemsService.getItems(receiptID).then((response) =>{
+      $scope.items = response.data;
     });
   };
-  $scope.getItems();
+
+  $scope.getItems($stateParams.receiptID);
 }).controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -55,7 +59,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   $scope.settings = {
     enableFriends: true
   };
-}).controller('GraphCtrl', function($scope, $http) {
+}).controller('GraphCtrl', function($scope, $http, ReceiptsService) {
   $scope.options = {
     chart: {
       type: 'discreteBarChart',
@@ -93,6 +97,9 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     }
   ];
   $scope.getReceiptData = function() {
+
+
+
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       res.data.forEach(function(receipt) {
         const dataObj = {};
@@ -104,8 +111,10 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
         });
         $scope.data[0].values.push(dataObj);
       });
-      console.log($scope.data);
+      // console.log($scope.data);
     });
   };
   $scope.getReceiptData();
+}).controller('SplashCtrl', function($scope) {
+  console.log("SPLASH");
 });
