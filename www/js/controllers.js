@@ -1,12 +1,37 @@
-angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal) {
+angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera) {
   $scope.receipts;
+  $scope.imgURI;
 
   $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/users/1').then((res) => {
+    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
       $scope.receipts = res.data;
     });
   };
   $scope.getReceipts();
+
+  $scope.takePicture = function() {
+    console.log('making it here');
+    var options = {
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+      $cordovaCamera.getPicture(options).then(function(imageData) {
+        console.log('got picture?');
+          $scope.imgURI = "data:image/jpeg;base64," + imageData;
+          console.log($scope.imgURI);
+      }, function(err) {
+        console.log('error');
+          // An error occured. Show a message to the user
+      });
+  }
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
@@ -27,7 +52,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   $scope.items;
 
   $scope.getItems = function() {
-    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/${$stateParams.receiptId}/items`).then((res) => {
+    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
       $scope.items = res.data;
     });
   };
@@ -89,7 +114,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     }
   ];
   $scope.getReceiptData = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/users/1').then(function(res) {
+    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       res.data.forEach(function(receipt) {
         const dataObj = {};
         dataObj.key = receipt.date;
