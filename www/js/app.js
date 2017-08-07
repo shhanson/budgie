@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nvd3']).run(($ionicPlatform) => {
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nvd3', 'ngCordova']).run(($ionicPlatform) => {
   $ionicPlatform.ready(() => {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -75,7 +75,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ItemsCtrl'
       }
     }
-  })
+  }).state('splash', {
+    url: '/splash',
+    views: {
+      'splash': {
+        templateUrl: 'templates/splash.html',
+        controller: 'SplashCtrl'
+      }
+    }
+  });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');

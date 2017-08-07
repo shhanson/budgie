@@ -1,12 +1,39 @@
-angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal) {
-  $scope.receipts;
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, $cordovaCamera) {
 
-  $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
-      $scope.receipts = res.data;
+  $scope.imgURI;
+
+  $scope.getReceipts = function getReceipts(userID) {
+    ReceiptsService.getReceipts(userID).then(() => {
+      $scope.receipts = ReceiptsService.receipts;
     });
   };
-  $scope.getReceipts();
+
+  //CALLED IN TEMPLATE ???
+  $scope.getReceipts(1);
+
+  $scope.takePicture = function() {
+    console.log('making it here');
+    var options = {
+      quality: 75,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 300,
+      targetHeight: 300,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      console.log('got picture?');
+      $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      console.log($scope.imgURI);
+    }, function(err) {
+      console.log('error');
+      // An error occured. Show a message to the user
+    });
+  }
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
@@ -15,23 +42,29 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     $scope.modal = modal;
   });
 
-  $scope.showItems = function(receipt) {
+  $scope.showItems = function showItems(receipt) {
     $scope.receipt = receipt;
     $scope.modal.show();
   };
-  $scope.closeModal = function() {
+  $scope.closeModal = function closeModal() {
     $scope.modal.hide();
   };
 
-}).controller('ItemsCtrl', function($scope, $stateParams, $http) {
-  $scope.items;
+}).controller('ItemsCtrl', function($scope, $stateParams, ItemsService) {
+  $scope.items = [];
 
-  $scope.getItems = function() {
-    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
-      $scope.items = res.data;
+  // $scope.getItems = function() {
+  //   $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
+  //     $scope.items = res.data;
+  //   });
+  // };
+  $scope.getItems = function getItems(receiptID) {
+    ItemsService.getItems(receiptID).then((response) => {
+      $scope.items = response.data;
     });
   };
-  $scope.getItems();
+
+  $scope.getItems($stateParams.receiptID);
 }).controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
