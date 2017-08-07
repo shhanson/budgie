@@ -1,0 +1,13 @@
+<ion-view view-title="Receipts">
+  <ion-content>
+    <!-- <button class="button button-block button-positive" type="button" ng-click="getReceipts()">Get Receipts</button> -->
+    <ion-list show-delete="false" can-swipe="true">
+      <ion-item ng-repeat="receipt in receipts" ng-click="showItems(receipt)">
+        {{receipt.location}} {{receipt.date}}
+        <ion-option-button class="button-light icon ion-heart"></ion-option-button>
+        <ion-option-button class="button-light icon ion-email"></ion-option-button>
+        <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
