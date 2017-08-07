@@ -1,12 +1,15 @@
-angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal) {
-  $scope.receipts;
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, ReceiptsService) {
 
-  $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/users/1').then((res) => {
-      $scope.receipts = res.data;
-    });
+  $scope.receipts = [];
+
+  $scope.getReceipts = function getReceipts(userID){
+      ReceiptsService.getReceipts(userID).then(()=>{
+        $scope.receipts = ReceiptsService.receipts;
+      });
   };
-  $scope.getReceipts();
+
+  //CALLED IN TEMPLATE ???
+  //$scope.getReceipts(1);
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
@@ -15,19 +18,20 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     $scope.modal = modal;
   });
 
-  $scope.showItems = function(receipt) {
+  $scope.showItems = function showItems(receipt) {
     $scope.receipt = receipt;
     $scope.modal.show();
   };
-  $scope.closeModal = function() {
+  $scope.closeModal = function closeModal() {
     $scope.modal.hide();
   }
+
 
 }).controller('ItemsCtrl', function($scope, $stateParams, $http) {
   $scope.items;
 
   $scope.getItems = function() {
-    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/${$stateParams.receiptId}/items`).then((res) => {
+    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
       $scope.items = res.data;
     });
   };
@@ -89,7 +93,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     }
   ];
   $scope.getReceiptData = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8000/receipts/users/1').then(function(res) {
+    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       res.data.forEach(function(receipt) {
         const dataObj = {};
         dataObj.key = receipt.date;
