@@ -73,8 +73,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ItemsCtrl'
       }
     }
-  })
+  }).state('splash', {
+    url: '/splash',
+    views: {
+      'splash': {
+        templateUrl: 'templates/splash.html',
+        controller: 'SplashCtrl'
+      }
+    },
+  });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/receipts');
+  $urlRouterProvider.otherwise('/splash');
 });

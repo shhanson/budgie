@@ -1,13 +1,16 @@
-angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera) {
-  $scope.receipts;
-  $scope.imgURI;
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, $cordovaCamera) {
 
-  $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
-      $scope.receipts = res.data;
-    });
+  $scope.imgURI;
+  
+  $scope.getReceipts = function getReceipts(userID){
+      ReceiptsService.getReceipts(userID).then(()=>{
+        $scope.receipts = ReceiptsService.receipts;
+      });
   };
-  $scope.getReceipts();
+
+
+  //CALLED IN TEMPLATE ???
+  $scope.getReceipts(1);
 
   $scope.takePicture = function() {
     console.log('making it here');
@@ -40,23 +43,29 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     $scope.modal = modal;
   });
 
-  $scope.showItems = function(receipt) {
+  $scope.showItems = function showItems(receipt) {
     $scope.receipt = receipt;
     $scope.modal.show();
   };
-  $scope.closeModal = function() {
+  $scope.closeModal = function closeModal() {
     $scope.modal.hide();
   }
 
-}).controller('ItemsCtrl', function($scope, $stateParams, $http) {
-  $scope.items;
+}).controller('ItemsCtrl', function($scope, $stateParams, ItemsService ) {
+  $scope.items = [];
 
-  $scope.getItems = function() {
-    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
-      $scope.items = res.data;
+  // $scope.getItems = function() {
+  //   $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${$stateParams.receiptId}/items`).then((res) => {
+  //     $scope.items = res.data;
+  //   });
+  // };
+  $scope.getItems = function getItems(receiptID){
+    ItemsService.getItems(receiptID).then((response) =>{
+      $scope.items = response.data;
     });
   };
-  $scope.getItems();
+
+  $scope.getItems($stateParams.receiptID);
 }).controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -76,7 +85,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   $scope.settings = {
     enableFriends: true
   };
-}).controller('GraphCtrl', function($scope, $http) {
+}).controller('GraphCtrl', function($scope, $http, ReceiptsService) {
   $scope.options = {
     chart: {
       type: 'discreteBarChart',
@@ -114,6 +123,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     }
   ];
   $scope.getReceiptData = function() {
+
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       res.data.forEach(function(receipt) {
         const dataObj = {};
@@ -125,8 +135,10 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
         });
         $scope.data[0].values.push(dataObj);
       });
-      console.log($scope.data);
+      // console.log($scope.data);
     });
   };
   $scope.getReceiptData();
+}).controller('SplashCtrl', function($scope) {
+  console.log("SPLASH");
 });
