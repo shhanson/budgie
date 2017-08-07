@@ -1,11 +1,11 @@
 const knex = require('./db');
 
 function Items() {
-  return knex('items');
+  return knex.select(['items.id', 'items.name', 'items.price', 'items.receipt_id', 'tags.tag']).from('items');
 }
 
 Items.getAll = (receiptId, callback) => {
-  Items().leftJoin('tags', 'items.tag_id', 'tags.id').where({ receipt_id: receiptId }).then((items) => {
+  Items().leftJoin('tags', 'items.tag_id', 'tags.id').where({receipt_id: receiptId}).then((items) => {
     if (!items) {
       const error = new Error('No items found matching this receipt.');
       error.status = 400;
@@ -22,7 +22,7 @@ Items.addNew = (data, receiptId, callback) => {
   const tagID = data.tag_id
     ? data.tag_id
     : '';
-  Items().insert({ name: data.name, price: data.price, tag_id: tagID, receipt_id: receiptId }).returning('*').then((item) => {
+  knex('items').insert({name: data.name, price: data.price, tag_id: tagID, receipt_id: receiptId}).returning('*').then((item) => {
     callback(undefined, item);
   }).catch((err) => {
     callback(err);
@@ -43,7 +43,7 @@ Items.getOne = (itemId, callback) => {
 };
 
 Items.updateItem = (itemId, data, callback) => {
-  Items().update(data).where({ id: itemId }).then(() => {
+  knex('items').update(data).where({id: itemId}).then(() => {
     Items().leftJoin('tags', 'items.tag_id', 'tags.id').where('items.id', itemId).first().returning('*').then((item) => {
       callback(undefined, item);
     });
@@ -53,7 +53,7 @@ Items.updateItem = (itemId, data, callback) => {
 };
 
 Items.deleteItem = (itemId, callback) => {
-  Items().del().where({ id: itemId }).then(() => {
+  knex('items').del().where({id: itemId}).then(() => {
     callback(undefined, 'Item successfully deleted.');
   }).catch((err) => {
     callback(err);

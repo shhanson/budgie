@@ -29,7 +29,6 @@ describe('routes : locations', () => {
     it('should return all locations', (done) => {
       chai.request(server).get('/locations/users/1').end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
@@ -39,7 +38,6 @@ describe('routes : locations', () => {
     it('should respond with 200 and return a new item details', (done) => {
       chai.request(server).post('/locations/users/1').send({location: 'Fresas', user_id: '1'}).end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });

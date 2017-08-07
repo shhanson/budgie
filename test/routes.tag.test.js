@@ -29,7 +29,6 @@ describe('routes : tags', () => {
     it('should return all tags', (done) => {
       chai.request(server).get('/tags/users/1').end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
@@ -37,9 +36,8 @@ describe('routes : tags', () => {
 
   describe('POST /tags/users/:user_id', () => {
     it('should respond with 200 and return a new item details', (done) => {
-      chai.request(server).post('/tags/users/1').send({ tag: 'cheese', user_id: '1' }).end((err, res) => {
+      chai.request(server).post('/tags/users/1').send({tag: 'cheese', user_id: '1'}).end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text);
         done();
       });
     });
@@ -56,7 +54,7 @@ describe('routes : tags', () => {
 
   describe('PATCH /tags/:id', () => {
     it('should respond with 200 and return updated data in json', (done) => {
-      chai.request(server).patch('/tags/1').send({ tag: 'cheese' }).end((err, res) => {
+      chai.request(server).patch('/tags/1').send({tag: 'cheese'}).end((err, res) => {
         res.status.should.equal(200);
         done();
       });
