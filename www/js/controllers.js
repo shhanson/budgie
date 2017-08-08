@@ -1,10 +1,6 @@
 angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera) {
   $scope.receipts;
   $scope.imgURI;
-  $scope.recognizedText
-  $scope.scannedImg = 'img/sample.JPG'
-  $scope.convertableImg = document.getElementById('convertableImg');
-  $scope.thisImage;
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
@@ -14,79 +10,40 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   $scope.getReceipts();
 
   $scope.takePicture = function() {
-    // console.log($scope.scannedImg, 'sample img');
-    console.log('making it here');
-    var options = {
-        quality : 75,
-        destinationType : Camera.DestinationType.DATA_URL,
-        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
-        allowEdit : true,
-        encodingType: Camera.EncodingType.JPEG,
-        targetWidth: 300,
-        targetHeight: 300,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: false
-    };
-
-      $cordovaCamera.getPicture(options).then(function(imageData) {
-        console.log('got picture?');
-        // console.log(imageData, 'image data');
-        $scope.imgURI = "data:image/jpeg;base64," + imageData;
-
-        // var imageElem = document.createElement('img');
-        // imageElem.src = $scope.imgURI:
-          //let myBlob = new Blob([imageData], {type: 'image/jpeg'});
-          //console.log(myBlob, 'blob?');
-          //save
-          // console.log($scope.imgURI);
-        // let base64Image = 'data:image/jpeg;base64,' + imageData;
-        //
-        // function encodeImageUri(imageUri)
-        // {
-        //      var c=document.createElement('canvas');
-        //      var ctx=c.getContext("2d");
-        //      var img=new Image();
-        //      img.onload = function(){
-        //        c.width=this.width;
-        //        c.height=this.height;
-        //        ctx.drawImage(img, 0,0);
-        //      };
-        //      img.src=imageUri;
-        //      var dataURL = c.toDataURL("image/jpeg");
-        //      return dataURL;
-        // }
+    let example = document.getElementById('example');
+    console.log(example, 'example');
+    Tesseract.recognize(example)
+    .then((result) => {
+      console.log(result.text, 'result');
+    })
+    // console.log('making it here');
+    // var options = {
+    //     quality : 75,
+    //     destinationType : Camera.DestinationType.DATA_URL,
+    //     sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+    //     allowEdit : true,
+    //     encodingType: Camera.EncodingType.JPEG,
+    //     targetWidth: 300,
+    //     targetHeight: 300,
+    //     popoverOptions: CameraPopoverOptions,
+    //     saveToPhotoAlbum: false
+    // };
+    //
+    // $cordovaCamera.getPicture(options).then(function(imageData) {
+    //   console.log('got picture?');
+    //   $scope.imgURI = "data:image/jpeg;base64," + imageData;
+    //
+    //   let imageFromDom = document.getElementById('example');
+    //   Tesseract.recognize(myImg)
+    //   .then((result) => {
+    //     console.log(result, 'result');
+    //   })
+    // }, function(err) {
+    //   // console.log('error');
+    //     // An error occured. Show a message to the user
+    // });
 
 
-        // $scope.canvasImg = encodeImageUri($scope.imgURI);
-        console.log($scope.imgURI, 'canvas img');
-        // console.log(base64Image, 'after function');
-
-        // tesseract.process($scope.imgURI, (err, text) => {
-        //     if(err){
-        //         return console.log("An error occured: ", err);
-        //     }
-        //
-        //     console.log("Recognized text:");
-        //     // the text variable contains the recognized text
-        //     console.log(text);
-        // });
-
-          Tesseract.recognize($scope.imgURI)
-            .progress((progress) => {
-              console.log('progress', JSON.stringify(progress));
-            })
-            .then((tesseractResult) => {
-              console.log('tes result', JSON.stringify(tesseractResult));
-              $scope.recognizedText = tesseractResult.text;
-              console.log('recognized text?', $scope.recogizedText);
-              // console.log(tesseractResult, 'result');
-              // console.log("WORKED?");
-            });
-
-      }, function(err) {
-        // console.log('error');
-          // An error occured. Show a message to the user
-      });
   }
 
 
