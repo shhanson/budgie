@@ -1,6 +1,9 @@
 angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera) {
   $scope.receipts;
   $scope.imgURI;
+  $scope.recognizedText
+  $scope.scannedImg = 'img/sample.JPG'
+  $scope.convertableImg = document.getElementById('convertableImg');
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
@@ -10,6 +13,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   $scope.getReceipts();
 
   $scope.takePicture = function() {
+    // console.log($scope.scannedImg, 'sample img');
     console.log('making it here');
     var options = {
         quality : 75,
@@ -25,13 +29,61 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
 
       $cordovaCamera.getPicture(options).then(function(imageData) {
         console.log('got picture?');
-          $scope.imgURI = "data:image/jpeg;base64," + imageData;
-          console.log($scope.imgURI);
+        console.log(typeof(imageData), 'image data type');
+
+          // $scope.imgURI = "data:image/jpeg;base64," + imageData;
+          let myBlob = new Blob([imageData], {type: 'image/jpeg'});
+          console.log(myBlob, 'blob?');
+          //save
+          // console.log($scope.imgURI);
+        // let base64Image = 'data:image/jpeg;base64,' + imageData;
+        //
+        // function encodeImageUri(imageUri)
+        // {
+        //      var c=document.createElement('canvas');
+        //      var ctx=c.getContext("2d");
+        //      var img=new Image();
+        //      img.onload = function(){
+        //        c.width=this.width;
+        //        c.height=this.height;
+        //        ctx.drawImage(img, 0,0);
+        //      };
+        //      img.src=imageUri;
+        //      var dataURL = c.toDataURL("image/jpeg");
+        //      return dataURL;
+        // }
+
+        // base64Image = encodeImageUri(base64Image);
+        // console.log(base64Image, 'after function');
+
+        // tesseract.process($scope.imgURI, (err, text) => {
+        //     if(err){
+        //         return console.log("An error occured: ", err);
+        //     }
+        //
+        //     console.log("Recognized text:");
+        //     // the text variable contains the recognized text
+        //     console.log(text);
+        // });
+
+          Tesseract.recognize(myBlob)
+            .progress((progress) => {
+              // console.log('progress', progress);
+            })
+            .then((tesseractResult) => {
+              //console.log(tesseractResult);
+              $scope.recognizedText = tesseractResult.text;
+              // console.log($scope.recogizedText);
+              // console.log(tesseractResult, 'result');
+              // console.log("WORKED?");
+            });
+
       }, function(err) {
-        console.log('error');
+        // console.log('error');
           // An error occured. Show a message to the user
       });
   }
+
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
