@@ -72,7 +72,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     views: {
       account: {
         templateUrl: 'templates/items.html',
-        controller: 'ItemsCtrl'
+        controller: 'ReceiptsCtrl'
       }
     }
   });

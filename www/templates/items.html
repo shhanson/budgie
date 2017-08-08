@@ -1,13 +1,28 @@
 <ion-modal-view>
   <ion-header-bar>
     <button class="button button-light" ng-click="closeModal()"><i class="icon ion-ios-arrow-back"></i></button>
-    <h1 class="title">{{receipt.location}}</h1>
+    <input value='{{receipt.location}}'>
+
   </ion-header-bar>
   <ion-content>
+
     <ion-list>
+
       <ion-item ng-repeat="item in receipt.items">
-        {{item.name}} {{item.price}} {{item.tag}}
+        <form name='editForm'>
+          <input ng-model='item.name' placeholder='item name' style='width: 200px'/>
+          <input ng-model='item.price' placeholder='price' style="width: 40px"/>
+
+          <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change="getSelectedTag(tagSelected, receipt.id, item.id)">
+            <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+          </select>
+
+        </form>
+
+
       </ion-item>
     </ion-list>
+    <button ion-button ng-click='editItems()'>Save changes</button>
+
   </ion-content>
 </ion-modal-view>
