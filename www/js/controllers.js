@@ -4,6 +4,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   $scope.recognizedText
   $scope.scannedImg = 'img/sample.JPG'
   $scope.convertableImg = document.getElementById('convertableImg');
+  $scope.thisImage;
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
