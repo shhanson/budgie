@@ -1,5 +1,11 @@
 <ion-view view-title="Graphs">
   <ion-content>
-    <nvd3 options="options" data="data"></nvd3>
+    <button class="button button-clear button-calm" ng-click="showGraphControl(receipts)"><i class="icon ion-ios-color-wand"></i></button>
+    <nvd3 options="options" data="data" api="api"></nvd3>
+    <div class="item range">
+      <i class="icon ion-ios-clock-outline"></i>
+      <input type="range" name="date">
+      <i class="icon ion-ios-clock"></i>
+    </div>
   </ion-content>
 </ion-view>

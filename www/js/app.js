@@ -25,8 +25,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  $stateProvider
-
+  $stateProvider.state('splash', {
+    url: '',
+    templateUrl: 'templates/splash.html'
+  })
   // setup an abstract state for the tabs directive
     .state('tab', {
     url: '/tab',
@@ -72,11 +74,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     views: {
       account: {
         templateUrl: 'templates/items.html',
-        controller: 'ItemsCtrl'
+        controller: 'ReceiptsCtrl'
       }
     }
-  })
+  });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/receipts');
+  $urlRouterProvider.otherwise('/');
 });
