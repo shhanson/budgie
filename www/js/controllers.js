@@ -40,24 +40,24 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
           // console.log($scope.imgURI);
         // let base64Image = 'data:image/jpeg;base64,' + imageData;
         //
-        function encodeImageUri(imageUri)
-        {
-             var c=document.createElement('canvas');
-             var ctx=c.getContext("2d");
-             var img=new Image();
-             img.onload = function(){
-               c.width=this.width;
-               c.height=this.height;
-               ctx.drawImage(img, 0,0);
-             };
-             img.src=imageUri;
-             var dataURL = c.toDataURL("image/jpeg");
-             return dataURL;
-        }
+        // function encodeImageUri(imageUri)
+        // {
+        //      var c=document.createElement('canvas');
+        //      var ctx=c.getContext("2d");
+        //      var img=new Image();
+        //      img.onload = function(){
+        //        c.width=this.width;
+        //        c.height=this.height;
+        //        ctx.drawImage(img, 0,0);
+        //      };
+        //      img.src=imageUri;
+        //      var dataURL = c.toDataURL("image/jpeg");
+        //      return dataURL;
+        // }
 
 
-        $scope.canvasImg = encodeImageUri($scope.imgURI);
-        console.log($scope.canvasImg, 'canvas img');
+        // $scope.canvasImg = encodeImageUri($scope.imgURI);
+        console.log($scope.imgURI, 'canvas img');
         // console.log(base64Image, 'after function');
 
         // tesseract.process($scope.imgURI, (err, text) => {
@@ -70,7 +70,7 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
         //     console.log(text);
         // });
 
-          Tesseract.recognize($scope.canvasImg)
+          Tesseract.recognize($scope.imgURI)
             .progress((progress) => {
               console.log('progress', JSON.stringify(progress));
             })
