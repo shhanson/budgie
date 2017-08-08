@@ -2,9 +2,10 @@
   <ion-content>
     <button class="button button-clear button-calm" ng-click="showGraphControl(receipts)"><i class="icon ion-ios-color-wand"></i></button>
     <nvd3 options="options" data="data" api="api"></nvd3>
+    <!-- <svg width="960" height="500"></svg> -->
     <div class="item range">
       <i class="icon ion-ios-clock-outline"></i>
-      <input type="range" name="date">
+      <input type="range" ng-model="val" id="input" min=1 step=1 max=8>
       <i class="icon ion-ios-clock"></i>
     </div>
   </ion-content>

@@ -1,6 +1,6 @@
 {
   "name": "budgie-app",
-  "app_id": "",
+  "app_id": "9018adba",
   "type": "ionic1",
   "watchPatterns": [
     "scss/**/*"
