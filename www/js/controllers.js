@@ -29,31 +29,35 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
 
       $cordovaCamera.getPicture(options).then(function(imageData) {
         console.log('got picture?');
-        console.log(typeof(imageData), 'image data type');
+        // console.log(imageData, 'image data');
+        $scope.imgURI = "data:image/jpeg;base64," + imageData;
 
-          // $scope.imgURI = "data:image/jpeg;base64," + imageData;
-          let myBlob = new Blob([imageData], {type: 'image/jpeg'});
-          console.log(myBlob, 'blob?');
+        // var imageElem = document.createElement('img');
+        // imageElem.src = $scope.imgURI:
+          //let myBlob = new Blob([imageData], {type: 'image/jpeg'});
+          //console.log(myBlob, 'blob?');
           //save
           // console.log($scope.imgURI);
         // let base64Image = 'data:image/jpeg;base64,' + imageData;
         //
-        // function encodeImageUri(imageUri)
-        // {
-        //      var c=document.createElement('canvas');
-        //      var ctx=c.getContext("2d");
-        //      var img=new Image();
-        //      img.onload = function(){
-        //        c.width=this.width;
-        //        c.height=this.height;
-        //        ctx.drawImage(img, 0,0);
-        //      };
-        //      img.src=imageUri;
-        //      var dataURL = c.toDataURL("image/jpeg");
-        //      return dataURL;
-        // }
+        function encodeImageUri(imageUri)
+        {
+             var c=document.createElement('canvas');
+             var ctx=c.getContext("2d");
+             var img=new Image();
+             img.onload = function(){
+               c.width=this.width;
+               c.height=this.height;
+               ctx.drawImage(img, 0,0);
+             };
+             img.src=imageUri;
+             var dataURL = c.toDataURL("image/jpeg");
+             return dataURL;
+        }
 
-        // base64Image = encodeImageUri(base64Image);
+
+        $scope.canvasImg = encodeImageUri($scope.imgURI);
+        console.log($scope.canvasImg, 'canvas img');
         // console.log(base64Image, 'after function');
 
         // tesseract.process($scope.imgURI, (err, text) => {
@@ -66,14 +70,14 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
         //     console.log(text);
         // });
 
-          Tesseract.recognize(myBlob)
+          Tesseract.recognize($scope.canvasImg)
             .progress((progress) => {
-              // console.log('progress', progress);
+              console.log('progress', JSON.stringify(progress));
             })
             .then((tesseractResult) => {
-              //console.log(tesseractResult);
+              console.log('tes result', JSON.stringify(tesseractResult));
               $scope.recognizedText = tesseractResult.text;
-              // console.log($scope.recogizedText);
+              console.log('recognized text?', $scope.recogizedText);
               // console.log(tesseractResult, 'result');
               // console.log("WORKED?");
             });
