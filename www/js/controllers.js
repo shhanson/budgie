@@ -1,6 +1,7 @@
 angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera) {
   $scope.receipts;
-  $scope.imgURI;
+  $scope.imgURI= 'img/text.JPG';
+
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
@@ -9,13 +10,37 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
   };
   $scope.getReceipts();
 
+
   $scope.takePicture = function() {
-    let example = document.getElementById('example');
-    console.log(example, 'example');
-    Tesseract.recognize(example)
+    var options = {
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      $scope.imgURI = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+      console.log('error in grabbing image');
+    });
+  }
+
+  $scope.getText = function() {
+    let pickedImage = document.getElementById("pickedImage");
+    console.log('getting to get text function');
+    console.log(pickedImage, 'image at text function');
+    Tesseract.recognize(pickedImage)
     .then((result) => {
       console.log(result.text, 'result');
     })
+  }
+
     // console.log('making it here');
     // var options = {
     //     quality : 75,
@@ -44,7 +69,6 @@ angular.module('starter.controllers', []).controller('ReceiptsCtrl', function($s
     // });
 
 
-  }
 
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
