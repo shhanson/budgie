@@ -16,12 +16,21 @@
           <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change="getSelectedTag(tagSelected, receipt.id, item.id)">
             <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
           </select>
-
         </form>
+      </ion-item>
 
-
+      <ion-item>
+        <form name='addForm'>
+          <input placeholder='item name' style='width: 200px'/>
+          <input placeholder='price' style="width: 40px"/>
+          <select ng-model='newItemTag'>
+            <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+          </select>
+          <button class='button icon ion-ios-plus-empty' ng-click='addItem()'></button>
+        </form>
       </ion-item>
     </ion-list>
+
     <button ion-button ng-click='editItems()'>Save changes</button>
 
   </ion-content>
