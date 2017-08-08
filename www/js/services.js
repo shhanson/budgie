@@ -102,6 +102,7 @@ angular.module('starter.services', []).service('ReceiptsService', [
     };
 
     self.editItem = function editItem(receiptID, itemID, editedItem) {
+      console.log("EDITING");
       $http.patch(`${API_URL}/${receiptID}/items/${itemID}`, editedReceipt).then((response) => {
         for (let i = 0; i < self.items.length; i++) {
           if (self.items[i].id === itemID) {
