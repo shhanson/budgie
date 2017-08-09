@@ -80,6 +80,12 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     });
   }
 
+  $scope.deleteReceipt = function(receipt) {
+    $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${receipt.id}`).then(() => {
+      $scope.getReceipts(1);
+    });
+  }
+
   $scope.imgURI;
 
   $scope.getTags = function getTags(userID) {
@@ -162,28 +168,24 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   $scope.newItem = {};
 
-  $scope.addItem = function addItem(){
-
+  $scope.addItem = function addItem() {
 
     let addedItem = {
       name: $scope.newItem.name,
       price: $scope.newItem.price,
-      receipt_id: $scope.receipt.id,
+      receipt_id: $scope.receipt.id
     };
 
-    for(let i = 0; i < $scope.allTags.length; i++){
-      if($scope.allTags[i].tag === $scope.newItem.tag){
+    for (let i = 0; i < $scope.allTags.length; i++) {
+      if ($scope.allTags[i].tag === $scope.newItem.tag) {
         addedItem.tag_id = $scope.allTags[i].id;
         break;
       }
     }
 
-    $http.post(`${API_URL}/receipts/${addedItem.receipt_id}/items`, addedItem).then((response) => {
-
-    }).catch((err) => {
+    $http.post(`${API_URL}/receipts/${addedItem.receipt_id}/items`, addedItem).then((response) => {}).catch((err) => {
       console.error(err);
     });
-
 
   };
 
