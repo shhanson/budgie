@@ -282,9 +282,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
         showMaxMin: true,
         tickInterval: 7,
         tickFormat(d) {
-          if (typeof d === 'string') {
-            d = parseFloat(d);
-          }
           return d3.time.format('%m/%d')(new Date(d));
         }
       },
