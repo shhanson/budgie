@@ -6,7 +6,7 @@
   </ion-header-bar>
   <ion-content>
 
-    <ion-list>
+    <ion-list can-swipe='true'>
 
       <ion-item ng-repeat="item in receipt.items">
         <form name='editForm'>
@@ -17,6 +17,7 @@
             <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
           </select>
         </form>
+      <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
       </ion-item>
 
       <ion-item>
