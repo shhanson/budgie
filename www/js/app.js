@@ -5,8 +5,17 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'nvd3', 'ngCordova']).run(($ionicPlatform) => {
-
+angular.module('budgie', [
+  'ionic',
+  'budgie.controllers',
+  'budgie.graphs',
+  'budgie.loginServices',
+  'budgie.itemService',
+  'budgie.services',
+  'budgie.login',
+  'nvd3',
+  'ngCordova'
+]).run(($ionicPlatform) => {
 
   $ionicPlatform.ready(() => {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -41,7 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/receipts',
     views: {
       'tab-receipts': {
-        templateUrl: 'templates/tab-receipts.html',
+        templateUrl: 'core/receipts/tab-receipts.html',
         controller: 'ReceiptsCtrl'
       }
     }
@@ -49,7 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/charts',
     views: {
       'tab-charts': {
-        templateUrl: 'templates/tab-charts.html',
+        templateUrl: 'core/graphs/tab-charts.html',
         controller: 'GraphCtrl'
       }
     }
@@ -57,15 +66,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/sign-in',
     views: {
       'sign-in': {
-        templateUrl: 'templates/sign-in.html',
-        controller: 'ChatDetailCtrl'
+        templateUrl: 'core/login/sign-in.html',
+        controller: 'LoginCtrl'
       }
     }
   }).state('tab.account', {
     url: '/account',
     views: {
       'tab-account': {
-        templateUrl: 'templates/tab-account.html',
+        templateUrl: 'core/login/tab-account.html',
         controller: 'AccountCtrl'
       }
     }
@@ -73,7 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     url: '/receipts/:receipt_id',
     views: {
       account: {
-        templateUrl: 'templates/items.html',
+        templateUrl: 'core/receipts/items.html',
         controller: 'ReceiptsCtrl'
       }
     }
