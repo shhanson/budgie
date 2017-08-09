@@ -1,6 +1,48 @@
-angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, ItemsService, $cordovaCamera, $http) {
 
-  //ITEMS MODAL STUFF
+
+angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
+  $scope.receipts;
+  $scope.imgURI= 'img/text.JPG';
+
+
+  $scope.getReceipts = function() {
+    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
+      $scope.receipts = res.data;
+    });
+  };
+  $scope.getReceipts();
+
+
+  $scope.takePicture = function() {
+    var options = {
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      $scope.imgURI = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+      console.log('error in grabbing image');
+    });
+  }
+
+  $scope.getText = function() {
+    let pickedImage = document.getElementById("pickedImage");
+    console.log('getting to get text function');
+    console.log(pickedImage, 'image at text function');
+    Tesseract.recognize(pickedImage)
+    .then((result) => {
+      console.log(result.text, 'result');
+    })
+  }
+
   $ionicModal.fromTemplateUrl('templates/items.html', {
     id: 1,
     scope: $scope,
@@ -194,14 +236,12 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   };
 
-  $scope.deleteItem = function deleteItem(itemID, receiptID){
+  $scope.deleteItem = function deleteItem(itemID, receiptID) {
     console.log("GONNA DELETE");
 
-    $http.delete(`${API_URL}/receipts/${receiptID}/items/${itemID}`)
-    .then(() => {
+    $http.delete(`${API_URL}/receipts/${receiptID}/items/${itemID}`).then(() => {
       $scope.getReceipts(1);
-    })
-    .catch((err) => {
+    }).catch((err) => {
       console.error(err);
     });
   };
@@ -284,6 +324,9 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
         showMaxMin: true,
         tickInterval: 7,
         tickFormat(d) {
+          if (typeof d === 'string') {
+            d = parseFloat(d);
+          }
           return d3.time.format('%m/%d')(new Date(d));
         }
       },
