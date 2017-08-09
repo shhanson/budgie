@@ -73,7 +73,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   }
 
   $scope.addNewReceipt = function() {
-    $scope.newReceipt.listItems = $scope.listItems.splice($scope.listItems.length - 1, 1);
+    $scope.newReceipt.listItems = $scope.listItems;
     $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1', $scope.newReceipt).then(() => {
       $scope.getReceipts(1);
       $scope.closeReceiptModal();
