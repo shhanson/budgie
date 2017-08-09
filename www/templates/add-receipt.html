@@ -1,0 +1,31 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-light" ng-click="closeReceiptModal()"><i class="icon ion-ios-arrow-back"></i></button>
+    <title class="title">New Receipt
+    </title>
+  </ion-header-bar>
+  <ion-content>
+    <form name='addReceipt'>
+      <div class="list">
+        <div class="item item-input-inset">
+          <input type="text" ng-model='newReceipt.location' placeholder='Location' style='width: 200px' />
+          <input type="date" ng-model="newReceipt.date"></input>
+          <button class="button icon ion-ios-camera button-light" ng-click="takePicture()"></button>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="item item-input-inset">
+          <input class="col col-45" ng-model="newReceipt.items.name" type="text" placeholder='Item' />
+          <input class="col col-25" ng-model="newReceipt.items.price" type="text" placeholder='Price' />
+
+          <select class="col col-25 item-select" name="tag_id" ng-model='newReceipt.item.tag_id'>
+            <option value="tag.id" ng-repeat='tag in allTags'>{{tag.tag}}</option>
+          </select>
+          <button class='button icon ion-ios-plus-empty button-light' ng-click="addInput()"></button>
+        </div>
+      </div>
+      <button class='button icon button-block' type="submit"> Save </button>
+    </form>
+  </ion-content>
+</ion-modal-view>

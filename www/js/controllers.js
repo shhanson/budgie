@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, ItemsService, $cordovaCamera, $http) {
 
-  // MODAL STUFF
+  //ITEMS MODAL STUFF
   $ionicModal.fromTemplateUrl('templates/items.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -12,8 +12,25 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     $scope.receipt = receipt;
     $scope.modal.show();
   };
+
   $scope.closeModal = function closeModal() {
     $scope.modal.hide();
+  };
+
+  // RECEIPT MODAL STUFF
+  $ionicModal.fromTemplateUrl('templates/add-receipt.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.receiptModal = modal;
+  });
+
+  $scope.showAddReceipt = function showAddReceipt() {
+    $scope.receiptModal.show();
+  };
+
+  $scope.closeReceiptModal = function closeModal() {
+    $scope.receiptModal.hide();
   };
 
   $scope.imgURI;
@@ -139,11 +156,11 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     enableFriends: true
   };
 }).controller('GraphCtrl', function($scope, $http, $ionicModal) {
+  //set initial graph state
   const d = new Date;
   $scope.xMin = {
-    value: 28
+    value: 30
   };
-
   $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
   $scope.xmaxvalue = new Date();
   $scope.xrange = d3.time.days($scope.xminvalue, $scope.xmaxvalue);
@@ -189,7 +206,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   };
 
   $scope.data = [];
-
+  //get receipt data from server
   $scope.getReceiptData = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       $scope.receipts = res.data;
@@ -198,7 +215,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     });
   };
   $scope.getReceiptData();
-
+  //update graph data with new range based on range control input
   $scope.updateRange = function() {
     const d = new Date;
     $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
@@ -211,7 +228,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
       $scope.$apply(); // update the chart
     }, 500);
   }
-
+  //create and refresh graph data on change
   $scope.updateGraphData = function() {
     const data = [];
     $scope.data.splice(0, $scope.data.length)
@@ -270,14 +287,14 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
       return o;
     }, []);
   }
-
+  //create graph control modal
   $ionicModal.fromTemplateUrl('templates/graphControl.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
+  //shows all items to remove from graph data
   $scope.showGraphControl = function(receipts) {
     $scope.receipts = receipts;
     $scope.modal.show();
