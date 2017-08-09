@@ -9,7 +9,6 @@ angular.module('budgie.services', []).service('ReceiptsService', [
     self.getReceipts = function getReceipts(userID) {
       return $http.get(`${API_URL}/receipts/users/${userID}`).then((response) => {
         self.receipts = response.data;
-        console.log(response.data);
       }).catch((err) => {
         console.error(err);
       });

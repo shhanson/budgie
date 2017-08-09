@@ -1,6 +1,6 @@
 angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
   $scope.receipts;
-  $scope.imgURI = 'img/text.JPG';
+  $scope.imgURI = 'img/test.JPG';
   const API_URL = "http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001";
 
   $scope.getReceipts = function() {
@@ -188,6 +188,14 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       console.error(err);
     });
   };
+
+  $scope.updateReceipt = function(receipt) {
+    const updated = {
+      location: receipt.location,
+      date: receipt.date
+    }
+    ReceiptsService.editReceipt(receipt.id, updated);
+  }
 
   $scope.editItems = function editItems(item) {
     delete item.tag;

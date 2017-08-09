@@ -9,7 +9,7 @@ angular.module('budgie', [
   'ionic',
   'budgie.controllers',
   'budgie.graphs',
-  'budgie.loginServices',
+  'budgie.userServices',
   'budgie.itemService',
   'budgie.services',
   'budgie.login',
