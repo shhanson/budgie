@@ -1,6 +1,9 @@
+
+
 angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
   $scope.receipts;
-  $scope.imgURI = 'img/text.JPG';
+  $scope.imgURI= 'img/text.JPG';
+
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
@@ -9,19 +12,18 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   };
   $scope.getReceipts();
 
-  $scope.items = [];
 
   $scope.takePicture = function() {
     var options = {
-      quality: 75,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
-      targetHeight: 300,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
+        quality : 75,
+        destinationType : Camera.DestinationType.DATA_URL,
+        sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit : true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
@@ -35,10 +37,25 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     let pickedImage = document.getElementById("pickedImage");
     console.log('getting to get text function');
     console.log(pickedImage, 'image at text function');
-    Tesseract.recognize(pickedImage).then((result) => {
-      console.log(result.text, 'result');
-    })
-  }
+    Tesseract.recognize(pickedImage)
+    .then((result) => {
+      //console.log(result.text, 'result');
+      let lines = result.text.split('\n');
+      console.log("LINES?");
+      console.log(lines);
+
+      let items = [];
+      for(let i = 0; i < lines.length; i++){
+        let item = {};
+        item.price = lines[i].match(/\d+[\.\,]\d+$/);
+        item.name = lines[i].substring(0, lines[i].indexOf(item.price));
+        items.push(item);
+      }
+
+      console.log(items);
+
+    });
+  };
 
   $ionicModal.fromTemplateUrl('templates/items.html', {
     id: 1,
@@ -49,10 +66,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   });
 
   $scope.showItems = function showItems(receipt) {
-    ItemsService.getItems(receipt.id).then((res) => {
-      $scope.items = res;
-      console.log($scope.items);
-    })
     $scope.receipt = receipt;
     $scope.ItemsModal.show();
   };
@@ -216,23 +229,32 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   $scope.newItem = {};
 
-  $scope.addItem = function addItem(receipt) {
-    $scope.newItem.receipt_id = receipt.id;
-    $http.post(`${API_URL}/receipts/${receipt.id}/items`, $scope.newItem).then(() => {
-      ItemsService.getItems(receipt.id).then((res) => {
-        $scope.items = res;
-        $scope.newItem = {};
-      });
-    }).catch((err) => {
+  $scope.addItem = function addItem() {
+
+    let addedItem = {
+      name: $scope.newItem.name,
+      price: $scope.newItem.price,
+      receipt_id: $scope.receipt.id
+    };
+
+    for (let i = 0; i < $scope.allTags.length; i++) {
+      if ($scope.allTags[i].tag === $scope.newItem.tag) {
+        addedItem.tag_id = $scope.allTags[i].id;
+        break;
+      }
+    }
+
+    $http.post(`${API_URL}/receipts/${addedItem.receipt_id}/items`, addedItem).then((response) => {}).catch((err) => {
       console.error(err);
     });
+
   };
 
   $scope.deleteItem = function deleteItem(itemID, receiptID) {
+    console.log("GONNA DELETE");
+
     $http.delete(`${API_URL}/receipts/${receiptID}/items/${itemID}`).then(() => {
-      ItemsService.getItems(receiptID).then((res) => {
-        $scope.items = res;
-      })
+      $scope.getReceipts(1);
     }).catch((err) => {
       console.error(err);
     });
@@ -316,6 +338,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
         showMaxMin: true,
         tickInterval: 7,
         tickFormat(d) {
+
           return d3.time.format('%m/%d')(new Date(d));
         }
       },
