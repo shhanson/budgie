@@ -29,7 +29,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
       setTimeout(() => {
         $scope.getText();
-      }, 10000);
+      }, 6000);
 
     }, function(err) {
       console.log('error in grabbing image');
@@ -46,18 +46,16 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       // console.log("LINES?");
       // console.log(lines);
 
-      let items = [];
       let priceRegex = /\d+[\.\,]\d+$/;
       for(let i = 0; i < lines.length; i++){
         let item = {};
         if(lines[i].match(priceRegex)){
           item.price = lines[i].match(priceRegex)[0];
-          item.price = item.price.replace(',', '.');
         }
-        item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim();
+        item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+        item.price = item.price.replace(',', '.');
+        console.log(item);
         if(item.name && item.price){
-          //items.push(item);
-
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
         }
