@@ -13,7 +13,7 @@
           <input ng-model='item.name' placeholder='item name' style='width: 200px' />
           <input ng-model='item.price' placeholder='price' style="width: 40px" />
 
-          <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change="getSelectedTag(tagSelected, receipt.id, item.id)">
+          <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)' >
             <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
           </select>
         </form>
@@ -21,9 +21,10 @@
 
       <ion-item>
         <form name='addForm'>
-          <input placeholder='item name' style='width: 200px' />
-          <input placeholder='price' style="width: 40px" />
-          <select ng-model='newItemTag'>
+
+          <input ng-model='newItem.name' placeholder='item name' style='width: 200px'/>
+          <input ng-model='newItem.price' placeholder='price' style="width: 40px"/>
+          <select ng-model='newItem.tag'>
             <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
           </select>
           <button class='button icon ion-ios-plus-empty' ng-click='addItem()'></button>
@@ -31,7 +32,7 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button ng-click='editItems()'>Save changes</button>
+    <button class='button icon button-block' ng-click='editItems()'>Save changes</button>
 
   </ion-content>
 </ion-modal-view>
