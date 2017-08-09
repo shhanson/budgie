@@ -3,10 +3,12 @@
     <button class="button icon ion-ios-plus-empty button-balanced button-clear" ng-click="showAddReceipt()"></button>
   </ion-nav-buttons>
   <ion-content>
-    <!-- <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
-    <img ng-show="imgURI === undefined" ng-src="http://placehold.it/300x300"> -->
-    <!-- <button class="button icon ion-ios-camera" ng-click="takePicture()"></button> -->
-    <!-- <ion-icon class="button" ng-click="takePicture()" name="camera"></ion-icon> -->
+    <img id="pickedImage" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+    <img id="example" ng-show="imgURI === undefined" ng-src="img/ReceiptSwiss.jpg">
+    <button class="button icon ion-ios-camera" ng-click="takePicture()">Choose an Image</button>
+    <button class="button" ng-click="getText()">Process Text</button>
+    <!-- <p value="{{recognizedText}}">Text Result</p> -->
+     <!-- <ion-icon class="button" ng-click="takePicture()" name="camera"></ion-icon> -->
     <!-- <button class="button button-block button-positive" type="button" ng-click="getReceipts()">Get Receipts</button> -->
     <ion-list show-delete="false" can-swipe="true">
       <ion-item ng-repeat="receipt in receipts" ng-click="showItems(receipt)">
