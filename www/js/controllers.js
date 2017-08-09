@@ -269,7 +269,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
       }
       return o;
     }, []);
-    console.log($scope.data);
   }
 
   $ionicModal.fromTemplateUrl('templates/graphControl.html', {
