@@ -26,7 +26,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
         return d3.time.format('%m/%d')(new Date(d.x))
       },
       showValues: true,
-      showLegend: false,
+      showLegend: true,
       objectequality: true,
       duration: 500,
       xAxis: {
