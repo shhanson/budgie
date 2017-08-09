@@ -36,15 +36,11 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     let pickedImage = document.getElementById("pickedImage");
     console.log('getting to get text function');
     console.log(pickedImage, 'image at text function');
-<<<<<<< HEAD
     Tesseract.recognize(pickedImage)
     .then((result) => {
       console.log(result.text,'text');
       $scope.textresult = result.text;
-=======
-    Tesseract.recognize(pickedImage).then((result) => {
-      console.log(result.text, 'result');
->>>>>>> 3d31d76d707f1c2d5a92f59df2f48de4b1cb33cb
+
     })
   }
 
