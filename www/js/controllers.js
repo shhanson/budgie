@@ -33,6 +33,54 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     $scope.receiptModal.hide();
   };
 
+  $scope.newRecepit = {};
+
+  $scope.inputItems = [
+    {
+      input: 'Item',
+      price: '$0.00'
+    }
+  ];
+
+  $scope.newReceiptItem = {
+    name: '',
+    price: '',
+    tag_id: ''
+  };
+  $scope.listItems = [
+    {
+      name: '',
+      price: '',
+      tag_id: ''
+    }
+  ];
+
+  $scope.addInput = function() {
+    $scope.listItems.push($scope.newReceiptItem);
+    $scope.newReceiptItem = {
+      name: '',
+      price: '',
+      tag_id: ''
+    };
+    $scope.inputItems.push({input: 'Item', price: '$0.00'});
+    console.log($scope.listItems);
+  };
+
+  $scope.deleteInput = function(index) {
+    $scope.inputItems.splice(index, 1);
+    $scope.listItems.splice(index, 1);
+    console.log($scope.listItems);
+  }
+
+  $scope.addNewReceipt = function() {
+    $scope.newReceipt.listItems = $scope.listItems.splice($scope.listItems.length - 1, 1);
+    $scope.newReceipt.user_id = 1;
+    $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1', $scope.newReceipt).then(() => {
+      $scope.getReceipts(1);
+      $scope.closeReceiptModal();
+    });
+  }
+
   $scope.imgURI;
 
   $scope.getTags = function getTags(userID) {
