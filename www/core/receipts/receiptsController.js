@@ -30,7 +30,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     }, function(err) {
       console.log('error in grabbing image');
     });
-  }
+  };
 
   $scope.getText = function() {
     let pickedImage = document.getElementById("pickedImage");
@@ -39,7 +39,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     Tesseract.recognize(pickedImage).then((result) => {
       console.log(result.text, 'result');
     })
-  }
+  };
 
   $ionicModal.fromTemplateUrl('core/receipts/items.html', {
     id: 1,
@@ -167,52 +167,36 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   //
   // $scope.getItems($scope.receipt.id);
 
-  $scope.getSelectedTag = function getSelectedTag(tagSelected, receiptID, itemID) {
-    let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
-
-    const itemUpdatedTag = {
-      id: itemToEdit.id,
-      name: itemToEdit.name,
-      price: itemToEdit.price,
-      receipt_id: itemToEdit.receipt_id
-    };
-
+  $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
+    // let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
+    //
+    // const itemUpdatedTag = {
+    //   id: itemToEdit.id,
+    //   name: itemToEdit.name,
+    //   price: itemToEdit.price,
+    //   receipt_id: itemToEdit.receipt_id
+    // };
+    delete item.tag;
     for (let j = 0; j < $scope.allTags.length; j++) {
       if ($scope.allTags[j].tag === tagSelected) {
-        itemUpdatedTag.tag_id = $scope.allTags[j].id;
+        item.tag_id = $scope.allTags[j].id;
         break;
       }
     }
 
-    $http.patch(`${API_URL}/receipts/${receiptID}/items/${itemID}`, itemUpdatedTag).catch((err) => {
+    $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item).catch((err) => {
       console.error(err);
     });
   };
 
-  $scope.editItems = function editItems() {
-
-    const receiptID = $scope.receipt.id;
-    const updatedItems = $scope.receipt.items;
-    for (let i = 0; i < updatedItems.length; i++) {
-      let editedItem = {
-        id: updatedItems[i].id,
-        name: updatedItems[i].name,
-        price: updatedItems[i].price,
-        receipt_id: updatedItems[i].receipt_id
-      };
-
-      for (let j = 0; j < $scope.allTags.length; j++) {
-        if ($scope.allTags[j].tag === updatedItems[i].tag) {
-          editedItem.tag_id = $scope.allTags[j].id;
-          break;
-        }
-      }
-
-      $http.patch(`${API_URL}/receipts/${receiptID}/items/${updatedItems[i].id}`, editedItem).catch((err) => {
-        console.error(err);
+  $scope.editItems = function editItems(item) {
+    delete item.tag;
+    console.log(item);
+    $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item).then(() => {
+      ItemsService.getItems(item.receipt_id).then((res) => {
+        $scope.items = res;
       });
-    }
-
+    });
   };
 
   $scope.newItem = {};
@@ -238,28 +222,4 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       console.error(err);
     });
   };
-
-  $scope.takePicture = function() {
-    console.log('making it here');
-    let options = {
-      quality: 75,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
-      targetHeight: 300,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
-    };
-
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-      console.log('got picture?');
-      $scope.imgURI = "data:image/jpeg;base64," + imageData;
-      console.log($scope.imgURI);
-    }, function(err) {
-      console.log('error');
-      // An error occured. Show a message to the user
-    });
-  }
-})
+});

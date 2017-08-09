@@ -9,18 +9,15 @@
     <ion-list can-swipe='true'>
 
       <ion-item ng-repeat="item in items">
-        <form name='editForm'>
-          <div class='list'>
-            <div class='item item-input-inset'>
-              <input class='col col-45' type='text' ng-model='item.name' placeholder='item name' />
-              <input class='col col-25' type='text' ng-model='item.price' placeholder='price' />
-
-              <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)'>
+        <div class='list'>
+          <div class='item item-input-inset'>
+            <input class='col col-45' type='text' ng-model='item.name' placeholder='item name' />
+            <input class='col col-25' type='text' ng-model='item.price' placeholder='price' />
+            <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, item)'>
                 <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
               </select>
-            </div>
           </div>
-        </form>
+        </div>
         <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
       </ion-item>
 
