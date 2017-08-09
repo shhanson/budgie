@@ -10,25 +10,36 @@
 
       <ion-item ng-repeat="item in receipt.items">
         <form name='editForm'>
-          <input ng-model='item.name' placeholder='item name' style='width: 200px' />
-          <input ng-model='item.price' placeholder='price' style="width: 40px" />
+          <div class='list'>
+            <div class='item item-input-inset'>
+              <input class='col col-45' type='text' ng-model='item.name' placeholder='item name'/>
+              <input class='col col-25' type='text' ng-model='item.price' placeholder='price'/>
 
-          <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)' >
-            <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
-          </select>
+              <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)' >
+                <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+              </select>
+            </div>
+          </div>
         </form>
       <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
       </ion-item>
 
       <ion-item>
         <form name='addForm'>
+          <div class='list'>
+            <div class='item item-input-inset'>
+              <input class='col col-45' ng-model='newItem.name' placeholder='item name'/>
+              <input class='col col-25' ng-model='newItem.price' placeholder='price'/>
+              <select ng-model='newItem.tag'>
+                <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+              </select>
 
-          <input ng-model='newItem.name' placeholder='item name' style='width: 200px'/>
-          <input ng-model='newItem.price' placeholder='price' style="width: 40px"/>
-          <select ng-model='newItem.tag'>
-            <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
-          </select>
-          <button class='button icon ion-ios-plus-empty' ng-click='addItem()'></button>
+              <button class='button icon ion-ios-plus-empty' ng-click='addItem()'></button>
+
+            </div>
+
+          </div>
+
         </form>
       </ion-item>
     </ion-list>
