@@ -1,7 +1,14 @@
 const knex = require('./db');
 
 function Items() {
-  return knex.select(['items.id', 'items.name', 'items.price', 'items.receipt_id', 'tags.tag']).from('items');
+  return knex.select([
+    'items.id',
+    'items.name',
+    'items.price',
+    'items.receipt_id',
+    'items.tag_id',
+    'tags.tag'
+  ]).from('items');
 }
 
 Items.getAll = (receiptId, callback) => {
