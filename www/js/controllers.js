@@ -3,7 +3,7 @@
 angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
   $scope.receipts;
   $scope.imgURI= 'img/text.JPG';
-
+  $scope.textresult;
 
   $scope.getReceipts = function() {
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
@@ -39,7 +39,8 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     console.log(pickedImage, 'image at text function');
     Tesseract.recognize(pickedImage)
     .then((result) => {
-      console.log(result.text, 'result');
+      console.log(result.text,'text');
+      $scope.textresult = result.text;
     })
   }
 

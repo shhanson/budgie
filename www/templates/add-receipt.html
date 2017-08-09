@@ -5,6 +5,10 @@
     </title>
   </ion-header-bar>
   <ion-content>
+    <img id="pickedImage" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+    <button class="button icon ion-ios-camera" ng-click="takePicture()">Choose an Image</button>
+    <button class="button" ng-click="getText()">Process Text</button>
+    <p ng-model='textresult'></p>
     <form ng-submit="addNewReceipt()">
       <div class="list">
         <div class="item item-input-inset">
