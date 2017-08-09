@@ -114,14 +114,14 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   $scope.getReceipts(1);
 
-  // ITEMS STUFF
+  //ITEMS STUFF
   // $scope.getItems = function getItems(receiptID) {
   //   ItemsService.getItems(receiptID).then((response) => {
   //     $scope.items = response.data;
   //   });
   // };
-
-  //$scope.getItems($scope.receipt.id);
+  //
+  // $scope.getItems($scope.receipt.id);
 
   $scope.getSelectedTag = function getSelectedTag(tagSelected, receiptID, itemID) {
     let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
@@ -192,6 +192,18 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
       console.error(err);
     });
 
+  };
+
+  $scope.deleteItem = function deleteItem(itemID, receiptID){
+    console.log("GONNA DELETE");
+
+    $http.delete(`${API_URL}/receipts/${receiptID}/items/${itemID}`)
+    .then(() => {
+      $scope.getReceipts(1);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   };
 
   $scope.takePicture = function() {
