@@ -1,4 +1,3 @@
-
 angular.module('starter.controllers', ['starter.services']).controller('ReceiptsCtrl', function($scope, $ionicModal, ReceiptsService, ItemsService, $cordovaCamera, $http) {
 
   // MODAL STUFF
@@ -19,8 +18,7 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   $scope.imgURI;
 
-
-  $scope.getTags = function getTags(userID){
+  $scope.getTags = function getTags(userID) {
     $http.get(`${API_URL}/tags/users/${userID}`).then((response) => {
       //const toReturn = response.data.filter(tag => tag.tag !== tagName);
       $scope.allTags = response.data;
@@ -31,7 +29,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     });
   };
   $scope.getTags(1);
-
 
   // RECEIPTS STUFF
   $scope.getReceipts = function getReceipts(userID) {
@@ -51,18 +48,18 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   //$scope.getItems($scope.receipt.id);
 
-  $scope.getSelectedTag = function getSelectedTag(tagSelected, receiptID, itemID){
+  $scope.getSelectedTag = function getSelectedTag(tagSelected, receiptID, itemID) {
     let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
 
     const itemUpdatedTag = {
       id: itemToEdit.id,
       name: itemToEdit.name,
       price: itemToEdit.price,
-      receipt_id: itemToEdit.receipt_id,
+      receipt_id: itemToEdit.receipt_id
     };
 
-    for(let j = 0; j < $scope.allTags.length; j++){
-      if($scope.allTags[j].tag === tagSelected){
+    for (let j = 0; j < $scope.allTags.length; j++) {
+      if ($scope.allTags[j].tag === tagSelected) {
         itemUpdatedTag.tag_id = $scope.allTags[j].id;
         break;
       }
@@ -73,21 +70,20 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     });
   };
 
-
-  $scope.editItems = function editItems(){
+  $scope.editItems = function editItems() {
 
     const receiptID = $scope.receipt.id;
     const updatedItems = $scope.receipt.items;
-    for(let i = 0; i < updatedItems.length; i++){
+    for (let i = 0; i < updatedItems.length; i++) {
       let editedItem = {
         id: updatedItems[i].id,
         name: updatedItems[i].name,
         price: updatedItems[i].price,
-        receipt_id: updatedItems[i].receipt_id,
+        receipt_id: updatedItems[i].receipt_id
       };
 
-      for(let j = 0; j < $scope.allTags.length; j++){
-        if($scope.allTags[j].tag === updatedItems[i].tag){
+      for (let j = 0; j < $scope.allTags.length; j++) {
+        if ($scope.allTags[j].tag === updatedItems[i].tag) {
           editedItem.tag_id = $scope.allTags[j].id;
           break;
         }
@@ -99,9 +95,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
     }
 
   };
-
-
-
 
   $scope.takePicture = function() {
     console.log('making it here');
@@ -147,9 +140,11 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   };
 }).controller('GraphCtrl', function($scope, $http, $ionicModal) {
   const d = new Date;
-  console.log($scope.xMin);
+  $scope.xMin = {
+    value: 28
+  };
 
-  $scope.xminvalue = d.setDate(d.getDate() - 30);
+  $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
   $scope.xmaxvalue = new Date();
   $scope.xrange = d3.time.days($scope.xminvalue, $scope.xmaxvalue);
 
@@ -204,6 +199,19 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   };
   $scope.getReceiptData();
 
+  $scope.updateRange = function() {
+    const d = new Date;
+    $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
+    $scope.xmaxvalue = new Date();
+    $scope.xrange = d3.time.days($scope.xminvalue, $scope.xmaxvalue);
+    $scope.updateGraphData();
+    setInterval(function() {
+      if (!$scope.run)
+        return;
+      $scope.$apply(); // update the chart
+    }, 500);
+  }
+
   $scope.updateGraphData = function() {
     const data = [];
     $scope.data.splice(0, $scope.data.length)
@@ -244,7 +252,6 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
           : n;
       }, -1);
       if (occurs > -1) {
-        console.log(cur.values);
         let values = []
         for (var i1 = 0; i1 < o[occurs].values.length; i1++) {
           for (var i2 = 0; i2 < cur.values.length; i2++) {
