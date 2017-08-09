@@ -37,7 +37,7 @@ describe('routes : receipts', () => {
   describe('POST /receipts/users/:id', () => {
     it('should respond with 200 and return a json object containing all list receipts for new receipt', (done) => {
       chai.request(server).post('/receipts/users/1').send({
-        location_id: '1',
+        location: 'HEB',
         date: '2017-08-04',
         listItems: [
           {

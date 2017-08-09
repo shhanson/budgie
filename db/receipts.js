@@ -1,7 +1,7 @@
 const knex = require('./db');
 
 function Receipts() {
-  return knex.select(['receipts.id', 'receipts.date', 'receipts.location_id', 'receipts.user_id', 'locations.location']).from('receipts');
+  return knex('receipts');
 }
 
 function Items() {
@@ -9,7 +9,7 @@ function Items() {
 }
 
 Receipts.getAll = (userId, callback) => {
-  Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.user_id', userId).returning('*').then((receipts) => {
+  Receipts().where('receipts.user_id', userId).returning('*').then((receipts) => {
     console.log(receipts);
     if (!receipts) {
       const error = new Error('No receipts found for user.');
@@ -52,7 +52,7 @@ Receipts.addNew = (data, userId, callback) => {
 };
 
 Receipts.getOne = (receiptId, callback) => {
-  Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.id', receiptId).first().returning('*').then((receipt) => {
+  Receipts().where('receipts.id', receiptId).first().returning('*').then((receipt) => {
     if (!receipt) {
       const error = new Error('Item does not exist.');
       error.status = 400;
@@ -69,7 +69,7 @@ Receipts.getOne = (receiptId, callback) => {
 
 Receipts.updateReceipt = (receiptId, data, callback) => {
   knex('receipts').update(data).where({id: receiptId}).then(() => {
-    Receipts().join('locations', 'receipts.location_id', 'locations.id').where('receipts.id', receiptId).first().returning('*').then((receipt) => {
+    Receipts().where('receipts.id', receiptId).first().returning('*').then((receipt) => {
       if (!receipt) {
         const error = new Error('Item does not exist.');
         error.status = 400;
