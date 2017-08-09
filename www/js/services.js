@@ -68,21 +68,22 @@ angular.module('starter.services', []).service('ReceiptsService', [
     self.items = [];
 
     self.getItems = function getItems(receiptID) {
-      return $http.get(`${API_URL}/${receiptID}/items`).then((response) => {
+      return $http.get(`${API_URL}/receipts/${receiptID}/items`).then((response) => {
         self.items = response.data;
+        return response.data;
       }).catch((err) => {
         console.error(err);
       });
     };
 
     self.getItem = function getItem(receiptID, itemID) {
-      return $http.get(`${API_URL}/${receiptID}/items/${itemID}`).catch((err) => {
+      return $http.get(`${API_URL}/receipts/${receiptID}/items/${itemID}`).catch((err) => {
         console.error(err);
       });
     };
 
     self.addItem = function addItem(receiptID, newItem) {
-      $http.post(`${API_URL}/${receiptID}/items`, newItem).then((response) => {
+      $http.post(`${API_URL}/receipts/${receiptID}/items`, newItem).then((response) => {
         self.receipts.push(response.data);
       }).catch((err) => {
         console.error(err);
@@ -90,7 +91,7 @@ angular.module('starter.services', []).service('ReceiptsService', [
     };
 
     self.deleteItem = function deleteItem(receiptID, itemID) {
-      $http.delete(`${API_URL}/${receiptID}/items/${itemID}`).then(() => {
+      $http.delete(`${API_URL}/receipts/${receiptID}/items/${itemID}`).then(() => {
         for (let i = 0; i < self.items.length; i++) {
           if (self.items[i].id === itemID) {
             self.items.splice(i, 1);
@@ -104,7 +105,7 @@ angular.module('starter.services', []).service('ReceiptsService', [
 
     self.editItem = function editItem(receiptID, itemID, editedItem) {
       console.log("EDITING");
-      $http.patch(`${API_URL}/${receiptID}/items/${itemID}`, editedReceipt).then((response) => {
+      $http.patch(`${API_URL}/receipts/${receiptID}/items/${itemID}`, editedReceipt).then((response) => {
         for (let i = 0; i < self.items.length; i++) {
           if (self.items[i].id === itemID) {
             self.items[i] = response.data;
