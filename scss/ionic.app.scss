@@ -4,6 +4,7 @@ in ionic's _variables.scss file.
 
 For example, you might change some of the default colors:
 
+
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
@@ -21,3 +22,76 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+/* Empty. Add your own CSS if you like */
+
+$teal: #13393e;
+$light-teal: #40d5bb;
+$yellow: #fed500; // #e3bc13
+$yellow-hover: #fbeaae;
+$grey: #c0bfc0;
+$text: #272727;
+$white: #fbfcfc;
+
+
+body {
+  font-family: 'Helvetica'
+  font-size: 100%;
+}
+/*splash page*/
+.view {
+  background-color: $teal;
+}
+
+ion-header-bar.bar-stable.bar.bar-header {
+  background-color: $text;
+  margin: 0;
+  color: $yellow;
+  div.title, .platform-android.bar.title {
+    text-align: center;
+    font-size: 1em;
+  }
+  // .title .header-item {
+  //   background-color: $yellow;
+  // }
+}
+
+.splash-content {
+  margin: 0 auto;
+  margin-top: 45%;
+  width: 100%;
+  display: block;
+
+  img {
+    width: 55%;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 2em;
+  }
+
+}
+
+.splash-button-container {
+  width: 75%;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 6em;
+  a {
+    &:hover {
+      color: $yellow-hover;
+    }
+    &:first-child {
+      border-right: 2px solid $yellow;
+      text-align: right;
+      padding-right: 7px;
+    }
+    &:last-child{
+      padding-left: 2px;
+    }
+    width: 100%;
+    color: $yellow;
+    border: none;
+    background-color: $teal;
+    border-radius: 0;
+  }
+}
