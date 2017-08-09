@@ -34,25 +34,12 @@ $white: #fbfcfc;
 
 
 body {
-  font-family: 'Helvetica'
+  font-family: 'Helvetica';
   font-size: 100%;
 }
 /*splash page*/
 .view {
-  background-color: $teal;
-}
-
-ion-header-bar.bar-stable.bar.bar-header {
-  background-color: $text;
-  margin: 0;
-  color: $yellow;
-  div.title, .platform-android.bar.title {
-    text-align: center;
-    font-size: 1em;
-  }
-  // .title .header-item {
-  //   background-color: $yellow;
-  // }
+  background-color: $white;
 }
 
 .splash-content {
@@ -78,10 +65,10 @@ ion-header-bar.bar-stable.bar.bar-header {
   margin-top: 6em;
   a {
     &:hover {
-      color: $yellow-hover;
+      color: $teal;
     }
     &:first-child {
-      border-right: 2px solid $yellow;
+      border-right: 2px solid $light-teal;
       text-align: right;
       padding-right: 7px;
     }
@@ -89,9 +76,32 @@ ion-header-bar.bar-stable.bar.bar-header {
       padding-left: 2px;
     }
     width: 100%;
-    color: $yellow;
+    color: $light-teal;
     border: none;
-    background-color: $teal;
+    background-color: $white;
     border-radius: 0;
   }
+}
+
+button.btn-icon.icon {
+  &::after {
+    color: $light-teal;
+  }
+  &::before {
+    color: $light-teal;
+  }
+  // background-color: $light-teal;
+  color: $light-teal;
+}
+
+.icon, .icon::before, span.tab-title {
+  color: $light-teal;
+}
+
+a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active span, a.tab-item-active.icon {
+  color: $light-teal;
+}
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
+  border-color: $light-teal;
+  color: $light-teal;
 }

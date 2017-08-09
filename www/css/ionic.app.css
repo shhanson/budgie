@@ -4,6 +4,9 @@ To customize the look and feel of Ionic, you can override the variables
 in ionic's _variables.scss file.
 
 For example, you might change some of the default colors:
+
+
+$light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
@@ -9812,21 +9815,15 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
-<<<<<<< HEAD
 
 /* Empty. Add your own CSS if you like */
 body {
-  font-family: 'Helvetica'; }
+  font-family: 'Helvetica';
+  font-size: 100%; }
 
 /*splash page*/
 .view {
-  background-color: #13393e; }
-
-ion-header-bar.bar-stable.bar.bar-header {
-  background-color: #fed500;
-  margin: 0; }
-  ion-header-bar.bar-stable.bar.bar-header div.title {
-    text-align: center; }
+  background-color: #fbfcfc; }
 
 .splash-content {
   margin: 0 auto;
@@ -9847,17 +9844,32 @@ ion-header-bar.bar-stable.bar.bar-header {
   margin-top: 6em; }
   .splash-button-container a {
     width: 100%;
-    color: #fed500;
+    color: #40d5bb;
     border: none;
-    background-color: #13393e;
+    background-color: #fbfcfc;
     border-radius: 0; }
     .splash-button-container a:hover {
-      color: #fbeaae; }
+      color: #13393e; }
     .splash-button-container a:first-child {
-      border-right: 2px solid #fed500;
+      border-right: 2px solid #40d5bb;
       text-align: right;
       padding-right: 7px; }
     .splash-button-container a:last-child {
       padding-left: 2px; }
-=======
->>>>>>> 959f087426b58e980551b0f7f330acb9e4510d33
+
+button.btn-icon.icon {
+  color: #40d5bb; }
+  button.btn-icon.icon::after {
+    color: #40d5bb; }
+  button.btn-icon.icon::before {
+    color: #40d5bb; }
+
+.icon, .icon::before, span.tab-title {
+  color: #40d5bb; }
+
+a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active span, a.tab-item-active.icon {
+  color: #40d5bb; }
+
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
+  border-color: #40d5bb;
+  color: #40d5bb; }
