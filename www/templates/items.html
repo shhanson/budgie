@@ -10,8 +10,8 @@
 
       <ion-item ng-repeat="item in receipt.items">
         <form name='editForm'>
-          <input ng-model='item.name' placeholder='item name' style='width: 200px'/>
-          <input ng-model='item.price' placeholder='price' style="width: 40px"/>
+          <input ng-model='item.name' placeholder='item name' style='width: 200px' />
+          <input ng-model='item.price' placeholder='price' style="width: 40px" />
 
           <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)' >
             <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
@@ -21,6 +21,7 @@
 
       <ion-item>
         <form name='addForm'>
+
           <input ng-model='newItem.name' placeholder='item name' style='width: 200px'/>
           <input ng-model='newItem.price' placeholder='price' style="width: 40px"/>
           <select ng-model='newItem.tag'>
