@@ -2,23 +2,25 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
 
   //ITEMS MODAL STUFF
   $ionicModal.fromTemplateUrl('templates/items.html', {
+    id: 1,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.modal = modal;
+    $scope.ItemsModal = modal;
   });
 
   $scope.showItems = function showItems(receipt) {
     $scope.receipt = receipt;
-    $scope.modal.show();
+    $scope.ItemsModal.show();
   };
 
   $scope.closeModal = function closeModal() {
-    $scope.modal.hide();
+    $scope.ItemsModal.hide();
   };
 
   // RECEIPT MODAL STUFF
   $ionicModal.fromTemplateUrl('templates/add-receipt.html', {
+    id: 2,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -73,15 +75,18 @@ angular.module('starter.controllers', ['starter.services']).controller('Receipts
   }
 
   $scope.addNewReceipt = function() {
+    if ($scope.listItems[$scope.listItems.length - 1].name === '') {
+      $scope.listItems.splice($scope.listItems.length - 1, 1);
+    }
     $scope.newReceipt.listItems = $scope.listItems;
-    $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1', $scope.newReceipt).then(() => {
+    $http.post(`${API_URL}/receipts/users/1`, $scope.newReceipt).then(() => {
       $scope.getReceipts(1);
       $scope.closeReceiptModal();
     });
   }
 
   $scope.deleteReceipt = function(receipt) {
-    $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/${receipt.id}`).then(() => {
+    $http.delete(`${API_URL}/receipts/${receipt.id}`).then(() => {
       $scope.getReceipts(1);
     });
   }
