@@ -1,4 +1,7 @@
 <ion-view view-title="Receipts">
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-ios-plus-empty button-balanced button-clear" ng-click="showAddReceipt()"></button>
+  </ion-nav-buttons>
   <ion-content>
     <img id="pickedImage" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
     <img id="example" ng-show="imgURI === undefined" ng-src="img/ReceiptSwiss.jpg">
@@ -11,8 +14,7 @@
       <ion-item ng-repeat="receipt in receipts" ng-click="showItems(receipt)">
         {{receipt.location}} {{receipt.date | date : format : shortDate}}
         <ion-option-button class="button-light icon ion-heart"></ion-option-button>
-        <ion-option-button class="button-light icon ion-email"></ion-option-button>
-        <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+        <ion-option-button ng-click="deleteReceipt(receipt)" class="button-assertive icon ion-trash-a"></ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>
