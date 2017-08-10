@@ -1,5 +1,7 @@
-angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal) {
+angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal, UserService, $state) {
   //set initial graph state
+  // $state.go($state.current, {}, {reload: true});
+  $scope.user = UserService.currentUser;
   const d = new Date;
   $scope.xMin = {
     value: 30
@@ -51,10 +53,9 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
   $scope.data = [];
   //get receipt data from server
   $scope.getReceiptData = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
+    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/${$scope.user.id}`).then(function(res) {
       $scope.receipts = res.data;
       $scope.selectedItems = JSON.parse(JSON.stringify(res.data));
-      console.log($scope.selectedItems);
       $scope.updateGraphData();
     });
   };
@@ -105,7 +106,6 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
       series.key = receipt.location;
       series.values = seriesValues;
       data.push(series);
-      console.log(data);
     });
     $scope.data = data.reduce((o, cur) => {
       const occurs = o.reduce((n, item, i) => {
@@ -131,7 +131,6 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
       }
       return o;
     }, []);
-    console.log($scope.data)
   }
   //create graph control modal
   $ionicModal.fromTemplateUrl('core/graphs/graphControl.html', {
