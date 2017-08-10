@@ -73,4 +73,18 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   $scope.closeSignUp = function closeModal() {
     $scope.signUpModal.hide();
   };
+
+  //TAG STUFF
+  $scope.getUserTags = function getUserTags(){
+    UserService.getUserTags().then(()=>{
+      $scope.allUserTags = UserService.allUserTags;
+    });
+  };
+
+  $scope.deleteTag = function deleteTag(tagID){
+    UserService.deleteTag(tagID);
+    $scope.getUserTags();
+  };
+
+  $scope.getUserTags();
 });
