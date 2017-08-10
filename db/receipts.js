@@ -10,7 +10,6 @@ function Items() {
 
 Receipts.getAll = (userId, callback) => {
   Receipts().where('receipts.user_id', userId).returning('*').then((receipts) => {
-    console.log(receipts);
     if (!receipts) {
       const error = new Error('No receipts found for user.');
       error.status = 400;
