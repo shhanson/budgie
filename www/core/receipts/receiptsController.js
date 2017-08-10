@@ -1,11 +1,12 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', 'budgie.userServices']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService) {
+  $scope.user = UserService.currentUser;
   $scope.receipts;
   $scope.imgURI = 'img/test.JPG';
   const API_URL = "http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001";
 
   $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
-      $scope.receipts = res.data;
+    ReceiptsService.getReceipts($scope.user.id).then((res) => {
+      $scope.receipts = ReceiptsService.receipts;
     });
   };
   $scope.getReceipts();
@@ -47,22 +48,19 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       // console.log(lines);
 
       let priceRegex = /\d+[\.\,]\d+$/;
-      for(let i = 0; i < lines.length; i++){
+      for (let i = 0; i < lines.length; i++) {
         let item = {};
-        if(lines[i].match(priceRegex)){
+        if (lines[i].match(priceRegex)) {
           item.price = lines[i].match(priceRegex)[0];
         }
         item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
         item.price = item.price.replace(',', '.');
         console.log(item);
-        if(item.name && item.price){
+        if (item.name && item.price) {
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
         }
       } //END FOR
-
-
-
 
     }).catch((err) => {
       console.error("********** RECOGNIZE ERROR **************");
@@ -71,7 +69,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   };
 
   $ionicModal.fromTemplateUrl('core/receipts/items.html', {
-    id: 1,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -93,7 +90,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   // RECEIPT MODAL STUFF
   $ionicModal.fromTemplateUrl('core/receipts/add-receipt.html', {
-    id: 2,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -120,22 +116,26 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   $scope.newReceiptItem = {
     name: '',
     price: '',
-    tag_id: ''
+    tag_id: null
   };
   $scope.listItems = [
     {
       name: '',
       price: '',
-      tag_id: ''
+      tag_id: null
     }
   ];
 
   $scope.addInput = function() {
+    console.log($scope.newReceiptItem.tag_id)
+    if ($scope.newReceiptItem.tag_id == null) {
+      delete $scope.newReceiptItem.tag_id;
+    }
     $scope.listItems.push($scope.newReceiptItem);
     $scope.newReceiptItem = {
       name: '',
       price: '',
-      tag_id: ''
+      tag_id: null
     };
     $scope.inputItems.push({input: 'Item', price: '$0.00'});
     console.log($scope.listItems);
@@ -153,14 +153,14 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     }
     $scope.newReceipt.listItems = $scope.listItems;
     $http.post(`${API_URL}/receipts/users/1`, $scope.newReceipt).then(() => {
-      $scope.getReceipts(1);
+      $scope.getReceipts();
       $scope.closeReceiptModal();
     });
   }
 
   $scope.deleteReceipt = function(receipt) {
     $http.delete(`${API_URL}/receipts/${receipt.id}`).then(() => {
-      $scope.getReceipts(1);
+      $scope.getReceipts();
     });
   }
 
@@ -176,16 +176,16 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       console.error(err);
     });
   };
-  $scope.getTags(1);
+  $scope.getTags($scope.user.id);
 
   // RECEIPTS STUFF
-  $scope.getReceipts = function getReceipts(userID) {
-    ReceiptsService.getReceipts(userID).then(() => {
-      $scope.receipts = ReceiptsService.receipts;
-    });
-  };
-
-  $scope.getReceipts(1);
+  // $scope.getReceipts = function getReceipts(userID) {
+  //   ReceiptsService.getReceipts(userID).then(() => {
+  //     $scope.receipts = ReceiptsService.receipts;
+  //   });
+  // };
+  //
+  // $scope.getReceipts();
 
   //ITEMS STUFF
   // $scope.getItems = function getItems(receiptID) {
@@ -197,14 +197,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   // $scope.getItems($scope.receipt.id);
 
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
-    // let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
-    //
-    // const itemUpdatedTag = {
-    //   id: itemToEdit.id,
-    //   name: itemToEdit.name,
-    //   price: itemToEdit.price,
-    //   receipt_id: itemToEdit.receipt_id
-    // };
     delete item.tag;
     for (let j = 0; j < $scope.allTags.length; j++) {
       if ($scope.allTags[j].tag === tagSelected) {
@@ -212,7 +204,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         break;
       }
     }
-
     $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item).catch((err) => {
       console.error(err);
     });
