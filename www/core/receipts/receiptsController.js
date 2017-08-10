@@ -1,4 +1,4 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state) {
   $scope.user = UserService.currentUser;
   $scope.imgURI;
   $scope.receipts;
@@ -48,55 +48,50 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       saveToPhotoAlbum: false
     };
 
-    // $cordovaCamera.getPicture(options).then(function(imageData) {
-    //   $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    //   setTimeout(() => {
-    //     $scope.getText().then(()=>{
-    //     });
-    //   }, 6000);
-    // }, function(err) {
-    //   console.log('error in grabbing image');
-    // });
-    $cordovaCamera.getPicture(options).then((imageData) => {
+    $cordovaCamera.getPicture(options).then(function(imageData) {
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    }).then(()=>{
-      setTimeout(()=>{
+      setTimeout(() => {
         $scope.getText();
-      }, 4000);
-    }).catch((err)=>{
-      console.error(err);
-      console.error("**** GET PICUTRE ERROR *****")
-    })
+      }, 6000);
+    }, function(err) {
+      console.log('error in grabbing image');
+    });
   };
 
   $scope.getText = function() {
-    //$ionicLoading.show();
     let pickedImage = document.getElementById("pickedImage");
-    Tesseract.recognize(pickedImage).then((result) => {
-    //  $ionicLoading.hide();
-      let lines = result.text.split('\n');
-      console.log(lines);
 
-      let priceRegex = /\d+[\.\,]\d+$/;
-      for (let i = 0; i < lines.length; i++) {
-        let item = {};
-        if (lines[i].match(priceRegex)) {
-          item.price = lines[i].match(priceRegex)[0];
-        }
-        item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-        item.price = item.price.replace(',', '.');
-        if (item.name && item.price) {
-          $scope.listItems.unshift(item);
-          $scope.inputItems.unshift(item);
-        }
-      } //END FOR
+    // clean image
+    ReceiptsService.cleanImage(pickedImage).then((res) => {
+      console.log(res, 'result, should be tif???');
+      Tesseract.recognize(res).then((result) => {
+        let lines = result.text.split('\n');
+        // console.log("LINES?");
+        // console.log(lines);
 
+        let priceRegex = /\d+[\.\,]\d+$/;
+        for (let i = 0; i < lines.length; i++) {
+          let item = {};
+          if (lines[i].match(priceRegex)) {
+            item.price = lines[i].match(priceRegex)[0];
+          }
+          item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+          item.price = item.price.replace(',', '.');
+          if (item.name && item.price) {
+            $scope.listItems.unshift(item);
+            $scope.inputItems.unshift(item);
+          }
+        } //END FOR
 
+      }).catch((err) => {
+        console.error("********** RECOGNIZE ERROR **************");
+        console.error(err);
+      });
 
-    }).catch((err) => {
-      console.error("*** RECOGNIZE ERROR ***");
-      console.error(err);
-    });
+    })
+
+    // console.log('getting to get text function');
+    // console.log(pickedImage, 'image at text function');
   };
 
   //ITEM MODAL STUFF
@@ -157,28 +152,9 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     if ($scope.listItems[$scope.listItems.length - 1].name === '') {
       $scope.listItems.splice($scope.listItems.length - 1, 1);
     }
-
-
-
     $scope.newReceipt.listItems = $scope.listItems;
-
     $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
       $scope.getReceipts();
-      $scope.inputItems = [
-        {
-          input: 'Item',
-          price: '$0.00'
-        }
-      ];
-      $scope.listItems = [
-        {
-          name: '',
-          price: '',
-          tag_id: null
-        }
-      ];
-      $scope.newReceipt.location = "";
-      $scope.newReceipt.date = "";
       $scope.closeReceiptModal();
     });
   }
@@ -195,12 +171,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
   $scope.getTags();
-
-  $scope.tagHandler = function tagHandler(item){
-    if(item.tag_id === "addNewTag"){
-      $scope.addTagAlert(item);
-    }
-  };
 
   $scope.addTagAlert = function addTagAlert(item) {
     let tagPopup = $ionicPopup.show({
@@ -232,18 +202,15 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                 const patchTag = {
                   tag_id: response.data[0].id
                 };
-                if(item.id){
-                  $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
-                    $scope.getTags();
-                    ItemsService.getItems(item.receipt_id).then((res) => {
-                      $scope.items = res;
-                    });
-                    $scope.newTag.tag = "";
-                  }).catch((err) => {
-                    console.error(err);
+                $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
+                  $scope.getTags(1);
+                  ItemsService.getItems(item.receipt_id).then((res) => {
+                    $scope.items = res;
                   });
-                }
-
+                  $scope.newTag.tag = "";
+                }).catch((err) => {
+                  console.error(err);
+                });
 
               }).catch((err) => {
                 console.error(err);
