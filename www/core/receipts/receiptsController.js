@@ -195,7 +195,19 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       template: "<input type='text' ng-model='newTag.tag'>",
       scope: $scope,
       buttons: [
-        { text: 'Cancel'},
+        {
+          text: 'Cancel',
+          onTap: function(e){
+            if($scope.newTag.tag){
+              $scope.newTag.tag = "";
+            }
+
+            ItemsService.getItems(item.receipt_id).then((res) => {
+              $scope.items = res;
+            });
+
+          }
+        },
         {
           text: '<b>Save</b>',
           type: 'button-positive',
