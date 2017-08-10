@@ -10151,3 +10151,6 @@ ion-option-button.ion-trash-a {
 .toggle.toggle-assertive input:checked + .track {
   border-color: #33cd5f !important;
   background-color: #33cd5f !important; }
+
+.item-select {
+  -webkit-appearance: none !important; }
