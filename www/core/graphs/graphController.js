@@ -1,5 +1,6 @@
-angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal) {
+angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal, UserService) {
   //set initial graph state
+  $scope.user = UserService.currentUser;
   const d = new Date;
   $scope.xMin = {
     value: 30
@@ -51,7 +52,8 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
   $scope.data = [];
   //get receipt data from server
   $scope.getReceiptData = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
+    console.log($scope.user);
+    $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/${$scope.user.id}`).then(function(res) {
       $scope.receipts = res.data;
       $scope.selectedItems = JSON.parse(JSON.stringify(res.data));
       console.log($scope.selectedItems);

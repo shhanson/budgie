@@ -1,10 +1,24 @@
-angular.module('budgie.login', ['budgie.userServices']).controller('LoginCtrl', function($scope, $stateParams, $state, UserService, $ionicModal) {
+angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, $state, UserService, $ionicModal, $ionicPopup, AUTH_EVENTS) {
   $scope.newUserData = {};
   $scope.loginData = {};
 
+  $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
+    var alertPopup = $ionicPopup.alert({title: 'Unauthorized!', template: 'You are not allowed to access this resource.'});
+  });
+
+  $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
+    UserService.logout();
+    $state.go('splash');
+    var alertPopup = $ionicPopup.alert({title: 'Session Lost!', template: 'Sorry, You have to login again.'});
+  });
+
+  $scope.setCurrentUser = function(user) {
+    $scope.currentUser = user;
+  };
+
   $scope.checkUser = function() {
-    if (UserService.currentUser.first) {
-      $state.go('tab.receipt');
+    if (UserService.currentUser.id) {
+      $state.go('tab.receipts');
     }
   };
 

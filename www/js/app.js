@@ -1,11 +1,9 @@
 angular.module('budgie', [
-  'ionic',
-  'budgie.controllers',
-  'budgie.graphs',
-  'budgie.userServices',
+  'ionic', 'budgie.controllers', 'budgie.graphs',
+  // 'budgie.userServices',
   'budgie.itemService',
   'budgie.services',
-  'budgie.login',
+  // 'budgie.login',
   'nvd3',
   'ngCordova'
 ]).run(($ionicPlatform) => {
@@ -61,4 +59,23 @@ angular.module('budgie', [
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');
-});
+}).run(function($rootScope, $state, UserService, AUTH_EVENTS) {
+  $rootScope.$on('$stateChangeStart', function(event, next, nextParams, fromState) {
+
+    // if ('data' in next && 'authorizedRoles' in next.data) {
+    //   var authorizedRoles = next.data.authorizedRoles;
+    //   if (!UserService.isAuthorized(authorizedRoles)) {
+    //     event.preventDefault();
+    //     $state.go($state.current, {}, {reload: true});
+    //     $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+    //   }
+    // }
+
+    if (!UserService.isAuthenticated) {
+      if (next.name !== 'splash') {
+        event.preventDefault();
+        $state.go('splash');
+      }
+    }
+  });
+})

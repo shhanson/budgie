@@ -1,4 +1,4 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', 'budgie.userServices']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS) {
   $scope.user = UserService.currentUser;
   $scope.receipts;
   $scope.imgURI = 'img/test.JPG';
@@ -152,7 +152,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', '
       $scope.listItems.splice($scope.listItems.length - 1, 1);
     }
     $scope.newReceipt.listItems = $scope.listItems;
-    $http.post(`${API_URL}/receipts/users/1`, $scope.newReceipt).then(() => {
+    $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
       $scope.getReceipts();
       $scope.closeReceiptModal();
     });
@@ -166,8 +166,8 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', '
 
   $scope.imgURI;
 
-  $scope.getTags = function getTags(userID) {
-    $http.get(`${API_URL}/tags/users/${userID}`).then((response) => {
+  $scope.getTags = function getTags() {
+    $http.get(`${API_URL}/tags/users/${$scope.user.id}`).then((response) => {
       //const toReturn = response.data.filter(tag => tag.tag !== tagName);
       $scope.allTags = response.data;
 
@@ -176,25 +176,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', '
       console.error(err);
     });
   };
-  $scope.getTags($scope.user.id);
-
-  // RECEIPTS STUFF
-  // $scope.getReceipts = function getReceipts(userID) {
-  //   ReceiptsService.getReceipts(userID).then(() => {
-  //     $scope.receipts = ReceiptsService.receipts;
-  //   });
-  // };
-  //
-  // $scope.getReceipts();
-
-  //ITEMS STUFF
-  // $scope.getItems = function getItems(receiptID) {
-  //   ItemsService.getItems(receiptID).then((response) => {
-  //     $scope.items = response.data;
-  //   });
-  // };
-  //
-  // $scope.getItems($scope.receipt.id);
+  $scope.getTags();
 
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
     delete item.tag;
