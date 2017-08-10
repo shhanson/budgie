@@ -35,9 +35,12 @@
           <input class="col col-20" ng-model="listItems[$index].name" type="text" placeholder="{{item.input}}" />
           <input class="col col-20" ng-model="listItems[$index].price" type="text" placeholder="{{item.price}}" />
           <div class="select-style col col-40">
-            <select class="item-select category" ng-model="listItems[$index].tag_id">
-              <option value="" disabled selected>Category</option>
-              <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option>
+            <select class="item-select category" ng-model="listItems[$index].tag_id" ng-change='tagHandler(listItems[$index])'>
+              <!-- <option value="" disabled selected>Category</option>
+              <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option> -->
+              <option value='' disabled selected>Tag</option>
+              <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+              <option value='addNewTag'>add new tag</option>
             </select>
           </div>
           <div class="col col-20">
