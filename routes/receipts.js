@@ -2,6 +2,18 @@ const Receipts = require('../db/receipts');
 const express = require('express');
 const cors = require('cors');
 const im = require('imagemagick');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now());
+  }
+});
+
+const upload = multer({storage: storage}).single('userPhoto');
 
 const router = express.Router();
 
@@ -21,21 +33,29 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
-  console.log(req.body, 'REQUEST BODAY!!!!!!!');
-  im.convert([
-    req.body,
-    '-resize',
-    '400%',
-    '-type',
-    'Grayscale',
-    'cleaned.tif'
-  ], (err, result) => {
+  upload(req, res, function(err) {
     if (err) {
-      console.log(err, 'ERROR!!!!');
+      console.log(err)
+      return res.end("Error uploading file.");
     }
-    console.log(result, 'RESULT!!!!');
-    res.send(result);
+
+    res.end("File is uploaded");
   });
+
+  // im.convert([
+  //   req.body,
+  //   '-resize',
+  //   '400%',
+  //   '-type',
+  //   'Grayscale',
+  //   'cleaned.tif'
+  // ], (err, result) => {
+  //   if (err) {
+  //     console.log(err, 'ERROR!!!!');
+  //   }
+  //   console.log(result, 'RESULT!!!!');
+  //   res.send(result);
+  // });
 });
 
 router.post('/receipts/users/:id', cors(corsOptions), (req, res, next) => {

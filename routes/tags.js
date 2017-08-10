@@ -26,9 +26,13 @@ router.patch('/tags/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.delete('/tags/:id', cors(corsOptions), (req, res, next) => {
-  knex('users').update({tag_id: null}).where({tag_id: req.params.id}).then(() => {
+  knex('items').update({tag_id: null}).where({tag_id: req.params.id}).then((res) => {
+    console.log('update items res', res);
     knex('tags').del().where({id: req.params.id})
-  }).then(() => res.end()).catch(err => next(err));
+  }).then((result) => {
+    console.log('delete result', result);
+    res.end()
+  }).catch(err => next(err));
 });
 
 // function validate(req, res, next) {
