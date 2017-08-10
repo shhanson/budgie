@@ -167,19 +167,102 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       $scope.allTags = response.data;
     });
   };
-  $scope.getTags();
 
-  $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
-    delete item.tag;
-    for (let j = 0; j < $scope.allTags.length; j++) {
-      if ($scope.allTags[j].tag === tagSelected) {
-        item.tag_id = $scope.allTags[j].id;
-        break;
-      }
-    }
-    $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item).catch((err) => {
+  $scope.getReceipts(1);
+
+  $scope.newTag = {};
+  $scope.addTagAlert = function addTagAlert(item) {
+    console.log("HELLO?");
+    let tagPopup = $ionicPopup.show({
+      title: "Add a new tag",
+      template: "<input type='text' ng-model='newTag.tag'>",
+      scope: $scope,
+      buttons: [
+        {
+          text: 'Cancel',
+          onTap: function(e) {
+            if ($scope.newTag.tag) {
+              $scope.newTag.tag = "";
+            }
+
+            ItemsService.getItems(item.receipt_id).then((res) => {
+              $scope.items = res;
+            });
+
+          }
+        }, {
+          text: '<b>Save</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.newTag.tag) {
+              e.preventDefault();
+            } else {
+              $scope.newTag.user_id = 1;
+              $http.post(`${API_URL}/tags/users/${$scope.newTag.user_id}`, $scope.newTag).then((response) => {
+                console.log(response.data);
+                const patchTag = {
+                  tag_id: response.data[0].id
+                };
+                $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
+                  $scope.getTags(1);
+                  ItemsService.getItems(item.receipt_id).then((res) => {
+                    $scope.items = res;
+                  });
+                  $scope.newTag.tag = "";
+                }).catch((err) => {
+                  console.error(err);
+                });
+
+              }).catch((err) => {
+                console.error(err);
+              });
+            }
+          }
+        }
+      ]
+    });
+
+    tagPopup.catch((err) => {
       console.error(err);
     });
+  };
+
+  //ITEMS STUFF
+  // $scope.getItems = function getItems(receiptID) {
+  //   ItemsService.getItems(receiptID).then((response) => {
+  //     $scope.items = response.data;
+  //   });
+  // };
+  //
+  // $scope.getItems($scope.receipt.id);
+
+  $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
+    // let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
+    //
+    // const itemUpdatedTag = {
+    //   id: itemToEdit.id,
+    //   name: itemToEdit.name,
+    //   price: itemToEdit.price,
+    //   receipt_id: itemToEdit.receipt_id
+    // };
+    if (tagSelected === 'addNewTag') {
+      $scope.addTagAlert(item);
+    } else {
+
+      delete item.tag;
+      for (let j = 0; j < $scope.allTags.length; j++) {
+        if ($scope.allTags[j].tag === tagSelected) {
+          item.tag_id = $scope.allTags[j].id;
+          break;
+        }
+      }
+
+      $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item).catch((err) => {
+        console.error(err);
+      });
+
+    }
+
   };
 
   $scope.updateReceipt = function(receipt) {

@@ -32,6 +32,7 @@ $yellow-hover: #fbeaae;
 $grey: #c0bfc0;
 $text: #272727;
 $white: #fff;
+$error: #ef473a;
 
 // $white: #235454;
 // $highlight: #fed500;
@@ -469,3 +470,28 @@ ion-option-button.ion-trash-a {
     left: auto;
   }
 }
+
+.delete-receipt {
+  color: $error;
+  &:before {
+    color: $error;
+  }
+  &:after {
+    color: $error;
+  }
+}
+
+.add-receipt {
+  color: $add !important;
+  &:before {
+    color: $add !important;
+  }
+  &:after {
+    color: $add !important;
+  }
+}
+
+.toggle.toggle-assertive input:checked + .track {
+    border-color: $add !important;
+    background-color:  $add !important;
+  }

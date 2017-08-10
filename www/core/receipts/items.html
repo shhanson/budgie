@@ -14,6 +14,7 @@
             <div class="select-style">
               <select ng-init='tagSelected=item.tag' class="item-select" ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, item)'>
                   <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+                  <option value='addNewTag'>add new tag</option>
                 </select>
             </div>
           </div>
@@ -36,7 +37,7 @@
 
           </div>
 
-          <button type="submit" class='add-item-button button icon ion-ios-plus-empty button-light'> </button>
+          <button type="submit" class='add-item-button add-receipt button icon ion-ios-plus-empty button-light'> </button>
         </form>
       </ion-item>
     </ion-list>

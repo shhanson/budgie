@@ -41,8 +41,8 @@
             </select>
           </div>
           <div class="col col-20">
-            <button class='button icon ion-ios-minus-empty button-light' ng-if="$index !== (inputItems.length - 1)" ng-click="deleteInput($index)"></button>
-            <button class='button icon ion-ios-plus-empty button-light' ng-if="$index === (inputItems.length - 1)" ng-click="addInput()"></button>
+            <button class='button icon ion-ios-minus-empty button-light delete-receipt' ng-if="$index !== (inputItems.length - 1)" ng-click="deleteInput($index)"></button>
+            <button class='button icon ion-ios-plus-empty button-light add-receipt' ng-if="$index === (inputItems.length - 1)" ng-click="addInput()"></button>
          </div>
         </div>
       </div>

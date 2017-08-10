@@ -10133,3 +10133,21 @@ ion-option-button.ion-trash-a {
 .view-add .select-style::after {
   right: -10px;
   left: auto; }
+
+.delete-receipt {
+  color: #ef473a; }
+  .delete-receipt:before {
+    color: #ef473a; }
+  .delete-receipt:after {
+    color: #ef473a; }
+
+.add-receipt {
+  color: #33cd5f !important; }
+  .add-receipt:before {
+    color: #33cd5f !important; }
+  .add-receipt:after {
+    color: #33cd5f !important; }
+
+.toggle.toggle-assertive input:checked + .track {
+  border-color: #33cd5f !important;
+  background-color: #33cd5f !important; }
