@@ -7,6 +7,26 @@ function Users() {
   return knex('users');
 }
 
+const tagDefaults = [
+  {
+    tag: 'dessert'
+  }, {
+    tag: 'coffee'
+  }, {
+    tag: 'vegetables'
+  }, {
+    tag: 'dining out'
+  }, {
+    tag: 'meat'
+  }, {
+    tag: 'bread'
+  }, {
+    tag: 'fruits'
+  }, {
+    tag: 'dairy'
+  }
+]
+
 Users.createUser = (data, callback) => {
   if (data.password.length < 6) {
     return callback('Password must be at least 6 characters.');
@@ -25,7 +45,13 @@ Users.createUser = (data, callback) => {
         }
         data.password = hash;
         Users().insert(data, '*').then((result) => {
-          callback(undefined, result);
+          tagDefaults.map((tag) => {
+            tag.user_id = result.id;
+            return tag;
+          });
+          knex('tags').insert(tagDefaults).then(() => {
+            callback(undefined, result);
+          })
         }).catch((err) => {
           console.log(err);
           callback(err);
@@ -59,7 +85,7 @@ Users.createUser = (data, callback) => {
 // };
 
 Users.authenticateUser = (email, password, callback) => {
-  Users().where({ email }).first().then((user) => {
+  Users().where({email}).first().then((user) => {
     if (!user) {
       return callback('Not a valid user.');
     }
