@@ -1,6 +1,6 @@
 angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService) {
   $scope.receipts;
-  $scope.imgURI = 'img/test.JPG';
+  // $scope.imgURI = 'img/test.JPG';
   const API_URL = "http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001";
 
   $scope.getReceipts = function() {

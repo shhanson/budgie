@@ -13,7 +13,7 @@
      <!-- <ion-icon class="button" ng-click="takePicture()" name="camera"></ion-icon> -->
     <!-- <button class="button button-block button-positive" type="button" ng-click="getReceipts()">Get Receipts</button> -->
 
-    <img id="pickedImage" style="background-image:url({{imgURI}})" ng-show="imgURI !== undefined">
+    <img ng-show="imgURI.length > 23" id="pickedImage" style="background-image:url({{imgURI}})" ng-src='{{imgURI}}' >
 
     <form ng-submit="addNewReceipt()">
       <div class="list">
