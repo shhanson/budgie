@@ -1,4 +1,4 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading) {
   $scope.user = UserService.currentUser;
   $scope.imgURI;
   $scope.receipts;
@@ -48,24 +48,34 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       saveToPhotoAlbum: false
     };
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
+    // $cordovaCamera.getPicture(options).then(function(imageData) {
+    //   $scope.imgURI = "data:image/jpeg;base64," + imageData;
+    //   setTimeout(() => {
+    //     $scope.getText().then(()=>{
+    //     });
+    //   }, 6000);
+    // }, function(err) {
+    //   console.log('error in grabbing image');
+    // });
+    $cordovaCamera.getPicture(options).then((imageData) => {
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
-      setTimeout(() => {
+    }).then(()=>{
+      setTimeout(()=>{
         $scope.getText();
-      }, 6000);
-    }, function(err) {
-      console.log('error in grabbing image');
-    });
+      }, 4000);
+    }).catch((err)=>{
+      console.error(err);
+      console.error("**** GET PICUTRE ERROR *****")
+    })
   };
 
   $scope.getText = function() {
+    //$ionicLoading.show();
     let pickedImage = document.getElementById("pickedImage");
-    // console.log('getting to get text function');
-    // console.log(pickedImage, 'image at text function');
     Tesseract.recognize(pickedImage).then((result) => {
+    //  $ionicLoading.hide();
       let lines = result.text.split('\n');
-      // console.log("LINES?");
-      // console.log(lines);
+      console.log(lines);
 
       let priceRegex = /\d+[\.\,]\d+$/;
       for (let i = 0; i < lines.length; i++) {
@@ -81,7 +91,11 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         }
       } //END FOR
 
+      $scope.modal.show();
+
+
     }).catch((err) => {
+      console.error("*** RECOGNIZE ERROR ***");
       console.error(err);
     });
   };
