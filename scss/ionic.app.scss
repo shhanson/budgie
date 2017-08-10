@@ -306,10 +306,11 @@ body {
   }
   .add-item-button {
     display: block;
-    width: 100%;
+    float: right;
+    color: $highlight;
     margin-top: -.5em;
     text-align: right;
-    padding-right: 18px;
+    padding-right: 27.66px;
     margin-top: -10px;
   }
 
