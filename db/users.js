@@ -50,7 +50,7 @@ Users.createUser = (data, callback) => {
             return tag;
           });
           knex('tags').insert(tagDefaults).then(() => {
-            callback(undefined, result);
+            callback(undefined, result[0]);
           })
         }).catch((err) => {
           console.log(err);
