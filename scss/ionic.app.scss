@@ -40,6 +40,118 @@ body {
   color: $text;
   background-color: $white;
 }
+
+button.btn-icon.icon {
+  &::after {
+    color: $highlight;
+  }
+  &::before {
+    color: $highlight;
+  }
+  // background-color: $highlight;
+  color: $highlight;
+}
+
+
+.icon, .icon::before, span.tab-title {
+  color: $highlight;
+}
+
+a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.tab-item-active span, a.tab-item-active.icon {
+  color: $highlight;
+  &:hover {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:active {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:focus {
+    border-color: $highlight;
+    color: $highlight;
+  }
+}
+
+
+
+a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
+  color: $highlight;
+  &:hover {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:active {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:focus {
+    border-color: $highlight;
+    color: $highlight;
+  }
+}
+
+a.tab-item i, a.tab-item i::before, a.tab-item i::after, a.tab-item span, a.tab-item.icon {
+  color: $highlight;
+  &:hover {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:active {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:focus {
+    border-color: $highlight;
+    color: $highlight;
+  }
+}
+
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
+  border-color: $highlight;
+  color: $highlight;
+  &:hover {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:active {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:focus {
+    border-color: $highlight;
+    color: $highlight;
+  }
+}
+
+ion-option-button.ion-trash-a {
+  color: $white;
+  &::before {
+    color: $white;
+  }
+  &::after {
+    color: $white;
+  }
+}
+
+.activated {
+  color: $highlight !important;
+  border-color: $highlight !important;
+  &:hover {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:active {
+    border-color: $highlight;
+    color: $highlight;
+  }
+  &:focus {
+    border-color: $highlight;
+    color: $highlight;
+  }
+}
+
+
 /*splash page*/
 .view {
   background-color: $white;
@@ -86,115 +198,7 @@ body {
     }
   }
 
-  button.btn-icon.icon {
-    &::after {
-      color: $highlight;
-    }
-    &::before {
-      color: $highlight;
-    }
-    // background-color: $highlight;
-    color: $highlight;
-  }
 
-
-  .icon, .icon::before, span.tab-title {
-    color: $highlight;
-  }
-
-  a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.tab-item-active span, a.tab-item-active.icon {
-    color: $highlight;
-    &:hover {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:active {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:focus {
-      border-color: $highlight;
-      color: $highlight;
-    }
-  }
-
-
-
-  a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
-    color: $highlight;
-    &:hover {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:active {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:focus {
-      border-color: $highlight;
-      color: $highlight;
-    }
-  }
-
-  a.tab-item i, a.tab-item i::before, a.tab-item i::after, a.tab-item span, a.tab-item.icon {
-    color: $highlight;
-    &:hover {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:active {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:focus {
-      border-color: $highlight;
-      color: $highlight;
-    }
-  }
-
-  ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
-    border-color: $highlight;
-    color: $highlight;
-    &:hover {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:active {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:focus {
-      border-color: $highlight;
-      color: $highlight;
-    }
-  }
-
-  ion-option-button.ion-trash-a {
-    color: $white;
-    &::before {
-      color: $white;
-    }
-    &::after {
-      color: $white;
-    }
-  }
-
-  .activated {
-    color: $highlight !important;
-    border-color: $highlight !important;
-    &:hover {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:active {
-      border-color: $highlight;
-      color: $highlight;
-    }
-    &:focus {
-      border-color: $highlight;
-      color: $highlight;
-    }
-  }
 
   input {
     border: none !important;
@@ -227,17 +231,7 @@ body {
     }
   }
   .item-select {
-    // -webkit-appearance:none;
-    // background-repeat: no-repeat;
-    // background-color: rgba(0,0,0,0);
-    // border:thin solid #dddddd;
-    // font-weight:300;
-    // display:inline;
-    // vertical-align:middle;
-    // color:#333;
-    // padding: auto 0;
-    // overflow:hidden;
-    // box-sizing:border-box;
+
     background-color: $white;
     border: none;
     /* border-bottom: 2px solid teal; */
@@ -327,5 +321,130 @@ body {
 
   }
   .price {
+  }
+}
+
+.view-add {
+  input {
+    padding: 5px;
+  }
+  .list {
+    margin: .5em;
+  }
+  div.item-content {
+    padding: 0;
+    border: none;
+  }
+
+  .item {
+    // padding: 0;
+    border: 0;
+    width: 100%;
+    input {
+      margin-right: 10px;
+      // text-align: center;
+    }
+  }
+  .item-select {
+
+    background-color: $white;
+    border: none;
+    /* border-bottom: 2px solid teal; */
+    height: 32px;
+
+
+    option {
+      background:#444;
+    }
+
+    select::-ms-expand {
+        display: none;
+    }
+
+    :focus {
+      outline:none;
+    }
+  }
+
+  .select-style {
+    position: relative;
+    // background-image: url('img/arrow-down.png');
+    // background-size: contain;
+    border-bottom: 2px solid $highlight;
+    margin-top: 0px;
+
+    &:after {
+      pointer-events: none;
+      content: '';
+      height: 29px;
+      /* right: 9px; */
+      left: 5px;
+      top: 3px;
+      padding: 4px;
+      width: 25px;
+      background-repeat: no-repeat;
+      background-image: url(../img/chevron-down.svg);
+      background-size: contain;
+      position: absolute;
+      background-color: #fff;
+
+    }
+
+  }
+  .select-style-add {
+    margin-top: -3px;
+    .item-select {
+      height: 32px;
+    }
+    &:after {
+      pointer-events: none;
+      content: '';
+      height: 28px;
+      right: 9px;
+      top: 11px;
+      padding: 4px;
+      width: 25px;
+      background-repeat: no-repeat;
+      background-image: url(../img/chevron-down.svg);
+      background-size: contain;
+      position: absolute;
+      background-color: $white;
+    }
+  }
+
+  .add-item {
+    padding: 0;
+  }
+  .add-item-button {
+    display: block;
+    float: right;
+    color: $highlight;
+    margin-top: -.5em;
+    text-align: right;
+    padding-right: 27.66px;
+    margin-top: -10px;
+  }
+
+  .save-changes-btn {
+    background-color: $highlight;
+    color: $white;
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 2em;
+    margin-top: 1em;
+  }
+
+  #pickedImage {
+    background-image: url(img/test.JPG);
+    background-size: cover;
+    display: block;
+    background-position: center;
+    width: 100%;
+    height: 200px;
+    margin: 0 auto;
+  }
+
+  .date {
+    margin-right: -52px !important;
   }
 }
