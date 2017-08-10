@@ -82,7 +82,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       } //END FOR
 
     }).catch((err) => {
-      console.error("********** RECOGNIZE ERROR **************");
       console.error(err);
     });
   };
@@ -145,7 +144,11 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     if ($scope.listItems[$scope.listItems.length - 1].name === '') {
       $scope.listItems.splice($scope.listItems.length - 1, 1);
     }
+
+
+
     $scope.newReceipt.listItems = $scope.listItems;
+
     $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
       $scope.getReceipts();
       $scope.inputItems = [
@@ -180,6 +183,12 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   };
   $scope.getTags();
 
+  $scope.tagHandler = function tagHandler(item){
+    if(item.tag_id === "addNewTag"){
+      $scope.addTagAlert(item);
+    }
+  };
+
   $scope.addTagAlert = function addTagAlert(item) {
     let tagPopup = $ionicPopup.show({
       title: "Add a new tag",
@@ -210,15 +219,18 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                 const patchTag = {
                   tag_id: response.data[0].id
                 };
-                $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
-                  $scope.getTags(1);
-                  ItemsService.getItems(item.receipt_id).then((res) => {
-                    $scope.items = res;
+                if(item.id){
+                  $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
+                    $scope.getTags();
+                    ItemsService.getItems(item.receipt_id).then((res) => {
+                      $scope.items = res;
+                    });
+                    $scope.newTag.tag = "";
+                  }).catch((err) => {
+                    console.error(err);
                   });
-                  $scope.newTag.tag = "";
-                }).catch((err) => {
-                  console.error(err);
-                });
+                }
+
 
               }).catch((err) => {
                 console.error(err);
