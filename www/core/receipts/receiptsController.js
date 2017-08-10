@@ -91,7 +91,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         }
       } //END FOR
 
-      $scope.modal.show();
 
 
     }).catch((err) => {
