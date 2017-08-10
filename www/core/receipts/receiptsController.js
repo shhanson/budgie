@@ -1,16 +1,39 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, $ionicPopup) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state) {
+  $scope.user = UserService.currentUser;
+  $scope.imgURI;
   $scope.receipts;
-  // $scope.imgURI = 'img/test.JPG';
+  $scope.newItem = {};
+  $scope.items = [];
+  $scope.newReceipt = {};
+  $scope.newTag = {};
+  $scope.inputItems = [
+    {
+      input: 'Item',
+      price: '$0.00'
+    }
+  ];
+  $scope.newReceiptItem = {
+    name: '',
+    price: '',
+    tag_id: null
+  };
+  $scope.listItems = [
+    {
+      name: '',
+      price: '',
+      tag_id: null
+    }
+  ];
+
   const API_URL = "http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001";
 
   $scope.getReceipts = function() {
-    $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then((res) => {
-      $scope.receipts = res.data;
+    ReceiptsService.getReceipts($scope.user.id).then((res) => {
+      $scope.receipts = ReceiptsService.receipts;
     });
   };
-  $scope.getReceipts();
 
-  $scope.items = [];
+  $scope.getReceipts();
 
   $scope.takePicture = function() {
     var options = {
@@ -30,11 +53,9 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       setTimeout(() => {
         $scope.getText();
       }, 6000);
-
     }, function(err) {
       console.log('error in grabbing image');
     });
-
   };
 
   $scope.getText = function() {
@@ -47,22 +68,18 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       // console.log(lines);
 
       let priceRegex = /\d+[\.\,]\d+$/;
-      for(let i = 0; i < lines.length; i++){
+      for (let i = 0; i < lines.length; i++) {
         let item = {};
-        if(lines[i].match(priceRegex)){
+        if (lines[i].match(priceRegex)) {
           item.price = lines[i].match(priceRegex)[0];
         }
         item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
         item.price = item.price.replace(',', '.');
-        console.log(item);
-        if(item.name && item.price){
+        if (item.name && item.price) {
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
         }
       } //END FOR
-
-
-
 
     }).catch((err) => {
       console.error("********** RECOGNIZE ERROR **************");
@@ -70,8 +87,8 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
 
+  //ITEM MODAL STUFF
   $ionicModal.fromTemplateUrl('core/receipts/items.html', {
-    id: 1,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -81,7 +98,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   $scope.showItems = function showItems(receipt) {
     ItemsService.getItems(receipt.id).then((res) => {
       $scope.items = res;
-      console.log($scope.items);
     })
     $scope.receipt = receipt;
     $scope.ItemsModal.show();
@@ -93,7 +109,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   // RECEIPT MODAL STUFF
   $ionicModal.fromTemplateUrl('core/receipts/add-receipt.html', {
-    id: 2,
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -108,43 +123,22 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     $scope.receiptModal.hide();
   };
 
-  $scope.newReceipt = {};
-
-  $scope.inputItems = [
-    {
-      input: 'Item',
-      price: '$0.00'
-    }
-  ];
-
-  $scope.newReceiptItem = {
-    name: '',
-    price: '',
-    tag_id: ''
-  };
-  $scope.listItems = [
-    {
-      name: '',
-      price: '',
-      tag_id: ''
-    }
-  ];
-
   $scope.addInput = function() {
+    if ($scope.newReceiptItem.tag_id == null) {
+      delete $scope.newReceiptItem.tag_id;
+    }
     $scope.listItems.push($scope.newReceiptItem);
     $scope.newReceiptItem = {
       name: '',
       price: '',
-      tag_id: ''
+      tag_id: null
     };
     $scope.inputItems.push({input: 'Item', price: '$0.00'});
-    console.log($scope.listItems);
   };
 
   $scope.deleteInput = function(index) {
     $scope.inputItems.splice(index, 1);
     $scope.listItems.splice(index, 1);
-    console.log($scope.listItems);
   }
 
   $scope.addNewReceipt = function() {
@@ -152,44 +146,26 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       $scope.listItems.splice($scope.listItems.length - 1, 1);
     }
     $scope.newReceipt.listItems = $scope.listItems;
-    $http.post(`${API_URL}/receipts/users/1`, $scope.newReceipt).then(() => {
-      $scope.getReceipts(1);
+    $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
+      $scope.getReceipts();
       $scope.closeReceiptModal();
     });
   }
 
   $scope.deleteReceipt = function(receipt) {
     $http.delete(`${API_URL}/receipts/${receipt.id}`).then(() => {
-      $scope.getReceipts(1);
+      $scope.getReceipts();
     });
   }
 
-  $scope.imgURI;
-
-  $scope.getTags = function getTags(userID) {
-    $http.get(`${API_URL}/tags/users/${userID}`).then((response) => {
-      //const toReturn = response.data.filter(tag => tag.tag !== tagName);
+  $scope.getTags = function getTags() {
+    $http.get(`${API_URL}/tags/users/${$scope.user.id}`).then((response) => {
       $scope.allTags = response.data;
-
-      //return toReturn;
-    }).catch((err) => {
-      console.error(err);
     });
   };
-  $scope.getTags(1);
+  $scope.getTags();
 
-  // RECEIPTS STUFF
-  $scope.getReceipts = function getReceipts(userID) {
-    ReceiptsService.getReceipts(userID).then(() => {
-      $scope.receipts = ReceiptsService.receipts;
-    });
-  };
-
-  $scope.getReceipts(1);
-
-  $scope.newTag = {};
-  $scope.addTagAlert = function addTagAlert(item){
-    console.log("HELLO?");
+  $scope.addTagAlert = function addTagAlert(item) {
     let tagPopup = $ionicPopup.show({
       title: "Add a new tag",
       template: "<input type='text' ng-model='newTag.tag'>",
@@ -197,8 +173,8 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       buttons: [
         {
           text: 'Cancel',
-          onTap: function(e){
-            if($scope.newTag.tag){
+          onTap: function(e) {
+            if ($scope.newTag.tag) {
               $scope.newTag.tag = "";
             }
 
@@ -207,20 +183,17 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
             });
 
           }
-        },
-        {
+        }, {
           text: '<b>Save</b>',
           type: 'button-positive',
-          onTap: function(e){
-            if(!$scope.newTag.tag){
+          onTap: function(e) {
+            if (!$scope.newTag.tag) {
               e.preventDefault();
             } else {
-              $scope.newTag.user_id = 1;
-              $http.post(`${API_URL}/tags/users/${$scope.newTag.user_id}`, $scope.newTag)
-              .then((response) => {
+              $http.post(`${API_URL}/tags/users/${$scope.user.id}`, $scope.newTag).then((response) => {
                 console.log(response.data);
                 const patchTag = {
-                  tag_id: response.data[0].id,
+                  tag_id: response.data[0].id
                 };
                 $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
                   $scope.getTags(1);
@@ -232,12 +205,11 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                   console.error(err);
                 });
 
-              })
-              .catch((err) => {
+              }).catch((err) => {
                 console.error(err);
               });
             }
-          },
+          }
         }
       ]
     });
@@ -247,28 +219,10 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
 
-  //ITEMS STUFF
-  // $scope.getItems = function getItems(receiptID) {
-  //   ItemsService.getItems(receiptID).then((response) => {
-  //     $scope.items = response.data;
-  //   });
-  // };
-  //
-  // $scope.getItems($scope.receipt.id);
-
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
-    // let itemToEdit = $scope.receipt.items.find(item => item.id === itemID);
-    //
-    // const itemUpdatedTag = {
-    //   id: itemToEdit.id,
-    //   name: itemToEdit.name,
-    //   price: itemToEdit.price,
-    //   receipt_id: itemToEdit.receipt_id
-    // };
-    if(tagSelected === 'addNewTag'){
+    if (tagSelected === 'addNewTag') {
       $scope.addTagAlert(item);
     } else {
-
       delete item.tag;
       for (let j = 0; j < $scope.allTags.length; j++) {
         if ($scope.allTags[j].tag === tagSelected) {
@@ -276,13 +230,8 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
           break;
         }
       }
-
-      $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item).catch((err) => {
-        console.error(err);
-      });
-
+      $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item);
     }
-
   };
 
   $scope.updateReceipt = function(receipt) {
@@ -295,15 +244,12 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   $scope.editItems = function editItems(item) {
     delete item.tag;
-    console.log(item);
     $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item).then(() => {
       ItemsService.getItems(item.receipt_id).then((res) => {
         $scope.items = res;
       });
     });
   };
-
-  $scope.newItem = {};
 
   $scope.addItem = function addItem(receipt) {
     $scope.newItem.receipt_id = receipt.id;
@@ -312,8 +258,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         $scope.items = res;
         $scope.newItem = {};
       });
-    }).catch((err) => {
-      console.error(err);
     });
   };
 
@@ -322,8 +266,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       ItemsService.getItems(receiptID).then((res) => {
         $scope.items = res;
       })
-    }).catch((err) => {
-      console.error(err);
     });
   };
 });
