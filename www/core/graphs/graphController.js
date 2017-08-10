@@ -1,5 +1,6 @@
-angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal, UserService) {
+angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $http, $ionicModal, UserService, $state) {
   //set initial graph state
+  // $state.go($state.current, {}, {reload: true});
   $scope.user = UserService.currentUser;
   const d = new Date;
   $scope.xMin = {

@@ -18,7 +18,7 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
 
   $scope.checkUser = function() {
     if (UserService.currentUser) {
-      $state.go('tab.receipts');
+      $state.go('tab.receipts', {}, {reload: true});
     }
   };
 
@@ -27,20 +27,20 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   $scope.signUp = function() {
     UserService.signUp($scope.newUserData).then(() => {
       $scope.closeSignUp();
-      $state.go('tab.receipts');
+      $state.go('tab.receipts', {}, {reload: true});
     });
   };
 
   $scope.login = function() {
     UserService.login($scope.loginData).then(() => {
       $scope.closeSignIn();
-      $state.go('tab.receipts');
+      $state.go('tab.receipts', {}, {reload: true});
     });
   }
 
   $scope.logout = function() {
     UserService.logout();
-    $state.go('splash');
+    $state.go('splash', {}, {reload: true});
   }
 
   //SIGN IN MODAL

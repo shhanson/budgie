@@ -2,7 +2,7 @@ angular.module('budgie').service('UserService', [
   '$http',
   function service($http) {
     const se = this;
-    const LOCAL_TOKEN_KEY = 'yourTokenKey';
+    const LOCAL_TOKEN_KEY = 'saaaas50';
     const username = '';
     const isAuthenticated = false;
     let authToken;
@@ -36,13 +36,13 @@ angular.module('budgie').service('UserService', [
 
     se.signUp = function(userData) {
       return $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/users/signup', userData).then(function(result) {
-        storeUserCredentials(JSON.stringify(result.data) + '|yourServerToken');
+        storeUserCredentials(JSON.stringify(result.data) + '|1b2u3d4g5i6e');
       });
     };
 
     se.login = function(userData) {
       return $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/users', userData).then(function(result) {
-        storeUserCredentials(JSON.stringify(result.data) + '|yourServerToken');
+        storeUserCredentials(JSON.stringify(result.data) + '|1b2u3d4g5i6e');
       });
     };
 
