@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view class="view view-items">
   <ion-header-bar>
     <button class="button button-light" ng-click="closeModal()"><i class="icon ion-ios-arrow-back"></i></button>
     <input value='{{receipt.location}}'>
@@ -12,37 +12,40 @@
         <form name='editForm'>
           <div class='list'>
             <div class='item item-input-inset'>
-              <input class='col col-45' type='text' ng-model='item.name' placeholder='item name' />
-              <input class='col col-25' type='text' ng-model='item.price' placeholder='price' />
-
-              <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)'>
-                <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
-              </select>
+              <input class='col col-45 item-name' type='text' ng-model='item.name' placeholder='item name' />
+              <input class='col col-25 price' type='text' ng-model='item.price' placeholder='price' />
+              <div class="select-style">
+                <select ng-init='tagSelected=item.tag' class="item-select" ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, receipt.id, item.id)'>
+                  <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+                </select>
+              </div>
             </div>
           </div>
         </form>
         <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="add-item">
         <form ng-submit='addItem(receipt)'>
           <div class='list'>
             <div class='item item-input-inset'>
               <input class='col col-45' ng-model='newItem.name' placeholder='item name' />
               <input class='col col-25' ng-model='newItem.price' placeholder='price' />
-              <select ng-model='newItem.tag_id'>
+              <div class="select-style select-style-add">
+              <select class="item-select" ng-model='newItem.tag_id'>
                 <option value= "{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option>
               </select>
-              <button type="submit" class='button icon ion-ios-plus-empty button-light'></button>
+            </div>
             </div>
 
           </div>
 
         </form>
       </ion-item>
+                <button type="submit" class='add-item-button button icon ion-ios-plus-empty button-light'> Add another Item</button>
     </ion-list>
 
-    <button class='button icon button-block' ng-click='editItems()'>Save changes</button>
+    <button class='button icon button-block save-changes-btn' ng-click='editItems()'>Save changes</button>
 
   </ion-content>
 </ion-modal-view>

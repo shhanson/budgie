@@ -24,84 +24,307 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 /* Empty. Add your own CSS if you like */
 
-$teal: #13393e;
-$light-teal: #40d5bb;
+$teal: #00a78f;
+$add: rgb(51, 205, 95);
+$highlight: #00a78f;
 $yellow: #fed500; // #e3bc13
 $yellow-hover: #fbeaae;
 $grey: #c0bfc0;
 $text: #272727;
-$white: #fbfcfc;
+$white: #fff;
 
 
 body {
   font-family: 'Helvetica';
   font-size: 100%;
+  color: $text;
+  background-color: $white;
 }
 /*splash page*/
 .view {
   background-color: $white;
-}
 
-.splash-content {
-  margin: 0 auto;
-  margin-top: 45%;
-  width: 100%;
-  display: block;
 
-  img {
-    width: 55%;
+  .splash-content {
     margin: 0 auto;
-    display: block;
-    margin-bottom: 2em;
-  }
-
-}
-
-.splash-button-container {
-  width: 75%;
-  display: block;
-  margin: 0 auto;
-  text-align: center;
-  margin-top: 6em;
-  a {
-    &:hover {
-      color: $teal;
-    }
-    &:first-child {
-      border-right: 2px solid $light-teal;
-      text-align: right;
-      padding-right: 7px;
-    }
-    &:last-child{
-      padding-left: 2px;
-    }
+    margin-top: 45%;
     width: 100%;
-    color: $light-teal;
+    display: block;
+
+    img {
+      width: 55%;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 2em;
+    }
+
+  }
+
+  .splash-button-container {
+    width: 75%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 6em;
+    a {
+      &:hover {
+        color: $teal;
+      }
+      &:first-child {
+        border-right: 2px solid $highlight;
+        text-align: right;
+        padding-right: 7px;
+      }
+      &:last-child{
+        padding-left: 2px;
+      }
+      width: 100%;
+      color: $highlight;
+      border: none;
+      background-color: $white;
+      border-radius: 0;
+    }
+  }
+
+  button.btn-icon.icon {
+    &::after {
+      color: $highlight;
+    }
+    &::before {
+      color: $highlight;
+    }
+    // background-color: $highlight;
+    color: $highlight;
+  }
+
+
+  .icon, .icon::before, span.tab-title {
+    color: $highlight;
+  }
+
+  a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.tab-item-active span, a.tab-item-active.icon {
+    color: $highlight;
+    &:hover {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:active {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:focus {
+      border-color: $highlight;
+      color: $highlight;
+    }
+  }
+
+
+
+  a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
+    color: $highlight;
+    &:hover {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:active {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:focus {
+      border-color: $highlight;
+      color: $highlight;
+    }
+  }
+
+  a.tab-item i, a.tab-item i::before, a.tab-item i::after, a.tab-item span, a.tab-item.icon {
+    color: $highlight;
+    &:hover {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:active {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:focus {
+      border-color: $highlight;
+      color: $highlight;
+    }
+  }
+
+  ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
+    border-color: $highlight;
+    color: $highlight;
+    &:hover {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:active {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:focus {
+      border-color: $highlight;
+      color: $highlight;
+    }
+  }
+
+  ion-option-button.ion-trash-a {
+    color: $white;
+    &::before {
+      color: $white;
+    }
+    &::after {
+      color: $white;
+    }
+  }
+
+  .activated {
+    color: $highlight !important;
+    border-color: $highlight !important;
+    &:hover {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:active {
+      border-color: $highlight;
+      color: $highlight;
+    }
+    &:focus {
+      border-color: $highlight;
+      color: $highlight;
+    }
+  }
+
+  input {
+    border: none !important;
+    border-bottom: 2px solid $highlight !important;
+  }
+
+
+
+}
+
+.view-items {
+  input {
+    padding: 5px;
+  }
+  .list {
+    margin: .5em;
+  }
+  div.item-content {
+    padding: 0;
     border: none;
+  }
+
+  .item {
+    // padding: 0;
+    border: 0;
+    width: 100%;
+    input {
+      margin-right: 10px;
+      // text-align: center;
+    }
+  }
+  .item-select {
+    // -webkit-appearance:none;
+    // background-repeat: no-repeat;
+    // background-color: rgba(0,0,0,0);
+    // border:thin solid #dddddd;
+    // font-weight:300;
+    // display:inline;
+    // vertical-align:middle;
+    // color:#333;
+    // padding: auto 0;
+    // overflow:hidden;
+    // box-sizing:border-box;
     background-color: $white;
-    border-radius: 0;
-  }
-}
+    border: none;
+    /* border-bottom: 2px solid teal; */
+    height: 32px;
 
-button.btn-icon.icon {
-  &::after {
-    color: $light-teal;
-  }
-  &::before {
-    color: $light-teal;
-  }
-  // background-color: $light-teal;
-  color: $light-teal;
-}
 
-.icon, .icon::before, span.tab-title {
-  color: $light-teal;
-}
+    option {
+      background:#444;
+    }
 
-a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active span, a.tab-item-active.icon {
-  color: $light-teal;
-}
-ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
-  border-color: $light-teal;
-  color: $light-teal;
+    select::-ms-expand {
+        display: none;
+    }
+
+    :focus {
+      outline:none;
+    }
+  }
+
+  .select-style {
+    // background-image: url('img/arrow-down.png');
+    // background-size: contain;
+    border-bottom: 2px solid $highlight;
+    margin-top: 0px;
+
+    &:after {
+      pointer-events: none;
+      content: '';
+      height: 29px;
+      right: 9px;
+      top: 12px;
+      padding: 4px;
+      width: 25px;
+      background-repeat: no-repeat;
+      background-image: url(../img/chevron-down.svg);
+      background-size: contain;
+      position: absolute;
+      background-color: $white;
+
+    }
+
+  }
+  .select-style-add {
+    margin-top: -3px;
+    .item-select {
+      height: 32px;
+    }
+    &:after {
+      pointer-events: none;
+      content: '';
+      height: 28px;
+      right: 9px;
+      top: 11px;
+      padding: 4px;
+      width: 25px;
+      background-repeat: no-repeat;
+      background-image: url(../img/chevron-down.svg);
+      background-size: contain;
+      position: absolute;
+      background-color: $white;
+    }
+  }
+
+  .add-item {
+    padding: 0;
+  }
+  .add-item-button {
+    display: block;
+    width: 100%;
+    margin-top: -.5em;
+    text-align: right;
+    padding-right: 18px;
+    margin-top: -10px;
+  }
+
+  .save-changes-btn {
+    background-color: $highlight;
+    color: $white;
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 2em;
+    margin-top: 1em;
+  }
+
+  .item-name {
+
+  }
+  .price {
+  }
 }
