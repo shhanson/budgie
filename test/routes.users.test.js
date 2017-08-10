@@ -29,7 +29,6 @@ describe('routes : users', () => {
     it('should create user account and respond with 200', (done) => {
       chai.request(server).post('/users/signup').send({first: 'Amanda', last: 'Allen', email: 'amanda@amanda.com', password: 'hellothere'}).end((err, res) => {
         res.status.should.equal(200);
-        console.log(res.text)
         done();
       });
     });
