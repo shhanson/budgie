@@ -5,6 +5,7 @@ in ionic's _variables.scss file.
 
 For example, you might change some of the default colors:
 
+
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
@@ -9814,3 +9815,321 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+/* Empty. Add your own CSS if you like */
+body {
+  font-family: 'Helvetica';
+  font-size: 100%;
+  color: #272727;
+  background-color: #fff; }
+
+button.btn-icon.icon {
+  color: #00a78f; }
+  button.btn-icon.icon::after {
+    color: #00a78f; }
+  button.btn-icon.icon::before {
+    color: #00a78f; }
+
+.icon, .icon::before, span.tab-title {
+  color: #00a78f; }
+
+a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.tab-item-active span, a.tab-item-active.icon {
+  color: #00a78f; }
+  a.tab-item-active i:hover, a.tab-item-active i::before:hover, a.tab-item-active i::after:hover, a.tab-item-active span:hover, a.tab-item-active.icon:hover {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item-active i:active, a.tab-item-active i::before:active, a.tab-item-active i::after:active, a.tab-item-active span:active, a.tab-item-active.icon:active {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item-active i:focus, a.tab-item-active i::before:focus, a.tab-item-active i::after:focus, a.tab-item-active span:focus, a.tab-item-active.icon:focus {
+    border-color: #00a78f;
+    color: #00a78f; }
+
+a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
+  color: #00a78f; }
+  a.tab-item-activated i:hover, a.tab-item-activated i::before:hover, a.tab-item-activated i::after:hover, a.tab-item-activated span:hover, a.tab-item-activated.icon:hover {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item-activated i:active, a.tab-item-activated i::before:active, a.tab-item-activated i::after:active, a.tab-item-activated span:active, a.tab-item-activated.icon:active {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item-activated i:focus, a.tab-item-activated i::before:focus, a.tab-item-activated i::after:focus, a.tab-item-activated span:focus, a.tab-item-activated.icon:focus {
+    border-color: #00a78f;
+    color: #00a78f; }
+
+a.tab-item i, a.tab-item i::before, a.tab-item i::after, a.tab-item span, a.tab-item.icon {
+  color: #00a78f; }
+  a.tab-item i:hover, a.tab-item i::before:hover, a.tab-item i::after:hover, a.tab-item span:hover, a.tab-item.icon:hover {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item i:active, a.tab-item i::before:active, a.tab-item i::after:active, a.tab-item span:active, a.tab-item.icon:active {
+    border-color: #00a78f;
+    color: #00a78f; }
+  a.tab-item i:focus, a.tab-item i::before:focus, a.tab-item i::after:focus, a.tab-item span:focus, a.tab-item.icon:focus {
+    border-color: #00a78f;
+    color: #00a78f; }
+
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
+  border-color: #00a78f;
+  color: #00a78f; }
+  ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:hover {
+    border-color: #00a78f;
+    color: #00a78f; }
+  ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:active {
+    border-color: #00a78f;
+    color: #00a78f; }
+  ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:focus {
+    border-color: #00a78f;
+    color: #00a78f; }
+
+ion-option-button.ion-trash-a {
+  color: #fff; }
+  ion-option-button.ion-trash-a::before {
+    color: #fff; }
+  ion-option-button.ion-trash-a::after {
+    color: #fff; }
+
+.activated {
+  color: #00a78f !important;
+  border-color: #00a78f !important; }
+  .activated:hover {
+    border-color: #00a78f;
+    color: #00a78f; }
+  .activated:active {
+    border-color: #00a78f;
+    color: #00a78f; }
+  .activated:focus {
+    border-color: #00a78f;
+    color: #00a78f; }
+
+/*splash page*/
+.view {
+  background-color: #fff; }
+  .view .splash-content {
+    margin: 0 auto;
+    margin-top: 45%;
+    width: 100%;
+    display: block; }
+    .view .splash-content img {
+      width: 55%;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 2em; }
+  .view .splash-button-container {
+    width: 75%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 6em; }
+    .view .splash-button-container a {
+      width: 100%;
+      color: #00a78f;
+      border: none;
+      background-color: #fff;
+      border-radius: 0; }
+      .view .splash-button-container a:hover {
+        color: #00a78f; }
+      .view .splash-button-container a:first-child {
+        border-right: 2px solid #00a78f;
+        text-align: right;
+        padding-right: 7px; }
+      .view .splash-button-container a:last-child {
+        padding-left: 2px; }
+  .view input {
+    border-radius: 0 !important;
+    background-color: #fff;
+    -webkit-appearance: none;
+    border: none !important;
+    border-bottom: 2px solid #00a78f !important; }
+
+.view-items input {
+  padding: 5px; }
+
+.view-items .list {
+  margin: .5em; }
+
+.view-items div.item-content {
+  padding: 0;
+  border: none; }
+
+.view-items .item {
+  border: 0;
+  width: 100%; }
+  .view-items .item input {
+    margin-right: 10px; }
+
+.view-items .item-select {
+  background-color: #fff;
+  border: none !important;
+  /* border-bottom: 2px solid teal; */
+  height: 32px; }
+  .view-items .item-select option {
+    background: #444; }
+  .view-items .item-select select::-ms-expand {
+    display: none; }
+  .view-items .item-select :focus {
+    outline: none; }
+
+.view-items .select-style {
+  border-bottom: 2px solid #00a78f;
+  margin-top: 0px; }
+  .view-items .select-style:after {
+    pointer-events: none;
+    content: '';
+    height: 29px;
+    right: 9px;
+    top: 12px;
+    padding: 4px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-image: url(../img/chevron-down.svg);
+    background-size: contain;
+    position: absolute;
+    background-color: #fff; }
+
+.view-items .select-style-add {
+  margin-top: -3px; }
+  .view-items .select-style-add .item-select {
+    height: 32px; }
+  .view-items .select-style-add:after {
+    pointer-events: none;
+    content: '';
+    height: 28px;
+    right: 9px;
+    top: 11px;
+    padding: 4px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-image: url(../img/chevron-down.svg);
+    background-size: contain;
+    position: absolute;
+    background-color: #fff; }
+
+.view-items .add-item {
+  padding: 0; }
+
+.view-items .add-item-button {
+  display: block;
+  float: right;
+  color: #00a78f;
+  margin-top: -.5em;
+  text-align: right;
+  padding-right: 27.66px;
+  margin-top: -10px; }
+
+.view-items .save-changes-btn {
+  background-color: #00a78f;
+  color: #fff;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 2em;
+  margin-top: 1em; }
+
+.view-add input {
+  padding: 5px; }
+
+.view-add .list {
+  margin: .5em; }
+
+.view-add div.item-content {
+  padding: 0;
+  border: none; }
+
+.view-add .item {
+  border: 0;
+  width: 100%; }
+  .view-add .item input {
+    margin-right: 10px; }
+
+.view-add .item-select {
+  background-color: #fff;
+  border: none;
+  /* border-bottom: 2px solid teal; */
+  height: 32px; }
+  .view-add .item-select option {
+    background: #444; }
+  .view-add .item-select select::-ms-expand {
+    display: none; }
+  .view-add .item-select :focus {
+    outline: none; }
+
+.view-add .select-style {
+  position: relative;
+  border-bottom: 2px solid #00a78f;
+  margin-top: 0px; }
+  .view-add .select-style:after {
+    pointer-events: none;
+    content: '';
+    height: 29px;
+    /* right: 9px; */
+    left: 5px;
+    top: 3px;
+    padding: 4px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-image: url(../img/chevron-down.svg);
+    background-size: contain;
+    position: absolute;
+    background-color: #fff; }
+
+.view-add .select-style-add {
+  margin-top: -3px; }
+  .view-add .select-style-add .item-select {
+    height: 32px; }
+  .view-add .select-style-add:after {
+    pointer-events: none;
+    content: '';
+    height: 29px;
+    left: 60px;
+    top: 2px;
+    padding: 4px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-image: url(../img/chevron-down.svg);
+    background-size: contain;
+    position: absolute;
+    background-color: #fff; }
+
+.view-add .add-item {
+  padding: 0; }
+
+.view-add .add-item-button {
+  display: block;
+  float: right;
+  color: #00a78f;
+  margin-top: -.5em;
+  text-align: right;
+  padding-right: 27.66px;
+  margin-top: -10px; }
+
+.view-add .save-changes-btn {
+  background-color: #00a78f;
+  color: #fff;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 2em;
+  margin-top: 1em; }
+
+.view-add #pickedImage {
+  background-image: url(img/test.JPG);
+  background-size: cover;
+  display: block;
+  background-position: center;
+  width: 100%;
+  height: 200px;
+  margin: 0 auto; }
+
+.view-add .date {
+  margin-right: -52px !important; }
+
+.view-add .category {
+  height: 22px;
+  background-color: #fff;
+  -webkit-appearance: none; }
+
+.view-add .category.ng-pristine {
+  color: #B3B3B3; }
+
+.view-add .select-style::after {
+  right: -10px;
+  left: auto; }
