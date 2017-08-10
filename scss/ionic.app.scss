@@ -32,6 +32,7 @@ $yellow-hover: #fbeaae;
 $grey: #c0bfc0;
 $text: #272727;
 $white: #fff;
+$error: #ef473a;
 
 // $white: #235454;
 // $highlight: #fed500;
@@ -206,7 +207,7 @@ ion-option-button.ion-trash-a {
   input {
     border-radius: 0 !important;
     background-color: $white;
-    -webkit-appearance: none !important;
+    -webkit-appearance: none;
     border: none !important;
     border-bottom: 2px solid $highlight !important;
   }
@@ -237,7 +238,7 @@ ion-option-button.ion-trash-a {
     }
   }
   .item-select {
-    -webkit-appearance:none !important;
+
     background-color: $white;
     border: none !important;
     /* border-bottom: 2px solid teal; */
@@ -470,8 +471,27 @@ ion-option-button.ion-trash-a {
   }
 }
 
-.view-items{
-   .item-select {
-    -webkit-appearance: none !important;
-   }
+.delete-receipt {
+  color: $error;
+  &:before {
+    color: $error;
+  }
+  &:after {
+    color: $error;
+  }
 }
+
+.add-receipt {
+  color: $add !important;
+  &:before {
+    color: $add !important;
+  }
+  &:after {
+    color: $add !important;
+  }
+}
+
+.toggle.toggle-assertive input:checked + .track {
+    border-color: $add !important;
+    background-color:  $add !important;
+  }
