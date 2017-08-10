@@ -161,6 +161,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
 
     $scope.newReceipt.listItems = $scope.listItems;
+    console.log($scope.newReceipt);
 
     $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
       $scope.getReceipts();

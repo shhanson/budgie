@@ -39,7 +39,7 @@
               <!-- <option value="" disabled selected>Category</option>
               <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option> -->
               <option value='' disabled selected>Tag</option>
-              <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+              <option value='{{tag.id}}' ng-repeat='tag in allTags'>{{tag.tag}}</option>
               <option value='addNewTag'>add new tag</option>
             </select>
           </div>

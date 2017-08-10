@@ -1,6 +1,9 @@
 <ion-view cache-view="false" view-title="Graphs">
-  <ion-content>
+  <ion-nav-buttons>
     <button class="button button-clear button-calm" ng-click="showGraphControl(receipts)"><i class="icon ion-android-options"></i></button>
+  </ion-nav-buttons>
+  <ion-content>
+
     <nvd3 options="options" data="data" api="api"></nvd3>
     <!-- <svg width="960" height="500"></svg> -->
     <div class="item range">
