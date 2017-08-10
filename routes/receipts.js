@@ -1,12 +1,13 @@
 const Receipts = require('../db/receipts');
 const express = require('express');
 const cors = require('cors');
+const imageMagick = require('imagemagick');
 
 const router = express.Router();
 
 const corsOptions = {
   origin: 'http://localhost:8100',
-  optionsSuccessStatus: 200,
+  optionsSuccessStatus: 200
 };
 
 router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
@@ -17,6 +18,10 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
       res.json(receipts);
     }
   });
+});
+
+router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
+  imageMagick.process(req.body);
 });
 
 router.post('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
