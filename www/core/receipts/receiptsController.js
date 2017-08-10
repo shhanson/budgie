@@ -27,18 +27,47 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      setTimeout(() => {
+        $scope.getText();
+      }, 6000);
+
     }, function(err) {
       console.log('error in grabbing image');
     });
+
   };
 
   $scope.getText = function() {
     let pickedImage = document.getElementById("pickedImage");
-    console.log('getting to get text function');
-    console.log(pickedImage, 'image at text function');
+    // console.log('getting to get text function');
+    // console.log(pickedImage, 'image at text function');
     Tesseract.recognize(pickedImage).then((result) => {
-      console.log(result.text, 'result');
-    })
+      let lines = result.text.split('\n');
+      // console.log("LINES?");
+      // console.log(lines);
+
+      let priceRegex = /\d+[\.\,]\d+$/;
+      for(let i = 0; i < lines.length; i++){
+        let item = {};
+        if(lines[i].match(priceRegex)){
+          item.price = lines[i].match(priceRegex)[0];
+        }
+        item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+        item.price = item.price.replace(',', '.');
+        console.log(item);
+        if(item.name && item.price){
+          $scope.listItems.unshift(item);
+          $scope.inputItems.unshift(item);
+        }
+      } //END FOR
+
+
+
+
+    }).catch((err) => {
+      console.error("********** RECOGNIZE ERROR **************");
+      console.error(err);
+    });
   };
 
   $ionicModal.fromTemplateUrl('core/receipts/items.html', {

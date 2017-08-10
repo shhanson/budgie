@@ -14,6 +14,10 @@
         </div>
       </div>
 
+      <img id="pickedImage" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+      
+      <!-- <img id="example" ng-show="imgURI === undefined" ng-src="img/ReceiptSwiss.jpg"> -->
+
       <div class="list" ng-repeat="item in inputItems">
         <div class="item item-input-inset">
           <input class="col col-45" ng-model="listItems[$index].name" type="text" placeholder="{{item.input}}" />
