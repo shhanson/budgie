@@ -1,14 +1,13 @@
 <ion-modal-view class="view view-items">
   <ion-header-bar>
     <button class="button button-light" ng-click="closeModal()"><i class="icon ion-ios-arrow-back"></i></button>
-    <input value='{{receipt.location}}'>
-
+    <!-- <title ng-if="!editingTitle" ng-click="editingTitle=true">{{receipt.location}}</title> -->
+    <input ng-blur="updateReceipt(receipt)" type="text" ng-model='receipt.location'>
   </ion-header-bar>
   <ion-content>
-
     <ion-list can-swipe='true'>
-
       <ion-item ng-repeat="item in items">
+<!-- <<<<<<< HEAD
         <form name='editForm'>
           <div class='list'>
             <div class='item item-input-inset'>
@@ -40,12 +39,39 @@
 
           </div>
 
-        </form>
+        </form> -->
+<!-- ======= -->
+        <div class='list'>
+          <div class='item item-input-inset'>
+            <input class='col col-45' type='text' ng-model='item.name' ng-blur='editItems(item)' />
+            <input class='col col-25' type='text' ng-model='item.price' ng-blur='editItems(item)' />
+            <select ng-init='tagSelected=item.tag' ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, item) '>
+                <option ng-repeat='tag in allTags '>{{tag.tag}}</option>
+              </select>
+          </div>
+        </div>
+        <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id) '></ion-option-button>
+>>>>>>> 85c7f935fd1d3d5fa2feafd296b9dd85779a1ca8
       </ion-item>
                 <button type="submit" class='add-item-button button icon ion-ios-plus-empty button-light'> </button>
     </ion-list>
+<!-- <<<<<<< HEAD -->
 
-    <button class='button icon button-block save-changes-btn' ng-click='editItems()'>Save changes</button>
+    <!-- <button class='button icon button-block save-changes-btn' ng-click='editItems()'>Save changes</button> -->
 
+<!-- ======= -->
+    <form ng-submit='addItem(receipt) '>
+      <div class='list '>
+        <div class='item item-input-inset '>
+          <input class='col col-45 ' ng-model='newItem.name ' placeholder='item name ' />
+          <input class='col col-25 ' ng-model='newItem.price ' placeholder='price ' />
+          <select ng-model='newItem.tag_id '>
+                <option value= "{{tag.id}}" ng-repeat='tag in allTags '>{{tag.tag}}</option>
+              </select>
+          <button type="submit" class='button icon ion-ios-plus-empty button-light '></button>
+        </div>
+      </div>
+    </form>
+>>>>>>> 85c7f935fd1d3d5fa2feafd296b9dd85779a1ca8
   </ion-content>
 </ion-modal-view>
