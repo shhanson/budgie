@@ -1,7 +1,7 @@
 const Receipts = require('../db/receipts');
 const express = require('express');
 const cors = require('cors');
-const imageMagick = require('imagemagick');
+const im = require('imagemagick');
 
 const router = express.Router();
 
@@ -21,7 +21,21 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
-  imageMagick.process(req.body);
+
+  im.convert([
+    req.body,
+    '-resize',
+    '400%',
+    '-type',
+    'Grayscale',
+    'cleaned.tif'
+  ], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result);
+    res.send(result);
+  });
 });
 
 router.post('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
