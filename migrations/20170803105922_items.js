@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
     table.integer('receipt_id').notNullable();
     table.foreign('receipt_id').references('id').inTable('receipts').onDelete('CASCADE');
     table.integer('tag_id');
-    table.foreign('tag_id').references('id').inTable('tags').onDelete('CASCADE');
+    table.foreign('tag_id').references('id').inTable('tags');
     table.timestamps(true, true);
   }).then(() => {
     knex.raw('ALTER SEQUENCE tags_id_seq RESTART WITH 1').then(() => {

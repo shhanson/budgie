@@ -21,7 +21,7 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
-
+  console.log(req.body, 'REQUEST BODAY!!!!!!!');
   im.convert([
     req.body,
     '-resize',
@@ -31,9 +31,9 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
     'cleaned.tif'
   ], (err, result) => {
     if (err) {
-      console.log(err);
+      console.log(err, 'ERROR!!!!');
     }
-    console.log(result);
+    console.log(result, 'RESULT!!!!');
     res.send(result);
   });
 });
