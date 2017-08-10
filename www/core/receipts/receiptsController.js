@@ -148,6 +148,21 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     $scope.newReceipt.listItems = $scope.listItems;
     $http.post(`${API_URL}/receipts/users/${$scope.user.id}`, $scope.newReceipt).then(() => {
       $scope.getReceipts();
+      $scope.inputItems = [
+        {
+          input: 'Item',
+          price: '$0.00'
+        }
+      ];
+      $scope.listItems = [
+        {
+          name: '',
+          price: '',
+          tag_id: null
+        }
+      ];
+      $scope.newReceipt.location = "";
+      $scope.newReceipt.date = "";
       $scope.closeReceiptModal();
     });
   }
