@@ -5,7 +5,8 @@ angular.module('budgie', [
   'budgie.itemService',
   'budgie.services',
   'nvd3',
-  'ngCordova'
+  'ngCordova',
+  'angular.filter'
 ]).run(($ionicPlatform) => {
 
   $ionicPlatform.ready(() => {

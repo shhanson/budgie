@@ -4,7 +4,7 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list show-delete="false" can-swipe="true">
-      <ion-item ng-repeat="receipt in receipts" ng-click="showItems(receipt)">
+      <ion-item ng-repeat="receipt in receipts | orderBy: 'date':true" ng-click="showItems(receipt)">
         {{receipt.location}} {{receipt.date | date : format : shortDate}}
         <!-- <ion-option-button class="button-light icon ion-heart"></ion-option-button> -->
         <ion-option-button ng-click="deleteReceipt(receipt)" class="button-assertive icon ion-trash-a"></ion-option-button>

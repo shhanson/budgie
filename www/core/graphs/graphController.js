@@ -51,12 +51,17 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
   };
 
   $scope.data = [];
+  $scope.allItems = [];
+
   //get receipt data from server
   $scope.getReceiptData = function() {
     $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/${$scope.user.id}`).then(function(res) {
       $scope.receipts = res.data;
       $scope.selectedItems = JSON.parse(JSON.stringify(res.data));
       $scope.updateGraphData();
+      res.data.forEach((receipt) => {
+        $scope.allItems = $scope.allItems.concat(receipt.items);
+      });
     });
   };
   $scope.getReceiptData();
@@ -167,8 +172,15 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
     } else {
       $scope.selectedItems[rI].items.push(item);
     }
+
     $scope.updateGraphData();
   };
+
+  $scope.toggleTags = function(items) {
+    items.forEach((item) => {
+      $scope.toggleSelection(item)
+    });
+  }
 
   $scope.closeModal = function() {
     $scope.modal.hide();
