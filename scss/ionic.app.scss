@@ -206,7 +206,7 @@ ion-option-button.ion-trash-a {
   input {
     border-radius: 0 !important;
     background-color: $white;
-    -webkit-appearance: none;
+    -webkit-appearance: none !important;
     border: none !important;
     border-bottom: 2px solid $highlight !important;
   }
@@ -237,7 +237,7 @@ ion-option-button.ion-trash-a {
     }
   }
   .item-select {
-
+    -webkit-appearance:none !important;
     background-color: $white;
     border: none !important;
     /* border-bottom: 2px solid teal; */
@@ -468,4 +468,10 @@ ion-option-button.ion-trash-a {
     right: -10px;
     left: auto;
   }
+}
+
+.view-items{
+   .item-select {
+    -webkit-appearance: none !important;
+   }
 }
