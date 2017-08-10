@@ -46,7 +46,7 @@ Users.createUser = (data, callback) => {
         data.password = hash;
         Users().insert(data, '*').then((result) => {
           tagDefaults.map((tag) => {
-            tag.user_id = result.id;
+            tag.user_id = result[0].id;
             return tag;
           });
           knex('tags').insert(tagDefaults).then(() => {
