@@ -54,6 +54,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
     $http.get('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/receipts/users/1').then(function(res) {
       $scope.receipts = res.data;
       $scope.selectedItems = JSON.parse(JSON.stringify(res.data));
+      console.log($scope.selectedItems);
       $scope.updateGraphData();
     });
   };
@@ -104,6 +105,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
       series.key = receipt.location;
       series.values = seriesValues;
       data.push(series);
+      console.log(data);
     });
     $scope.data = data.reduce((o, cur) => {
       const occurs = o.reduce((n, item, i) => {
@@ -118,7 +120,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
             if (o[occurs].values[i1].x === cur.values[i2].x) {
               values.push({
                 x: o[occurs].values[i1].x,
-                y: (o[occurs].values[i1].y + o[occurs].values[i2].y)
+                y: (o[occurs].values[i1].y + cur.values[i2].y)
               });
             }
           }
@@ -129,6 +131,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
       }
       return o;
     }, []);
+    console.log($scope.data)
   }
   //create graph control modal
   $ionicModal.fromTemplateUrl('core/graphs/graphControl.html', {
@@ -172,10 +175,3 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
     $scope.modal.hide();
   }
 });
-// .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-//   $scope.chat = Chats.get($stateParams.chatId);
-// }).controller('AccountCtrl', function($scope) {
-//   $scope.settings = {
-//     enableFriends: true
-//   };
-// })

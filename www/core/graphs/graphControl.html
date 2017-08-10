@@ -8,7 +8,7 @@
   <ion-content>
     <ul class="list">
       <div ng-repeat="receipt in receipts | orderBy: date">
-        <li ng-repeat="item in receipt.items | orderBy: id" class="item item-toggle">
+        <li ng-repeat="item in receipt.items | groupBy: tag" class="item item-toggle">
           {{item.name}} {{item.price}} {{item.tag}}
           <label class="toggle toggle-assertive">
        <input type="checkbox" ng-checked="true" ng-click="toggleSelection(item, receipt)">
