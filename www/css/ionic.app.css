@@ -10076,9 +10076,9 @@ ion-option-button.ion-trash-a {
   .view-add .select-style-add:after {
     pointer-events: none;
     content: '';
-    height: 28px;
-    right: 9px;
-    top: 11px;
+    height: 29px;
+    left: 60px;
+    top: 2px;
     padding: 4px;
     width: 25px;
     background-repeat: no-repeat;
@@ -10118,3 +10118,14 @@ ion-option-button.ion-trash-a {
 
 .view-add .date {
   margin-right: -52px !important; }
+
+.view-add .category {
+  height: 22px;
+  margin-left: -8px; }
+
+.view-add .category.ng-pristine {
+  color: #B3B3B3; }
+
+.view-add .select-style::after {
+  right: -10px;
+  left: auto; }

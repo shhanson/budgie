@@ -32,8 +32,9 @@
         <div class="item item-input-inset">
           <input class="col col-45" ng-model="listItems[$index].name" type="text" placeholder="{{item.input}}" />
           <input class="col col-25" ng-model="listItems[$index].price" type="text" placeholder="{{item.price}}" />
-          <div class="select-style">
-            <select class="col col-25 item-select" ng-model="listItems[$index].tag_id">
+          <div class="select-style col col-25">
+            <select class="item-select category" ng-model="listItems[$index].tag_id">
+              <option value="" disabled selected>Category</option>
               <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option>
             </select>
           </div>
