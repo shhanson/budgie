@@ -204,6 +204,9 @@ ion-option-button.ion-trash-a {
 
 
   input {
+    border-radius: 0 !important;
+    background-color: $white;
+    -webkit-appearance: none;
     border: none !important;
     border-bottom: 2px solid $highlight !important;
   }
@@ -236,7 +239,7 @@ ion-option-button.ion-trash-a {
   .item-select {
 
     background-color: $white;
-    border: none;
+    border: none !important;
     /* border-bottom: 2px solid teal; */
     height: 32px;
 
@@ -454,6 +457,8 @@ ion-option-button.ion-trash-a {
   .category {
     height: 22px;
     margin-left: -8px;
+    background-color: $white;
+    -webkit-appearance: none;
   }
 
   .category.ng-pristine {

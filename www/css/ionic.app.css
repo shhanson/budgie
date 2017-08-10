@@ -9936,6 +9936,9 @@ ion-option-button.ion-trash-a {
       .view .splash-button-container a:last-child {
         padding-left: 2px; }
   .view input {
+    border-radius: 0 !important;
+    background-color: #fff;
+    -webkit-appearance: none;
     border: none !important;
     border-bottom: 2px solid #00a78f !important; }
 
@@ -9957,7 +9960,7 @@ ion-option-button.ion-trash-a {
 
 .view-items .item-select {
   background-color: #fff;
-  border: none;
+  border: none !important;
   /* border-bottom: 2px solid teal; */
   height: 32px; }
   .view-items .item-select option {
@@ -10121,7 +10124,9 @@ ion-option-button.ion-trash-a {
 
 .view-add .category {
   height: 22px;
-  margin-left: -8px; }
+  margin-left: -8px;
+  background-color: #fff;
+  -webkit-appearance: none; }
 
 .view-add .category.ng-pristine {
   color: #B3B3B3; }
