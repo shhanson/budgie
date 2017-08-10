@@ -3,6 +3,7 @@
     <button class="button btn-icon icon ion-ios-plus-empty button-balanced button-clear add-receipt" ng-click="showAddReceipt()"></button>
   </ion-nav-buttons>
   <ion-content>
+    <span ng-if="receipts.length === 0">Click the "+" to add a receipt!</span>
     <ion-list show-delete="false" can-swipe="true">
       <ion-item ng-repeat="receipt in receipts" ng-click="showItems(receipt)">
         {{receipt.location}} {{receipt.date | date : format : shortDate}}
