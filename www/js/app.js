@@ -1,9 +1,9 @@
 angular.module('budgie', [
-  'ionic', 'budgie.controllers', 'budgie.graphs',
-  // 'budgie.userServices',
+  'ionic',
+  'budgie.controllers',
+  'budgie.graphs',
   'budgie.itemService',
   'budgie.services',
-  // 'budgie.login',
   'nvd3',
   'ngCordova'
 ]).run(($ionicPlatform) => {
@@ -52,7 +52,7 @@ angular.module('budgie', [
     views: {
       'tab-account': {
         templateUrl: 'core/login/tab-account.html',
-        controller: 'AccountCtrl'
+        controller: 'LoginCtrl'
       }
     }
   });

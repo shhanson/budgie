@@ -17,7 +17,7 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   };
 
   $scope.checkUser = function() {
-    if (UserService.currentUser.id) {
+    if (UserService.currentUser) {
       $state.go('tab.receipts');
     }
   };
@@ -36,23 +36,12 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
       $scope.closeSignIn();
       $state.go('tab.receipts');
     });
-  };
+  }
 
-  //LANDING PAGE MODAL
-  $ionicModal.fromTemplateUrl('core/login/user-landing.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.landingModal = modal;
-  });
-
-  $scope.showLanding = function() {
-    $scope.landingModal.show();
-  };
-
-  $scope.closeLanding = function closeModal() {
-    $scope.landingModal.hide();
-  };
+  $scope.logout = function() {
+    UserService.logout();
+    $state.go('splash');
+  }
 
   //SIGN IN MODAL
   $ionicModal.fromTemplateUrl('core/login/sign-in.html', {
@@ -63,7 +52,6 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   });
 
   $scope.showSignIn = function() {
-    $scope.landingModal.hide();
     $scope.signInModal.show();
   };
 
@@ -79,12 +67,10 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   });
 
   $scope.showSignUp = function() {
-    $scope.landingModal.hide();
     $scope.signUpModal.show();
   };
 
   $scope.closeSignUp = function closeModal() {
     $scope.signUpModal.hide();
   };
-
-}).controller('AccountCtrl', function($scope, $stateParams) {});
+});

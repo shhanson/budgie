@@ -55,7 +55,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         }
         item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
         item.price = item.price.replace(',', '.');
-        console.log(item);
         if (item.name && item.price) {
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
@@ -78,7 +77,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   $scope.showItems = function showItems(receipt) {
     ItemsService.getItems(receipt.id).then((res) => {
       $scope.items = res;
-      console.log($scope.items);
     })
     $scope.receipt = receipt;
     $scope.ItemsModal.show();
@@ -127,7 +125,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   ];
 
   $scope.addInput = function() {
-    console.log($scope.newReceiptItem.tag_id)
     if ($scope.newReceiptItem.tag_id == null) {
       delete $scope.newReceiptItem.tag_id;
     }
@@ -138,13 +135,11 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       tag_id: null
     };
     $scope.inputItems.push({input: 'Item', price: '$0.00'});
-    console.log($scope.listItems);
   };
 
   $scope.deleteInput = function(index) {
     $scope.inputItems.splice(index, 1);
     $scope.listItems.splice(index, 1);
-    console.log($scope.listItems);
   }
 
   $scope.addNewReceipt = function() {
@@ -168,12 +163,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   $scope.getTags = function getTags() {
     $http.get(`${API_URL}/tags/users/${$scope.user.id}`).then((response) => {
-      //const toReturn = response.data.filter(tag => tag.tag !== tagName);
       $scope.allTags = response.data;
-
-      //return toReturn;
-    }).catch((err) => {
-      console.error(err);
     });
   };
   $scope.getTags();
@@ -201,7 +191,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   $scope.editItems = function editItems(item) {
     delete item.tag;
-    console.log(item);
     $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item).then(() => {
       ItemsService.getItems(item.receipt_id).then((res) => {
         $scope.items = res;

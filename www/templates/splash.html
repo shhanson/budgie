@@ -1,9 +1,9 @@
-<ion-view class="splash-view view" view-title="Welcome">
+<ion-view class="splash-view view" view-title="Welcome" ng-controller="LoginCtrl">
   <ion-content class="splash-content">
     <img src='img/logo.png' />
     <div class='splash-button-container'>
-      <a ui-sref='tab.receipts'>Sign Up</a>
-      <a ui-sref='tab.receipts' href="">Log In</a>
+      <a ng-click='showSignUp()'>Sign Up</a>
+      <a ng-click='showSignIn()'>Log In</a>
     </div>
   </ion-content>
 </ion-view>
