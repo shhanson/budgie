@@ -6,9 +6,9 @@
   </ion-header-bar>
   <ion-content>
     <ion-list can-swipe='true'>
-      <ion-item ng-repeat="item in items">
-        <div class='list'>
-          <div class='item item-input-inset'>
+      <div class='list'>
+        <ion-item ng-repeat="item in items">
+          <div class='item-input-inset'>
             <input class='col col-45 item-name' type='text' ng-model='item.name' ng-blur="editItems(item)" placeholder='item name' />
             <input class='col col-25 price' type='text' ng-model='item.price' ng-blur="editItems(item)" placeholder='price' />
             <div class="select-style">
@@ -20,9 +20,9 @@
               </select>
             </div>
           </div>
-        </div>
-        <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
-      </ion-item>
+          <ion-option-button class="button-assertive icon ion-trash-a" ng-click='deleteItem(item.id, receipt.id)'></ion-option-button>
+        </ion-item>
+      </div>
 
       <ion-item class="add-item">
         <form ng-submit='addItem(receipt)'>
