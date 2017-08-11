@@ -10154,3 +10154,9 @@ ion-option-button.ion-trash-a {
 
 .item-select {
   -webkit-appearance: none !important; }
+
+button.btn-logout {
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 2em;
+  margin-top: 1em; }
