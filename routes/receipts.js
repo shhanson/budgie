@@ -49,8 +49,8 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
 
     im.convert([
       photo,
-      '-resize',
-      '400%',
+      // '-resize',
+      // '400%',
       '-type',
       'Grayscale',
       './uploads/cleaned.jpg'
