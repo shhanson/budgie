@@ -9,7 +9,11 @@ const storage = multer.diskStorage({
     callback(null, './uploads');
   },
   filename: function(req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now());
+    const fileExt = file.mimetype.split('/')[1];
+    if (fileExt == 'jpeg') {
+      fileExt = 'jpg';
+    }
+    callback(null, file.fieldname + '-' + Date.now() + '.' + fileExt);
   }
 });
 
@@ -33,6 +37,8 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
+  const photo = req.file.path;
+
   upload(req, res, function(err) {
     if (err) {
       console.log(err, "file errored and here is the error message")
@@ -41,7 +47,7 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
     console.log(req.file.path, 'FILEPATHOFTHENEWDANGFILE!!!')
 
     im.convert([
-      res.file.path,
+      req.file.path,
       '-resize',
       '400%',
       '-type',
@@ -112,4 +118,3 @@ router.delete('/receipts/:id', cors(corsOptions), (req, res, next) => {
 // }
 
 module.exports = router;
-er;
