@@ -35,26 +35,26 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
   upload(req, res, function(err) {
     if (err) {
-      console.log(err)
+      console.log(err, "file errored and here is the error message")
       return res.end("Error uploading file.");
     }
 
+    // im.convert([
+    //   './uploads/',
+    //   '-resize',
+    //   '400%',
+    //   '-type',
+    //   'Grayscale',
+    //   'cleaned.tif'
+    // ], (err, result) => {
+    //   if (err) {
+    //     console.log(err, 'ERROR!!!!');
+    //   }
+    //   console.log(result, 'RESULT!!!!');
+    //   res.send(result);
+    // });
+    console.log(res, 'image upload response');
     res.end("File is uploaded");
-  });
-
-  im.convert([
-    './uploads/tempfile',
-    '-resize',
-    '400%',
-    '-type',
-    'Grayscale',
-    'cleaned.tif'
-  ], (err, result) => {
-    if (err) {
-      console.log(err, 'ERROR!!!!');
-    }
-    console.log(result, 'RESULT!!!!');
-    res.send(result);
   });
 });
 
