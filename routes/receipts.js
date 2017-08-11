@@ -38,7 +38,8 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       console.log(err, "file errored and here is the error message")
       return res.end("Error uploading file.");
     }
-    console.log(res.file.path, 'FILEPATHOFTHENEWDANGFILE!!!')
+    console.log(req.file.path, 'FILEPATHOFTHENEWDANGFILE!!!')
+
     im.convert([
       res.file.path,
       '-resize',
@@ -53,7 +54,6 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       console.log(result, 'RESULT!!!!');
       res.send(result);
     });
-    console.log(res, 'image upload response');
     res.end("File is uploaded");
   });
 });
@@ -112,3 +112,4 @@ router.delete('/receipts/:id', cors(corsOptions), (req, res, next) => {
 // }
 
 module.exports = router;
+er;
