@@ -229,13 +229,13 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
               e.preventDefault();
             } else {
               $http.post(`${API_URL}/tags/users/${$scope.user.id}`, $scope.newTag).then((response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 const patchTag = {
                   tag_id: response.data[0].id
                 };
                 if(item.id){
                   $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
-                    $scope.getTags();
+                    // $scope.getTags();
                     ItemsService.getItems(item.receipt_id).then((res) => {
                       $scope.items = res;
                     });
@@ -244,6 +244,9 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                     console.error(err);
                   });
                 }
+
+                $scope.getTags();
+
 
 
               }).catch((err) => {
@@ -260,18 +263,25 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
 
+
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
     if (tagSelected === 'addNewTag') {
       $scope.addTagAlert(item);
-    } else {
-      delete item.tag;
+    }
+    else {
       for (let j = 0; j < $scope.allTags.length; j++) {
         if ($scope.allTags[j].tag === tagSelected) {
           item.tag_id = $scope.allTags[j].id;
           break;
         }
       }
-      $http.patch(`${API_URL}/receipts/${item.rececipt_id}/items/${item.id}`, item);
+    }
+
+    if(item.id){
+
+      delete item.tag;
+      $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item)
+      .catch((err)=> console.error(err));
     }
   };
 
