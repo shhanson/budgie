@@ -5,7 +5,7 @@
       <h1 class="title">Graph Controller</h1>
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content class="padding">
     <ul class="list">
       <div>
         <li ng-repeat="(key, value) in allItems | omit: 'tag === null' | groupBy: 'tag' " class="item item-toggle">
