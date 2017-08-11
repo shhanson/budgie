@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const im = require('imagemagick');
 const multer = require('multer');
+const Tesseract = require('tesseract.js');
 
 const storage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -57,8 +58,29 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       if (err) {
         console.log(err, 'ERROR!!!!');
       }
-      console.log(result, 'RESULT!!!!');
-      res.send(result);
+      Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
+        const lines = clean.text.split('\n');
+        const cleanLines = [];
+        console.log("LINES?");
+        console.log(lines);
+
+        const priceRegex = /\d+[\.\,]\d+$/;
+        for (let i = 0; i < lines.length; i++) {
+          const item = {};
+          if (lines[i].match(priceRegex)) {
+            item.price = lines[i].match(priceRegex)[0];
+          }
+          item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+          item.price = item.price.replace(',', '.');
+          if (item.name && item.price) {
+            cleanLines.push(item);
+          }
+        }
+        res.json(cleanLines);
+      }).catch((err) => {
+        console.error("********** RECOGNIZE ERROR **************");
+        console.error(err);
+      });
     });
     // res.end("File is uploaded");
   });
