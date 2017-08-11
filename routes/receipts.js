@@ -37,51 +37,24 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
   });
 });
 
-router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
-
+router.post('/receipts/image', cors(corsOptions), function(req, res, next){
+  console.log(req, 'post request');
   upload(req, res, function(err) {
     const photo = req.file.path;
     if (err) {
-      console.log(err, "file errored and here is the error message")
+      console.log(err, "error uploading file")
       return res.end("Error uploading file.");
     }
-    console.log(photo, 'FILEPATHOFTHENEWDANGFILE!!!')
-
-    im.convert([
-      photo,
-      // '-resize',
-      // '400%',
-      '-type',
-      'Grayscale',
-      './uploads/cleaned.jpg'
-    ], (err, result) => {
+    console.log(photo, 'new file file path')
+    let optionsObj = [photo, '-resize', '125%', './uploads/cleaned.jpg'];
+    im.convert(optionsObj, function(err, stdout){
       if (err) {
         console.log(err, 'ERROR!!!!');
       }
-      Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
-        console.log(clean, 'here is the tessy result');
-        // const lines = clean.text.split('\n');
-        // const cleanLines = [];
-        // console.log("LINES?");
-        // console.log(lines);
-        //
-        // const priceRegex = /\d+[\.\,]\d+$/;
-        // for (let i = 0; i < lines.length; i++) {
-        //   const item = {};
-        //   if (lines[i].match(priceRegex)) {
-        //     item.price = lines[i].match(priceRegex)[0];
-        //   }
-        //   item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-        //   item.price = item.price.replace(',', '.');
-        //   if (item.name && item.price) {
-        //     cleanLines.push(item);
-        //   }
-        // }
-        res.json(clean);
-      }).catch((err) => {
-        console.error("********** RECOGNIZE ERROR **************");
-        console.error(err);
+      res.json({
+        "message": "converted image successfully"
       });
+
     });
     // res.end("File is uploaded");
   });
@@ -141,3 +114,30 @@ router.delete('/receipts/:id', cors(corsOptions), (req, res, next) => {
 // }
 
 module.exports = router;
+
+// Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
+//   console.log(clean, 'here is the tessy result');
+//
+//   res.json(clean);
+// }).catch((err) => {
+//   console.error("********** RECOGNIZE ERROR **************");
+//   console.error(err);
+// });
+
+// const lines = clean.text.split('\n');
+// const cleanLines = [];
+// console.log("LINES?");
+// console.log(lines);
+//
+// const priceRegex = /\d+[\.\,]\d+$/;
+// for (let i = 0; i < lines.length; i++) {
+//   const item = {};
+//   if (lines[i].match(priceRegex)) {
+//     item.price = lines[i].match(priceRegex)[0];
+//   }
+//   item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+//   item.price = item.price.replace(',', '.');
+//   if (item.name && item.price) {
+//     cleanLines.push(item);
+//   }
+// }
