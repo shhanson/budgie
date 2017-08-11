@@ -51,7 +51,8 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next){
       if (err) {
         console.log(err, 'ERROR!!!!');
       }
-      res.send(stdout, 'standard output???');
+      // res.send(stdout, 'standard output???');
+      res.status(300).send(stdout)
 
     });
     // res.end("File is uploaded");
