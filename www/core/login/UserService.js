@@ -59,18 +59,14 @@ angular.module('budgie').service('UserService', [
       se.currentUser = undefined;
     }
 
-    se.getUserTags = function () {
+    se.getUserTags = function() {
       return $http.get(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/users/${se.currentUser.id}`).then((response) => {
         se.allUserTags = response.data;
       });
     };
 
     se.deleteTag = function deleteTag(tagID) {
-      //get all user items with tag, set their tags to ""
-      return $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/${tagID}`).then((response)=>{
-        se.allUserTags = se.allUserTags.filter(tag => tag.id !== tagID);
-      });
-      //delete tag
+      return $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/${tagID}`);
     };
   }
 ]).constant('AUTH_EVENTS', {

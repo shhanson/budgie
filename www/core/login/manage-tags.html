@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-light" ng-click="closeManageTagsModal()"><i class="icon ion-ios-arrow-back"></i></button>
+    <title class="title">Manage Tags</title>
+  </ion-header-bar>
+  <ion-content class="padding">
+
+    <ion-list show-delete='false' can-swipe='true'>
+      <ion-item ng-repeat="tag in allUserTags">
+        {{tag.tag}}
+        <ion-option-button ng-click="deleteTag(tag.id)" class="button-assertive icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
+    <button ng-click="addTagAlert()" class='add-item-button add-receipt button icon ion-ios-plus-empty button-light'> </button>
+  </ion-content>
+</ion-modal-view>

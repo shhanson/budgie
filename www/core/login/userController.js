@@ -1,4 +1,4 @@
-angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, $state, UserService, $ionicModal, $ionicPopup, AUTH_EVENTS) {
+angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, $http, $state, UserService, $ionicModal, $ionicPopup, AUTH_EVENTS) {
   $scope.newUserData = {};
   $scope.loginData = {};
 
@@ -74,20 +74,64 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
     $scope.signUpModal.hide();
   };
 
+  //MANAGE TAGS MODAL
+  $ionicModal.fromTemplateUrl('core/login/manage-tags.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.tagModal = modal;
+  });
+
+  $scope.showManageTagsModal = function() {
+    $scope.tagModal.show();
+  };
+
+  $scope.closeManageTagsModal = function closeModal() {
+    $scope.tagModal.hide();
+  };
+
   //TAG STUFF
-  $scope.getUserTags = function getUserTags(){
-    UserService.getUserTags().then(()=>{
+  $scope.getUserTags = function getUserTags() {
+    UserService.getUserTags().then(() => {
       $scope.allUserTags = UserService.allUserTags;
     });
   };
   $scope.getUserTags();
 
-  $scope.deleteTag = function deleteTag(tagID){
-    UserService.deleteTag(tagID).then(() =>{
+  $scope.deleteTag = function deleteTag(tagID) {
+    UserService.deleteTag(tagID).then(() => {
 
       $scope.getUserTags();
     });
   };
 
+  $scope.newTag = {};
+  $scope.addTagAlert = function addTagAlert(i) {
+    const tagPopup = $ionicPopup.show({
+      title: "Add a new tag",
+      template: "<input type='text' ng-model='newTag.tag'>",
+      scope: $scope,
+      buttons: [
+        {
+          text: 'Cancel',
+          onTap: function(e) {}
+        }, {
+          text: '<b>Save</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.newTag.tag) {
+              e.preventDefault();
+            } else {
+              $http.post(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/users/${UserService.currentUser.id}`, $scope.newTag).then((response) => {
+                $scope.getUserTags();
+                $scope.newTag = {};
+              })
+            }
+          }
+        }
+      ]
+    });
 
+    tagPopup.catch(err => console.log(err));
+  };
 });

@@ -1,14 +1,21 @@
 <ion-view view-title="Account">
   <ion-content>
-    My tags
+    <div class="list">
 
-    <ion-list show-delete='false' can-swipe='true'>
-      <ion-item ng-repeat="tag in allUserTags">
-        {{tag.tag}}
-        <ion-option-button ng-click="deleteTag(tag.id)" class="button-assertive icon ion-trash-a"></ion-option-button>
-      </ion-item>
-    </ion-list>
+      <div class="item item-divider">
+        Account Settings
+      </div>
 
-    <button class="button button-block" ng-click="logout()">Sign Out</button>
+      <a class="item" ng-click="showManageTagsModal()">
+        Manage Tags
+      </a>
+
+      <a class="item">
+        Manage Profile
+      </a>
+
+    </div>
+
+    <button class="button button-block button-assertive" ng-click="logout()">Sign Out</button>
   </ion-content>
 </ion-view>
