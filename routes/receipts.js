@@ -9,9 +9,11 @@ const storage = multer.diskStorage({
     callback(null, './uploads');
   },
   filename: function(req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now());
+    callback(null, 'tempfile');
   }
 });
+
+// file.fieldname + '-' + Date.now()
 
 const upload = multer({storage: storage}).single('userPhoto');
 
@@ -42,20 +44,20 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
     res.end("File is uploaded");
   });
 
-  // im.convert([
-  //   req.body,
-  //   '-resize',
-  //   '400%',
-  //   '-type',
-  //   'Grayscale',
-  //   'cleaned.tif'
-  // ], (err, result) => {
-  //   if (err) {
-  //     console.log(err, 'ERROR!!!!');
-  //   }
-  //   console.log(result, 'RESULT!!!!');
-  //   res.send(result);
-  // });
+  im.convert([
+    './uploads/tempfile',
+    '-resize',
+    '400%',
+    '-type',
+    'Grayscale',
+    'cleaned.tif'
+  ], (err, result) => {
+    if (err) {
+      console.log(err, 'ERROR!!!!');
+    }
+    console.log(result, 'RESULT!!!!');
+    res.send(result);
+  });
 });
 
 router.post('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
