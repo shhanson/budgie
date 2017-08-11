@@ -1,8 +1,8 @@
 # Budgie
 
-## Synopsis
+## Description
 
-Budgie is a mobile app which allows users to scan their grocery and restaurant receipts and provides data visualization about expenses.
+Budgie is a mobile app that provides users with an interactive graph to help visualize potential savings based on food and restaurant receipt input.
 
 ## Team
 
@@ -10,26 +10,16 @@ Budgie is a mobile app which allows users to scan their grocery and restaurant r
 * Amanda Allen
 * Sarah Hanson
 
-## Installation instructions
-
-### Dependencies
-
-`npm install`
-
-### Run
-
-From project directory:
-
-
-
 ## Stack
 
-* Ionic Cordova
+* Ionic Cordova v1
 * D3
-* Tessaract
-* NodeJS
+* TesseractJS
 * PostgreSQL
+* ExpressJS
+* NodeJS
+* Amazon Web Services
 
 ## Features
 
-## Stretch
+## Goals
