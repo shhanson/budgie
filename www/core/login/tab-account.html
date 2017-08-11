@@ -1,5 +1,14 @@
 <ion-view view-title="Account">
   <ion-content>
+    My tags
+
+    <ion-list show-delete='false' can-swipe='true'>
+      <ion-item ng-repeat="tag in allUserTags">
+        {{tag.tag}}
+        <ion-option-button ng-click="deleteTag(tag.id)" class="button-assertive icon ion-trash-a"></ion-option-button>
+      </ion-item>
+    </ion-list>
+
     <button class="button button-block" ng-click="logout()">Sign Out</button>
   </ion-content>
 </ion-view>

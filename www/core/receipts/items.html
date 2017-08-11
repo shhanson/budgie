@@ -13,9 +13,11 @@
             <input class='col col-25 price' type='text' ng-model='item.price' ng-blur="editItems(item)" placeholder='price' />
             <div class="select-style">
               <select ng-init='tagSelected=item.tag' class="item-select" ng-model='tagSelected' ng-change='getSelectedTag(tagSelected, item)'>
+
                   <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
                   <option value='addNewTag'>add new tag</option>
-                </select>
+
+              </select>
             </div>
           </div>
         </div>
@@ -29,9 +31,10 @@
               <input class='col col-45' ng-model='newItem.name' placeholder='item name' />
               <input class='col col-25' ng-model='newItem.price' placeholder='price' />
               <div class="select-style select-style-add">
-                <select class="item-select" ng-model='newItem.tag_id'>
-                <option value= "{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option>
-              </select>
+                <select class="item-select" ng-model='newItem.tag_id' ng-change='getSelectedTag(newItem.tag_id, newItem)'>
+                  <option value= "{{tag.id}}" ng-repeat='tag in allTags'> {{tag.tag}} </option>
+                  <option value='addNewTag'>add new tag</option>
+                </select>
               </div>
             </div>
 

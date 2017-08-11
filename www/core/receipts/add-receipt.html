@@ -21,7 +21,11 @@
           <input class="col col-40" type="text" ng-model='newReceipt.location' placeholder='Location' style='width: 200px' />
           <input class="col col-40" placeholder='Date' type="date" class='date' ng-model='newReceipt.date'></input>
           <div class="col col-20">
+<<<<<<< HEAD
             <button class="button icon ion-ios-camera button-light" ng-click="takePicture()" type="button"></button>
+=======
+            <button class="button icon ion-ios-camera button-light" ng-click="takePicture()" type='button'></button>
+>>>>>>> c2630c1567abc0d77ade6bd2fd1b4fabbd381e08
           </div>
         </div>
       </div>
@@ -39,7 +43,7 @@
               <!-- <option value="" disabled selected>Category</option>
               <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option> -->
               <option value='' disabled selected>Tag</option>
-              <option ng-repeat='tag in allTags'>{{tag.tag}}</option>
+              <option value='{{tag.id}}' ng-repeat='tag in allTags'>{{tag.tag}}</option>
               <option value='addNewTag'>add new tag</option>
             </select>
           </div>
