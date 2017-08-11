@@ -37,17 +37,17 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
-  const photo = req.file.path;
 
   upload(req, res, function(err) {
+    const photo = req.file.path;
     if (err) {
       console.log(err, "file errored and here is the error message")
       return res.end("Error uploading file.");
     }
-    console.log(req.file.path, 'FILEPATHOFTHENEWDANGFILE!!!')
+    console.log(photo, 'FILEPATHOFTHENEWDANGFILE!!!')
 
     im.convert([
-      req.file.path,
+      photo,
       '-resize',
       '400%',
       '-type',
