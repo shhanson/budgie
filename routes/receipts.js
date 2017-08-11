@@ -52,7 +52,7 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       '400%',
       '-type',
       'Grayscale',
-      './uploads/cleaned.tif'
+      './uploads/cleaned.jpg'
     ], (err, result) => {
       if (err) {
         console.log(err, 'ERROR!!!!');
@@ -60,7 +60,7 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       console.log(result, 'RESULT!!!!');
       res.send(result);
     });
-    res.end("File is uploaded");
+    // res.end("File is uploaded");
   });
 });
 
