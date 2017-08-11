@@ -34,14 +34,15 @@ angular.module('budgie.services', []).service('ReceiptsService', [
       });
     };
 
-    self.cleanImage = function cleanImage(pickedImage) {
-      $http.post(`${API_URL}/receipts/image`, newReceipt).then((response) => {
-        return response;
-      }).catch((err) => {
-        console.error(err);
-      });
-
-    };
+    // self.cleanImage = function cleanImage(pickedImage) {
+    //   console.log(pickedImage, 'pickedImage before post');
+    //   $http.post(`${API_URL}/receipts/image`, pickedImage).then((response) => {
+    //     return response;
+    //   }).catch((err) => {
+    //     console.error(err);
+    //   });
+    //
+    // };
 
     self.addReceipt = function addReceipt(userID, newReceipt) {
       $http.post(`${API_URL}/receipts/users/${userID}`, newReceipt).then((response) => {

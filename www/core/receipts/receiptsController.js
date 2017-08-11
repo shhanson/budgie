@@ -1,4 +1,4 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, $cordovaFileTransfer, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state) {
   $scope.user = UserService.currentUser;
   $scope.imgURI;
   $scope.receipts;
@@ -37,33 +37,152 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
   $scope.takePicture = function() {
     var options = {
-      quality: 75,
-      destinationType: Camera.DestinationType.DATA_URL,
+      quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
-      targetHeight: 300,
       popoverOptions: CameraPopoverOptions,
       saveToPhotoAlbum: false
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
-      $scope.imgURI = "data:image/jpeg;base64," + imageData;
-      setTimeout(() => {
-        $scope.getText();
-      }, 6000);
-    }, function(err) {
-      console.log('error in grabbing image');
-    });
-  };
+
+
+      //function uploadToServer(pictureName, fileURI) {
+      //
+      //   var options = new FileUploadOptions();
+      //   options.fileKey = "file";
+      //   options.mimeType = "image/jpeg";
+      //   options.fileName = pictureName;
+      //
+      //   var ft = new FileTransfer();
+      //   ft.upload(fileURI, encodeURI(CONSTANTS.hosts.remoteSR),
+      //     function (res) {
+      //       console.log("Code = " + res.responseCode);
+      //     },
+      //     function (error) {
+      //       $log.debug(error)
+      //       alert("An error has occurred: Code = " + error.code);
+      //     },
+      //     options);
+      //
+      // }
+      // console.log(imageData, 'image data from chosen pic');
+      var docImg = document.getElementById('pickedImage');
+      docImg.src = imageData;
+      // console.log(docImg, 'chosen img element');
+      var server = `${API_URL}/receipts/image`;
+      // console.log(server, 'server path');
+      var filePath = imageData;
+      // console.log(filePath, 'filePath');
+      var date = new Date();
+      // console.log(date, 'new date');
+      var options = {
+          fileKey: "userPhoto",
+          fileName: imageData.substr(imageData.lastIndexOf('/') + 1),
+          chunkedMode: false,
+          mimeType: "image/jpg"
+      };
+      $cordovaFileTransfer.upload(server, filePath, options).then(function(result) {
+          console.log("SUCCESS: " + JSON.stringify(result.response));
+          console.log('Result_' + result.response[0] + '_ending');
+          console.log("success");
+          console.log(JSON.stringify(result.response));
+
+      }, function(err) {
+          console.log("ERROR: " + JSON.stringify(err));
+          //alert(JSON.stringify(err));
+      }, function (progress) {
+          // constant progress updates
+      });
+
+
+  }, function(err) {
+      // error
+      console.log(err);
+  });
+}
+
+
+  //     console.log(imageData, 'image data b4 upload');
+  //     $cordovaFileTransfer.upload(`${API_URL}/receipts/image`, $scope.imgURI, options).then(function(result) {
+  //       console.log(result, 'result');
+  //     });
+  //
+  //     $http.post(`${API_URL}/receipts/image`, $scope.imgURI).then((res)=>{
+  //       console.log(res, 'POST RESPONSE FROM SERVER');
+  //     })
+  //
+  //     setTimeout(() => {
+  //       // $scope.getText();
+  //     }, 6000);
+  //   }, function(err) {
+  //     console.log('error in grabbing image');
+  //   });
+  // };
+
+  // // open PhotoLibrary
+  //     $scope.openPhotoLibrary = function() {
+  //         var options = {
+  //             quality: 50,
+  //             destinationType: Camera.DestinationType.FILE_URI,
+  //             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+  //             allowEdit: true,
+  //             encodingType: Camera.EncodingType.JPEG,
+  //             popoverOptions: CameraPopoverOptions,
+  //             saveToPhotoAlbum: false
+  //         };
+  //
+      //     $cordovaCamera.getPicture(options).then(function(imageData) {
+      //
+      //         //console.log(imageData);
+      //         //console.log(options);
+      //         var image = document.getElementById('tempImage');
+      //         image.src = imageData;
+      //
+      //         var server = "http://yourdomain.com/upload.php",
+      //             filePath = imageData;
+      //
+      //         var date = new Date();
+      //
+      //         var options = {
+      //             fileKey: "file",
+      //             fileName: imageData.substr(imageData.lastIndexOf('/') + 1),
+      //             chunkedMode: false,
+      //             mimeType: "image/jpg"
+      //         };
+      //
+      //         $cordovaFileTransfer.upload(server, filePath, options).then(function(result) {
+      //             console.log("SUCCESS: " + JSON.stringify(result.response));
+      //             console.log('Result_' + result.response[0] + '_ending');
+      //             alert("success");
+      //             alert(JSON.stringify(result.response));
+      //
+      //         }, function(err) {
+      //             console.log("ERROR: " + JSON.stringify(err));
+      //             //alert(JSON.stringify(err));
+      //         }, function (progress) {
+      //             // constant progress updates
+      //         });
+      //
+      //
+      //     }, function(err) {
+      //         // error
+      //         console.log(err);
+      //     });
+      // }
+
+
 
   $scope.getText = function() {
     let pickedImage = document.getElementById("pickedImage");
 
     // clean image
-    ReceiptsService.cleanImage(pickedImage).then((res) => {
-      console.log(res, 'result, should be tif???');
+    // ReceiptsService.cleanImage(rawData).then((res) => {
+
+
+      // console.log(res, 'result, should be tif???');
       Tesseract.recognize(res).then((result) => {
         let lines = result.text.split('\n');
         // console.log("LINES?");
@@ -88,7 +207,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
         console.error(err);
       });
 
-    })
+    // })
 
     // console.log('getting to get text function');
     // console.log(pickedImage, 'image at text function');
