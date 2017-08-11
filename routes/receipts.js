@@ -51,8 +51,16 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next){
       if (err) {
         console.log(err, 'ERROR!!!!');
       }
+
+      Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
+        console.log(clean, 'here is the tessy result');
+        res.status(300).send(clean)
+      }).catch((err) => {
+        console.error("********** RECOGNIZE ERROR **************");
+        console.error(err);
+      });
       // res.send(stdout, 'standard output???');
-      res.status(300).send(stdout)
+
 
     });
     // res.end("File is uploaded");
@@ -114,14 +122,7 @@ router.delete('/receipts/:id', cors(corsOptions), (req, res, next) => {
 
 module.exports = router;
 
-// Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
-//   console.log(clean, 'here is the tessy result');
-//
-//   res.json(clean);
-// }).catch((err) => {
-//   console.error("********** RECOGNIZE ERROR **************");
-//   console.error(err);
-// });
+
 
 // const lines = clean.text.split('\n');
 // const cleanLines = [];
