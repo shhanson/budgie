@@ -67,7 +67,7 @@ angular.module('budgie').service('UserService', [
 
     se.deleteTag = function deleteTag(tagID) {
       //get all user items with tag, set their tags to ""
-      $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/${tagID}`).then(()=>{
+      return $http.delete(`http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/tags/${tagID}`).then((response)=>{
         se.allUserTags = se.allUserTags.filter(tag => tag.id !== tagID);
       });
       //delete tag

@@ -80,11 +80,14 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
       $scope.allUserTags = UserService.allUserTags;
     });
   };
+  $scope.getUserTags();
 
   $scope.deleteTag = function deleteTag(tagID){
-    UserService.deleteTag(tagID);
-    $scope.getUserTags();
+    UserService.deleteTag(tagID).then(() =>{
+
+      $scope.getUserTags();
+    });
   };
 
-  $scope.getUserTags();
+
 });
