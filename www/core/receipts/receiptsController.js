@@ -48,7 +48,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
 
-
+      // console.log(imageData, 'image data');
       //function uploadToServer(pictureName, fileURI) {
       //
       //   var options = new FileUploadOptions();
@@ -70,12 +70,12 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       // }
       // console.log(imageData, 'image data from chosen pic');
       var docImg = document.getElementById('pickedImage');
-      docImg.src = imageData;
+      docImg.src = "data:image/jpeg;base64," + imageData;
       // console.log(docImg, 'chosen img element');
       var server = `${API_URL}/receipts/image`;
       // console.log(server, 'server path');
       var filePath = imageData;
-      // console.log(filePath, 'filePath');
+      console.log(filePath, 'filePath');
       var date = new Date();
       // console.log(date, 'new date');
       var options = {
@@ -183,29 +183,29 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
 
       // console.log(res, 'result, should be tif???');
-      Tesseract.recognize(res).then((result) => {
-        let lines = result.text.split('\n');
-        // console.log("LINES?");
-        // console.log(lines);
-
-        let priceRegex = /\d+[\.\,]\d+$/;
-        for (let i = 0; i < lines.length; i++) {
-          let item = {};
-          if (lines[i].match(priceRegex)) {
-            item.price = lines[i].match(priceRegex)[0];
-          }
-          item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-          item.price = item.price.replace(',', '.');
-          if (item.name && item.price) {
-            $scope.listItems.unshift(item);
-            $scope.inputItems.unshift(item);
-          }
-        } //END FOR
-
-      }).catch((err) => {
-        console.error("********** RECOGNIZE ERROR **************");
-        console.error(err);
-      });
+      // Tesseract.recognize(res).then((result) => {
+      //   let lines = result.text.split('\n');
+      //   // console.log("LINES?");
+      //   // console.log(lines);
+      //
+      //   let priceRegex = /\d+[\.\,]\d+$/;
+      //   for (let i = 0; i < lines.length; i++) {
+      //     let item = {};
+      //     if (lines[i].match(priceRegex)) {
+      //       item.price = lines[i].match(priceRegex)[0];
+      //     }
+      //     item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+      //     item.price = item.price.replace(',', '.');
+      //     if (item.name && item.price) {
+      //       $scope.listItems.unshift(item);
+      //       $scope.inputItems.unshift(item);
+      //     }
+      //   } //END FOR
+      //
+      // }).catch((err) => {
+      //   console.error("********** RECOGNIZE ERROR **************");
+      //   console.error(err);
+      // });
 
     // })
 
