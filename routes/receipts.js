@@ -52,7 +52,7 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       '400%',
       '-type',
       'Grayscale',
-      'cleaned.tif'
+      './uploads/cleaned.tif'
     ], (err, result) => {
       if (err) {
         console.log(err, 'ERROR!!!!');
