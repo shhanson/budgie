@@ -47,22 +47,33 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next){
     }
     console.log(photo, 'new file file path')
     let optionsObj = [photo, '-resize', '125%', './uploads/cleaned.jpg'];
+
+  let promise = new Promise(function(resolve, reject){
     im.convert(optionsObj, function(err, stdout){
       if (err) {
         console.log(err, 'ERROR!!!!');
+        reject('err in promise');
       }
+      console.log('inside of im convert');
 
-      Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
-        console.log(clean, 'here is the tessy result');
-        res.status(300).send(clean)
-      }).catch((err) => {
-        console.error("********** RECOGNIZE ERROR **************");
-        console.error(err);
-      });
       // res.send(stdout, 'standard output???');
 
-
+      resolve('promise complete!');
     });
+  })
+
+  promise.then(function(result){
+    Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
+      console.log(clean, 'here is the tessy result');
+      res.status(300).send(clean)
+    }).catch((err) => {
+      console.log("********** RECOGNIZE ERROR **************");
+      console.error(err);
+    });
+  })
+
+
+
     // res.end("File is uploaded");
   });
 });
