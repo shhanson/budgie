@@ -9824,63 +9824,63 @@ body {
   background-color: #fff; }
 
 button.btn-icon.icon {
-  color: #00a78f; }
+  color: #71cddd; }
   button.btn-icon.icon::after {
-    color: #00a78f; }
+    color: #71cddd; }
   button.btn-icon.icon::before {
-    color: #00a78f; }
+    color: #71cddd; }
 
 .icon, .icon::before, span.tab-title {
-  color: #00a78f; }
+  color: #71cddd; }
 
 a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.tab-item-active span, a.tab-item-active.icon {
-  color: #00a78f; }
+  color: #71cddd; }
   a.tab-item-active i:hover, a.tab-item-active i::before:hover, a.tab-item-active i::after:hover, a.tab-item-active span:hover, a.tab-item-active.icon:hover {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item-active i:active, a.tab-item-active i::before:active, a.tab-item-active i::after:active, a.tab-item-active span:active, a.tab-item-active.icon:active {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item-active i:focus, a.tab-item-active i::before:focus, a.tab-item-active i::after:focus, a.tab-item-active span:focus, a.tab-item-active.icon:focus {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
 
 a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
-  color: #00a78f; }
+  color: #71cddd; }
   a.tab-item-activated i:hover, a.tab-item-activated i::before:hover, a.tab-item-activated i::after:hover, a.tab-item-activated span:hover, a.tab-item-activated.icon:hover {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item-activated i:active, a.tab-item-activated i::before:active, a.tab-item-activated i::after:active, a.tab-item-activated span:active, a.tab-item-activated.icon:active {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item-activated i:focus, a.tab-item-activated i::before:focus, a.tab-item-activated i::after:focus, a.tab-item-activated span:focus, a.tab-item-activated.icon:focus {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
 
 a.tab-item i, a.tab-item i::before, a.tab-item i::after, a.tab-item span, a.tab-item.icon {
-  color: #00a78f; }
+  color: #71cddd; }
   a.tab-item i:hover, a.tab-item i::before:hover, a.tab-item i::after:hover, a.tab-item span:hover, a.tab-item.icon:hover {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item i:active, a.tab-item i::before:active, a.tab-item i::after:active, a.tab-item span:active, a.tab-item.icon:active {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   a.tab-item i:focus, a.tab-item i::before:focus, a.tab-item i::after:focus, a.tab-item span:focus, a.tab-item.icon:focus {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
 
 ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active {
-  border-color: #00a78f;
-  color: #00a78f; }
+  border-color: #71cddd;
+  color: #71cddd; }
   ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:hover {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:active {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active:focus {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
 
 ion-option-button.ion-trash-a {
   color: #fff; }
@@ -9890,17 +9890,17 @@ ion-option-button.ion-trash-a {
     color: #fff; }
 
 .activated {
-  color: #00a78f !important;
-  border-color: #00a78f !important; }
+  color: #71cddd !important;
+  border-color: #71cddd !important; }
   .activated:hover {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   .activated:active {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
   .activated:focus {
-    border-color: #00a78f;
-    color: #00a78f; }
+    border-color: #71cddd;
+    color: #71cddd; }
 
 /*splash page*/
 .view {
@@ -9923,14 +9923,14 @@ ion-option-button.ion-trash-a {
     margin-top: 6em; }
     .view .splash-button-container a {
       width: 100%;
-      color: #00a78f;
+      color: #71cddd;
       border: none;
       background-color: #fff;
       border-radius: 0; }
       .view .splash-button-container a:hover {
-        color: #00a78f; }
+        color: #71cddd; }
       .view .splash-button-container a:first-child {
-        border-right: 2px solid #00a78f;
+        border-right: 2px solid #71cddd;
         text-align: right;
         padding-right: 7px; }
       .view .splash-button-container a:last-child {
@@ -9940,7 +9940,7 @@ ion-option-button.ion-trash-a {
     background-color: #fff;
     -webkit-appearance: none;
     border: none !important;
-    border-bottom: 2px solid #00a78f !important; }
+    border-bottom: 2px solid #71cddd !important; }
 
 .view-items input {
   padding: 5px; }
@@ -9971,7 +9971,7 @@ ion-option-button.ion-trash-a {
     outline: none; }
 
 .view-items .select-style {
-  border-bottom: 2px solid #00a78f;
+  border-bottom: 2px solid #71cddd;
   margin-top: 0px; }
   .view-items .select-style:after {
     pointer-events: none;
@@ -10011,14 +10011,14 @@ ion-option-button.ion-trash-a {
 .view-items .add-item-button {
   display: block;
   float: right;
-  color: #00a78f;
+  color: #71cddd;
   margin-top: -.5em;
   text-align: right;
   padding-right: 27.66px;
   margin-top: -10px; }
 
 .view-items .save-changes-btn {
-  background-color: #00a78f;
+  background-color: #71cddd;
   color: #fff;
   width: 50%;
   margin: 0 auto;
@@ -10055,7 +10055,7 @@ ion-option-button.ion-trash-a {
 
 .view-add .select-style {
   position: relative;
-  border-bottom: 2px solid #00a78f;
+  border-bottom: 2px solid #71cddd;
   margin-top: 0px; }
   .view-add .select-style:after {
     pointer-events: none;
@@ -10096,14 +10096,14 @@ ion-option-button.ion-trash-a {
 .view-add .add-item-button {
   display: block;
   float: right;
-  color: #00a78f;
+  color: #71cddd;
   margin-top: -.5em;
   text-align: right;
   padding-right: 27.66px;
   margin-top: -10px; }
 
 .view-add .save-changes-btn {
-  background-color: #00a78f;
+  background-color: #71cddd;
   color: #fff;
   width: 50%;
   margin: 0 auto;
