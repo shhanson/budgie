@@ -9,7 +9,8 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
   $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
   $scope.xmaxvalue = new Date();
   $scope.xrange = d3.time.days($scope.xminvalue, $scope.xmaxvalue);
-
+  var tooltip = nv.models.tooltip();
+  tooltip.duration(0);
   $scope.options = {
     chart: {
       type: 'multiBarChart',
@@ -26,6 +27,34 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
       },
       x(d) {
         return d3.time.format('%m/%d')(new Date(d.x))
+      },
+      legend: {
+        vers: 'furious',
+        dispatch: {
+          //   legendMouseover: function(o) {
+          //     if (tooltip.hidden()) {
+          //       var data = {
+          //         series: {
+          //           key: o.key,
+          //           value: o.values.reduce((a, b) => {
+          //             return a.y + b.y
+          //           })[0],
+          //           color: o.color
+          //         }
+          //       };
+          //       tooltip.data(data).hidden(false);
+          //     }
+          //     // tooltip.position({top: d3.event.pageY, left: d3.event.pageX})();
+          //   },
+          //   legendMouseout: function(o) {
+          //     tooltip.hidden(true);
+          //   }
+          // },
+          legendPosition: 'right',
+          // valueFormat: function(d) {
+          //   return d;
+          // }
+        }
       },
       showValues: true,
       showLegend: true,
