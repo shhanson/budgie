@@ -95,7 +95,7 @@ angular.module('budgie.graphs', []).controller('GraphCtrl', function($scope, $ht
 
       v.forEach((item) => {
         const itemObj = {};
-        if ((item.x) === d3.time.format('%m/%d/%y')(new Date(receipt.date))) {
+        if ((item.x) === d3.time.format('%m/%d/%y')(new Date(receipt.date)) && receipt.items.length > 0) {
           itemObj.x = item.x;
           itemObj.y = receipt.items.map(function(i) {
             return parseInt(i.price, 10);
