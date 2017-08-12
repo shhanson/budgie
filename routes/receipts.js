@@ -58,6 +58,7 @@ router.post('/receipts/image', cors(corsOptions), (req, res, next) => {
       if (err) {
         console.log(err, 'ERROR!!!!');
       }
+      console.log('converted complete.')
       Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
         console.log(clean, 'here is the tessy result');
         // const lines = clean.text.split('\n');
