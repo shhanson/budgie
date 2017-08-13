@@ -36,66 +36,45 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   $scope.getReceipts();
 
   $scope.takePicture = function() {
-    var options = {
-      quality: 75,
+    const options = {
+      quality: 100,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
-      targetHeight: 300,
+      encodingType: Camera.EncodingType.PNG,
       popoverOptions: CameraPopoverOptions,
       saveToPhotoAlbum: false
     };
 
-    // $cordovaCamera.getPicture(options).then(function(imageData) {
-    //   $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    //   setTimeout(() => {
-    //     $scope.getText().then(()=>{
-    //     });
-    //   }, 6000);
-    // }, function(err) {
-    //   console.log('error in grabbing image');
-    // });
-    $cordovaCamera.getPicture(options).then((imageData) => {
-      $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    }).then(()=>{
-      setTimeout(()=>{
-        $scope.getText();
-      }, 4000);
-    }).catch((err)=>{
-      console.error(err);
-      console.error("**** GET PICUTRE ERROR *****")
-    })
-  };
-
-  $scope.getText = function() {
-    //$ionicLoading.show();
-    let pickedImage = document.getElementById("pickedImage");
-    Tesseract.recognize(pickedImage).then((result) => {
-    //  $ionicLoading.hide();
-      let lines = result.text.split('\n');
-      console.log(lines);
-
-      let priceRegex = /\d+[\.\,]\d+$/;
-      for (let i = 0; i < lines.length; i++) {
-        let item = {};
-        if (lines[i].match(priceRegex)) {
-          item.price = lines[i].match(priceRegex)[0];
-        }
-        item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-        item.price = item.price.replace(',', '.');
-        if (item.name && item.price) {
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      $scope.imgURI = 'data:image/jpeg;base64,' + imageData;
+      const server = `${API_URL}/receipts/image`;
+      $http.post(server, {data: imageData}).then((res) => {
+        res.data.forEach((item) => {
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
-        }
-      } //END FOR
-
-
-
-    }).catch((err) => {
-      console.error("*** RECOGNIZE ERROR ***");
-      console.error(err);
+        });
+      });
+      // const options = {
+      //   fileKey: "userPhoto",
+      //   fileName: imageData.substr(imageData.lastIndexOf('/') + 1),
+      //   chunkedMode: false,
+      //   mimeType: "image/jpg"
+      // };
+      // $cordovaFileTransfer.upload(server, filePath, options).then(function(result) {
+      //   console.log("SUCCESS: " + JSON.stringify(result.response));
+      //   console.log('Result_' + result.response[0] + '_ending');
+      //   console.log("success");
+      //   console.log(JSON.stringify(result.response));
+      //
+      // }, function(err) {
+      //   console.log("ERROR: " + JSON.stringify(err));
+      //   //alert(JSON.stringify(err));
+      // }, function(progress) {
+      //   // constant progress updates
+      // });
+    }, function(err) {
+      console.log(err, 'cordova camera error');
     });
   };
 
@@ -158,8 +137,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       $scope.listItems.splice($scope.listItems.length - 1, 1);
     }
 
-
-
     $scope.newReceipt.listItems = $scope.listItems;
     console.log($scope.newReceipt);
 
@@ -197,8 +174,8 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   };
   $scope.getTags();
 
-  $scope.tagHandler = function tagHandler(item){
-    if(item.tag_id === "addNewTag"){
+  $scope.tagHandler = function tagHandler(item) {
+    if (item.tag_id === "addNewTag") {
       $scope.addTagAlert(item);
     }
   };
@@ -233,7 +210,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                 const patchTag = {
                   tag_id: response.data[0].id
                 };
-                if(item.id){
+                if (item.id) {
                   $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, patchTag).then(() => {
                     // $scope.getTags();
                     ItemsService.getItems(item.receipt_id).then((res) => {
@@ -246,8 +223,6 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
                 }
 
                 $scope.getTags();
-
-
 
               }).catch((err) => {
                 console.error(err);
@@ -263,12 +238,10 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
 
-
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
     if (tagSelected === 'addNewTag') {
       $scope.addTagAlert(item);
-    }
-    else {
+    } else {
       for (let j = 0; j < $scope.allTags.length; j++) {
         if ($scope.allTags[j].tag === tagSelected) {
           item.tag_id = $scope.allTags[j].id;
@@ -277,11 +250,10 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       }
     }
 
-    if(item.id){
+    if (item.id) {
 
       delete item.tag;
-      $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item)
-      .catch((err)=> console.error(err));
+      $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item).catch((err) => console.error(err));
     }
   };
 
