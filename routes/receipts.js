@@ -4,6 +4,9 @@ const cors = require('cors');
 const im = require('imagemagick');
 const multer = require('multer');
 const Tesseract = require('tesseract.js');
+const fs = require('fs');
+// const sys = require('sys')
+const exec = require('child_process').exec;
 
 const storage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -38,41 +41,52 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
-  console.log(req, 'post request');
-  upload(req, res, function(err) {
-    const photo = req.file.path;
+  fs.writeFile('./uploads/temp.png', req.body.data, 'base64', (err) => {
     if (err) {
-      console.log(err, "error uploading file")
-      return res.end("Error uploading file.");
+      console.log(err);
+      return res.status(400).send('uh oh.');
     }
-    console.log(photo, 'new file file path')
-    let optionsObj = [photo, '-resize', '125%', './uploads/cleaned.jpg'];
-
-    let promise = new Promise(function(resolve, reject) {
-      im.convert(optionsObj, function(err, stdout) {
+    im.convert([
+      './uploads/temp.png',
+      '-resize',
+      '400%',
+      '-type',
+      'Grayscale',
+      './uploads/temp.tif'
+    ], (err) => {
+      if (err) {
+        console.log(err, 'im error');
+        return res.status(400).send('uh oh.');
+      }
+      exec('tesseract -l eng ./uploads/temp.tif output', (err) => {
         if (err) {
-          console.log(err, 'ERROR!!!!');
-          reject('err in promise');
+          console.log(err, 'tessy error');
+          return res.status(400).send('uh oh.');
         }
-        console.log('inside of im convert');
-
-        // res.send(stdout, 'standard output???');
-
-        resolve('promise complete!');
+        fs.readFile('output.txt', 'utf-8', (error, text) => {
+          if (error) {
+            console.log(err, 'readfile error');
+            return res.status(400).send('uh oh.');
+          }
+          const lines = text.split('\n');
+          const cleanLines = [];
+          const priceRegex = /\d+\s*[\.\,]\s*\d+$/;
+          for (let i = 0; i < lines.length; i++) {
+            const item = {};
+            if (lines[i].match(priceRegex)) {
+              item.price = lines[i].match(priceRegex)[0];
+              item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+              item.price = item.price.replace(',', '.').replace(/\s+/, '');
+              item.name = item.name.replace(/[^\w\s]/, '');
+            }
+            if (item.name && item.price) {
+              cleanLines.push(item);
+            }
+          }
+          res.json(cleanLines);
+        });
       });
-    })
-
-    promise.then(function(result) {
-      Tesseract.recognize('./uploads/cleaned.jpg').then((clean) => {
-        console.log(clean, 'here is the tessy result');
-        res.status(300).send(clean)
-      }).catch((err) => {
-        console.log("********** RECOGNIZE ERROR **************");
-        console.error(err);
-      });
-    })
-
-    // res.end("File is uploaded");
+    });
   });
 });
 
@@ -116,35 +130,4 @@ router.delete('/receipts/:id', cors(corsOptions), (req, res, next) => {
   });
 });
 
-// function validate(req, res, next) {
-//   const errors = [];
-//   ['location_id', 'date'].forEach((field) => {
-//     if (!req.body[field] || req.body[field].trim() === '') {
-//       errors.push({ field, messages: ['cannot be blank'] });
-//     }
-//   });
-//   if (errors.length) {
-//     return res.status(422).json({ errors });
-//   }
-//   next();
-// }
-
 module.exports = router;
-
-// const lines = clean.text.split('\n');
-// const cleanLines = [];
-// console.log("LINES?");
-// console.log(lines);
-//
-// const priceRegex = /\d+[\.\,]\d+$/;
-// for (let i = 0; i < lines.length; i++) {
-//   const item = {};
-//   if (lines[i].match(priceRegex)) {
-//     item.price = lines[i].match(priceRegex)[0];
-//   }
-//   item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-//   item.price = item.price.replace(',', '.');
-//   if (item.name && item.price) {
-//     cleanLines.push(item);
-//   }
-// }
