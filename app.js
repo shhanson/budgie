@@ -6,8 +6,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const port = process.env.PORT || 8000;
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb', parameterLimit: '100000'}));
+app.use(bodyParser.urlencoded({extended: true, limit: '50mb', parameterLimit: '100000'}));
 
 // Routes to go here...
 const users = require('./routes/users');
