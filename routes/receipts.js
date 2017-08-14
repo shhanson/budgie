@@ -46,23 +46,6 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
       console.log(err);
       return res.status(400).send('uh oh.');
     }
-    // im.convert([
-    //   './uploads/temp.png',
-    //   '-resize',
-    //   '400%',
-    //   '-type',
-    //   'Grayscale',
-    //   './uploads/temp.tif'
-    // ], (err) => {
-    //   if (err) {
-    //     console.log(err, 'im error');
-    //     return res.status(400).send('uh oh.');
-    //   }
-    // exec('convert ./uploads/temp.png -resize 150% -type Grayscale ./uploads/temp.tif', (errz) => {
-    //   if (errz) {
-    //     console.log('im err');
-    //     return res.status.send('uhohhh.');
-    //   }
     exec('./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ./uploads/temp.png ./uploads/CLEAN.tif', (e) => {
       if (e) {
         console.log(err, 'txtcleaner error');
@@ -97,7 +80,6 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
         });
       });
     });
-    // });
   });
 });
 
