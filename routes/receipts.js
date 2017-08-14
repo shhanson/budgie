@@ -86,7 +86,7 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
             if (lines[i].match(priceRegex)) {
               item.price = lines[i].match(priceRegex)[0];
               item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-              item.price = item.price.replace(',', '.').replace(/\s+/, '');
+              item.price = item.price.replace(',', '.').replace(/\s+/, '').replace(/([a-zA-Z])/, '');
               item.name = item.name.replace(/[^\w\s]/, '');
             }
             if (item.name && item.price) {
