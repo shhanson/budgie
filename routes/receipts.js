@@ -46,53 +46,53 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
       console.log(err);
       return res.status(400).send('uh oh.');
     }
-    im.convert([
-      './uploads/temp.png',
-      '-resize',
-      '150%',
-      '-type',
-      'Grayscale',
-      './uploads/temp.tif'
-    ], (err) => {
-      if (err) {
-        console.log(err, 'im error');
+    // im.convert([
+    //   './uploads/temp.png',
+    //   '-resize',
+    //   '400%',
+    //   '-type',
+    //   'Grayscale',
+    //   './uploads/temp.tif'
+    // ], (err) => {
+    //   if (err) {
+    //     console.log(err, 'im error');
+    //     return res.status(400).send('uh oh.');
+    //   }
+    exec('magick convert ./uploads/temp.png -resize 150% -type Grayscale ./uploads/temp.tif && ./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ./uploads/temp.tif ./uploads/CLEAN.tif', (e) => {
+      if (e) {
+        console.log(err, 'txtcleaner error');
         return res.status(400).send('uh oh.');
       }
-      exec('./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ./uploads/temp.tif ./uploads/CLEAN.tif', (e) => {
-        if (e) {
-          console.log(err, 'txtcleaner error');
+      exec('tesseract ./uploads/CLEAN.tif -psm 6 output', (err) => {
+        if (err) {
+          console.log(err, 'tessy error');
           return res.status(400).send('uh oh.');
         }
-        exec('tesseract ./uploads/CLEAN.tif -psm 6 output', (err) => {
-          if (err) {
-            console.log(err, 'tessy error');
+        fs.readFile('output.txt', 'utf-8', (error, text) => {
+          if (error) {
+            console.log(err, 'readfile error');
             return res.status(400).send('uh oh.');
           }
-          fs.readFile('output.txt', 'utf-8', (error, text) => {
-            if (error) {
-              console.log(err, 'readfile error');
-              return res.status(400).send('uh oh.');
+          const lines = text.split('\n');
+          const cleanLines = [];
+          const priceRegex = /\d+\s*[\.\,]\s*\d+$/;
+          for (let i = 0; i < lines.length; i++) {
+            const item = {};
+            if (lines[i].match(priceRegex)) {
+              item.price = lines[i].match(priceRegex)[0];
+              item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
+              item.price = item.price.replace(',', '.').replace(/\s+/, '');
+              item.name = item.name.replace(/[^\w\s]/, '');
             }
-            const lines = text.split('\n');
-            const cleanLines = [];
-            const priceRegex = /\d+\s*[\.\,]\s*\d+$/;
-            for (let i = 0; i < lines.length; i++) {
-              const item = {};
-              if (lines[i].match(priceRegex)) {
-                item.price = lines[i].match(priceRegex)[0];
-                item.name = lines[i].substring(0, lines[i].indexOf(item.price)).trim().toLowerCase();
-                item.price = item.price.replace(',', '.').replace(/\s+/, '');
-                item.name = item.name.replace(/[^\w\s]/, '');
-              }
-              if (item.name && item.price) {
-                cleanLines.push(item);
-              }
+            if (item.name && item.price) {
+              cleanLines.push(item);
             }
-            res.json(cleanLines);
-          });
+          }
+          res.json(cleanLines);
         });
       });
     });
+    // });
   });
 });
 
