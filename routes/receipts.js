@@ -58,7 +58,7 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
     //     console.log(err, 'im error');
     //     return res.status(400).send('uh oh.');
     //   }
-    exec('magick convert ./uploads/temp.png -resize 150% -type Grayscale ./uploads/temp.tif', (errz) => {
+    exec('convert ./uploads/temp.png -resize 150% -type Grayscale ./uploads/temp.tif', (errz) => {
       if (errz) {
         console.log('im err');
         return res.status.send('uhohhh.');
