@@ -80,7 +80,7 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
           }
           const lines = text.split('\n');
           const cleanLines = [];
-          const priceRegex = /\d+\s*[\.\,\-]\s*\w+$/;
+          const priceRegex = /\d+\s*[\.\,\-]\s*\d+\s*\w*$/;
           for (let i = 0; i < lines.length; i++) {
             const item = {};
             if (lines[i].match(priceRegex)) {
