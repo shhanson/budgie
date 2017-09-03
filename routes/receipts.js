@@ -41,22 +41,26 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
-  fs.writeFile('./uploads/temp.png', req.body.data, 'base64', (err) => {
+  let date = new Date();
+  let file = `./uploads/temp${date}.png`
+  fs.writeFile(file, req.body.data, 'base64', (err) => {
     if (err) {
       console.log(err);
       return res.status(400).send('uh oh.');
     }
-    exec('./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ./uploads/temp.png ./uploads/CLEAN.tif', (e) => {
+    let cleaned = `./uploads/CLEAN${date}.tif`
+    exec(`./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ${file} ${cleaned}`, (e) => {
       if (e) {
         console.log(err, 'txtcleaner error');
         return res.status(400).send('uh oh.');
       }
-      exec('tesseract ./uploads/CLEAN.tif -psm 6 output', (err) => {
+      let output = `output${date}`;
+      exec(`tesseract ${cleaned} -psm 6 ${output}`, (err) => {
         if (err) {
           console.log(err, 'tessy error');
           return res.status(400).send('uh oh.');
         }
-        fs.readFile('output.txt', 'utf-8', (error, text) => {
+        fs.readFile(`${output}.txt`, 'utf-8', (error, text) => {
           if (error) {
             console.log(err, 'readfile error');
             return res.status(400).send('uh oh.');
@@ -76,6 +80,7 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
               cleanLines.push(item);
             }
           }
+          exec(`rm ${file} && rm ${cleaned} && rm ${output}.txt`, () => {})
           res.json(cleanLines);
         });
       });
