@@ -43,30 +43,34 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
   let newdate = new Date();
   let date = newdate.getTime();
-
   let file = `./uploads/temp${date}.png`
+  //add image data to file
   fs.writeFile(file, req.body.data, 'base64', (err) => {
     if (err) {
       console.log(err);
       return res.status(400).send('uh oh.');
     }
+    //clean image using imagemagick
     let cleaned = `./uploads/${date}.tif`;
     exec(`./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ${file} ${cleaned}`, (e) => {
       if (e) {
         console.log(err, 'txtcleaner error');
         return res.status(400).send('uh oh.');
       }
+      //read text from image using tesseract
       let output = `output${date}`;
       exec(`tesseract ${cleaned} -psm 6 ${output}`, (err) => {
         if (err) {
           console.log(err, 'tessy error');
           return res.status(400).send('uh oh.');
         }
+        //get tesseract data from file
         fs.readFile(`${output}.txt`, 'utf-8', (error, text) => {
           if (error) {
             console.log(err, 'readfile error');
             return res.status(400).send('uh oh.');
           }
+          //parse data and add to array
           const lines = text.split('\n');
           const cleanLines = [];
           const priceRegex = /\d+\s*[\.\,\-]\s*\d+\s*\w*$/;
@@ -79,7 +83,7 @@ router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
               item.name = item.name.replace(/[^\w\s]/, '');
             }
             if (item.name && item.price) {
-              cleanLines.push(item);
+              cleanLines.unshift(item);
             }
           }
           exec(`rm ${file} && rm ${cleaned} && rm ${output}.txt`, () => {})
