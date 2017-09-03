@@ -41,14 +41,16 @@ router.get('/receipts/users/:id', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/receipts/image', cors(corsOptions), function(req, res, next) {
-  let date = new Date();
+  let newdate = new Date();
+  let date = newdate.getTime();
+
   let file = `./uploads/temp${date}.png`
   fs.writeFile(file, req.body.data, 'base64', (err) => {
     if (err) {
       console.log(err);
       return res.status(400).send('uh oh.');
     }
-    let cleaned = `./uploads/CLEAN${date}.tif`
+    let cleaned = `./uploads/${date}.tif`;
     exec(`./textcleaner.sh -g -e stretch -f 40 -o 12 -u -s 1 -T -p 20 ${file} ${cleaned}`, (e) => {
       if (e) {
         console.log(err, 'txtcleaner error');
