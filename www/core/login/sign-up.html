@@ -4,26 +4,34 @@
     <title class="title">Sign Up</title>
   </ion-header-bar>
   <ion-content class="padding">
-    <form ng-submit="signUp()">
+    <form ng-submit="signUp()" name='signUp' novalidate>
       <div class="list">
         <label class="item item-input">
           <span class="input-label">First</span>
-          <input type="text" name="first" ng-model="newUserData.first">
+          <input type="text" name="first" ng-model="newUserData.first" required>
         </label>
         <label class="item item-input">
         <span class="input-label">Last</span>
-        <input type="text" name="last" ng-model="newUserData.last">
+        <input type="text" name="last" ng-model="newUserData.last" required>
       </label>
         <label class="item item-input">
           <span class="input-label">Email</span>
-          <input type="email" name="email" ng-model="newUserData.email">
+          <input type="email" name="email" ng-model="newUserData.email" required>
         </label>
         <label class="item item-input">
           <span class="input-label">Password</span>
-          <input type="password" name="password" ng-model="newUserData.password">
+          <input type="password" name="password" ng-model="newUserData.password" ng-minlength="6" required>
         </label>
+        <div class="padding">
+          <p ng-show="signUp.first.$error.required && signUp.first.$touched">First name is required</p>
+          <p ng-show="signUp.last.$error.required && signUp.last.$touched">Last name is required</p>
+          <p ng-show="signUp.email.$error.required && signUp.email.$touched">Email is required</p>
+          <p ng-show="signUp.email.$invalid && signUp.email.$touched">Must be a valid email address</p>
+          <p ng-show="signUp.password.$error.required && signUp.password.$touched">Password is required</p>
+          <p ng-show="signUp.password.$error.minlength && signUp.password.$touched">Password must be longer than 6 characters</p>
+        </div>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Sign Up</button>
+          <button ng-disabled="signUp.$invalid" class="button button-block button-positive" type="submit">Sign Up</button>
         </label>
       </div>
     </form>

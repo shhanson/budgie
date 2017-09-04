@@ -1,6 +1,7 @@
 angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading) {
   $scope.user = UserService.currentUser;
   $scope.imgURI;
+  $scope.loading;
   $scope.receipts;
   $scope.newItem = {};
   $scope.items = [];
@@ -48,31 +49,15 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
       $scope.imgURI = 'data:image/jpeg;base64,' + imageData;
+      $scope.loading = true;
       const server = `${API_URL}/receipts/image`;
       $http.post(server, {data: imageData}).then((res) => {
         res.data.forEach((item) => {
           $scope.listItems.unshift(item);
           $scope.inputItems.unshift(item);
+          $scope.loading = false;
         });
       });
-      // const options = {
-      //   fileKey: "userPhoto",
-      //   fileName: imageData.substr(imageData.lastIndexOf('/') + 1),
-      //   chunkedMode: false,
-      //   mimeType: "image/jpg"
-      // };
-      // $cordovaFileTransfer.upload(server, filePath, options).then(function(result) {
-      //   console.log("SUCCESS: " + JSON.stringify(result.response));
-      //   console.log('Result_' + result.response[0] + '_ending');
-      //   console.log("success");
-      //   console.log(JSON.stringify(result.response));
-      //
-      // }, function(err) {
-      //   console.log("ERROR: " + JSON.stringify(err));
-      //   //alert(JSON.stringify(err));
-      // }, function(progress) {
-      //   // constant progress updates
-      // });
     }, function(err) {
       console.log(err, 'cordova camera error');
     });
@@ -110,8 +95,25 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     $scope.receiptModal.show();
   };
 
-  $scope.closeReceiptModal = function closeModal() {
+  $scope.closeReceiptModal = function closeReceiptModal() {
     $scope.receiptModal.hide();
+    $scope.newReceipt = {};
+    $scope.inputItems = [
+      {
+        input: 'Item',
+        price: '$0.00'
+      }
+    ];
+    $scope.listItems = [
+      {
+        name: '',
+        price: '',
+        tag_id: null
+      }
+    ];
+    $scope.newReceipt.location = '';
+    $scope.newReceipt.date = '';
+    $scope.imgURI = '';
   };
 
   $scope.addInput = function() {
@@ -292,3 +294,22 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
     });
   };
 });
+
+// const options = {
+//   fileKey: "userPhoto",
+//   fileName: imageData.substr(imageData.lastIndexOf('/') + 1),
+//   chunkedMode: false,
+//   mimeType: "image/jpg"
+// };
+// $cordovaFileTransfer.upload(server, filePath, options).then(function(result) {
+//   console.log("SUCCESS: " + JSON.stringify(result.response));
+//   console.log('Result_' + result.response[0] + '_ending');
+//   console.log("success");
+//   console.log(JSON.stringify(result.response));
+//
+// }, function(err) {
+//   console.log("ERROR: " + JSON.stringify(err));
+//   //alert(JSON.stringify(err));
+// }, function(progress) {
+//   // constant progress updates
+// });

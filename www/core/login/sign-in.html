@@ -4,18 +4,24 @@
     <title class="title">Log In</title>
   </ion-header-bar>
   <ion-content class="padding">
-    <form ng-submit="login()">
+    <form name="signIn" ng-submit="login()" novalidate>
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Email</span>
-          <input type="email" name="email" ng-model="loginData.email">
+          <input type="email" name="email" ng-model="loginData.email" required>
         </label>
         <label class="item item-input">
           <span class="input-label">Password</span>
-          <input type="password" name="password" ng-model="loginData.password">
+          <input type="password" name="password" ng-model="loginData.password" ng-minlength="6" required>
         </label>
+        <div class="padding">
+          <p ng-show="signIn.email.$error.required && signIn.email.$touched">Email is required</p>
+          <p ng-show="signIn.email.$invalid && signIn.email.$touched">Must be a valid email address</p>
+          <p ng-show="signIn.password.$error.required && signIn.password.$touched">Password is required</p>
+          <p ng-show="signIn.password.$error.minlength && signIn.password.$touched">Password must be longer than 6 characters</p>
+        </div>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <button ng-disabled="signIn.$invalid" class="button button-block button-positive" type="submit">Log in</button>
         </label>
       </div>
     </form>
