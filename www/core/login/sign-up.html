@@ -1,6 +1,6 @@
 <ion-modal-view>
   <ion-header-bar>
-    <button class="button button-light" ng-click="closeSignUp()"><i class="icon ion-ios-arrow-back"></i></button>
+    <button class="button button-light" ng-click="closeSignUp() && signUp.$setUntouched()"><i class="icon ion-ios-arrow-back"></i></button>
     <title class="title">Sign Up</title>
   </ion-header-bar>
   <ion-content class="padding">
@@ -22,7 +22,8 @@
           <span class="input-label">Password</span>
           <input type="password" name="password" ng-model="newUserData.password" ng-minlength="6" required>
         </label>
-        <div class="padding">
+        <div class="padding assertive">
+          <p ng-if="signUpError">{{signUpError}}</p>
           <p ng-show="signUp.first.$error.required && signUp.first.$touched">First name is required</p>
           <p ng-show="signUp.last.$error.required && signUp.last.$touched">Last name is required</p>
           <p ng-show="signUp.email.$error.required && signUp.email.$touched">Email is required</p>

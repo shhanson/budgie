@@ -38,12 +38,20 @@ angular.module('budgie').service('UserService', [
     se.signUp = function(userData) {
       return $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/users/signup', userData).then(function(result) {
         storeUserCredentials(JSON.stringify(result.data) + '|1b2u3d4g5i6e');
+      }).catch((err) => {
+        if (err) {
+          return err.data;
+        }
       });
     };
 
     se.login = function(userData) {
       return $http.post('http://ec2-18-220-68-160.us-east-2.compute.amazonaws.com:8001/users', userData).then(function(result) {
         storeUserCredentials(JSON.stringify(result.data) + '|1b2u3d4g5i6e');
+      }).catch((err) => {
+        if (err) {
+          return err.data;
+        }
       });
     };
 

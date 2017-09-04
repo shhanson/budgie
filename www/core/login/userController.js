@@ -1,6 +1,8 @@
 angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, $http, $state, UserService, $ionicModal, $ionicPopup, AUTH_EVENTS) {
   $scope.newUserData = {};
   $scope.loginData = {};
+  $scope.signInError;
+  $scope.signUpError;
 
   $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
     var alertPopup = $ionicPopup.alert({title: 'Unauthorized!', template: 'You are not allowed to access this resource.'});
@@ -25,16 +27,24 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   $scope.checkUser();
 
   $scope.signUp = function() {
-    UserService.signUp($scope.newUserData).then(() => {
-      $scope.closeSignUp();
-      $state.go('tab.receipts', {}, {reload: true});
+    UserService.signUp($scope.newUserData).then((err) => {
+      if (err) {
+        $scope.signUpError = err;
+      } else {
+        $scope.closeSignUp();
+        $state.go('tab.receipts', {}, {reload: true});
+      }
     });
   };
 
   $scope.login = function() {
-    UserService.login($scope.loginData).then(() => {
-      $scope.closeSignIn();
-      $state.go('tab.receipts', {}, {reload: true});
+    UserService.login($scope.loginData).then((err) => {
+      if (err) {
+        $scope.signInError = err;
+      } else {
+        $scope.closeSignIn();
+        $state.go('tab.receipts', {}, {reload: true});
+      }
     });
   }
 
@@ -56,6 +66,8 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   };
 
   $scope.closeSignIn = function closeModal() {
+    $scope.loginData = {};
+    $scope.signInError = false;
     $scope.signInModal.hide();
   };
   //SIGN UP MODAL
@@ -71,6 +83,9 @@ angular.module('budgie').controller('LoginCtrl', function($scope, $stateParams, 
   };
 
   $scope.closeSignUp = function closeModal() {
+    $scope.newUserData = {};
+    $scope.signUpError = false;
+    // form.setUntouched();
     $scope.signUpModal.hide();
   };
 
