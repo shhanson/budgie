@@ -87,7 +87,7 @@ Users.createUser = (data, callback) => {
 Users.authenticateUser = (email, password, callback) => {
   Users().where({email}).first().then((user) => {
     if (!user) {
-      return callback('Email not found - go back to sign up');
+      return callback('Email not found - go back to create an account');
     }
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err || !isMatch) {

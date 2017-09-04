@@ -1,8 +1,8 @@
 const users = require('../db/users');
 const express = require('express');
 const cors = require('cors');
-const Joi = require('joi');
-const schema = require('validate');
+// const Joi = require('joi');
+// const schema = require('./validate');
 
 const router = express.Router();
 
@@ -23,21 +23,21 @@ router.post('/users', cors(corsOptions), (req, res, next) => {
 });
 
 router.post('/users/signup', cors(corsOptions), (req, res, next) => {
-  Joi.validate(req.body, schema, (err, value) => {
-    if (err) {
+  // Joi.validate(req.body, schema, (err, value) => {
+  //   if (err) {
+  //     res.status(400);
+  //     res.send(err.message);
+  //   } else {
+  users.createUser(req.body, (error, user) => {
+    if (error) {
       res.status(400);
-      res.send(err.message);
+      res.send(error);
     } else {
-      users.createUser(req.body, (error, user) => {
-        if (error) {
-          res.status(400);
-          res.send(error);
-        } else {
-          res.json(user);
-        }
-      });
+      res.json(user);
     }
   });
+}
+// });
 });
 
 module.exports = router;
