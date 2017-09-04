@@ -91,7 +91,7 @@ Users.authenticateUser = (email, password, callback) => {
     }
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err || !isMatch) {
-        return callback('Username and password don\'t match');
+        return callback('Email and password don\'t match');
       }
       return callback(undefined, user);
     });
