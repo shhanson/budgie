@@ -9849,6 +9849,13 @@ a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.
   float: right;
   color: lightGrey !important; }
 
+.popup-vertical-buttons .popup-buttons {
+  display: block; }
+
+.popup-vertical-buttons .popup-buttons .button {
+  display: block;
+  min-width: 100% !important; }
+
 a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
   color: #71cddd; }
   a.tab-item-activated i:hover, a.tab-item-activated i::before:hover, a.tab-item-activated i::after:hover, a.tab-item-activated span:hover, a.tab-item-activated.icon:hover {

@@ -1,4 +1,4 @@
-angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading) {
+angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService', 'ionic.closePopup']).controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading, IonicClosePopupService) {
   $scope.user = UserService.currentUser;
   $scope.imgURI;
   $scope.loading;
@@ -44,28 +44,38 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
       $scope.currMonth = month;
     }
   };
-
+  $scope.picturePopUp;
   $scope.pictureAlert = function() {
-    let picturePopUp = $ionicPopup.show({
-      title: "Take Picture",
+    $scope.picturePopUp = $ionicPopup;
+    $scope.picturePopUp.show({
+      title: "Receipt Picture",
       scope: $scope,
+      cssClass: 'popup-vertical-buttons',
       buttons: [
         {
           text: 'Take Picture',
-          type: 'button button-full button-calm',
+          type: 'button-block',
           onTap: function() {
             $scope.takePicture();
           }
         }, {
           text: 'Select from Camera Roll',
-          type: 'button button-full button-calm',
+          type: 'button-block',
           onTap: function() {
             $scope.selectPicture();
+          }
+        }, {
+          text: 'Cancel',
+          type: 'button-block',
+          onTap: function() {
+            close();
           }
         }
       ]
     });
   };
+
+  IonicClosePopupService.register($scope.picturePopUp);
 
   $scope.takePicture = function() {
     const options = {
