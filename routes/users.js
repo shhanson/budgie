@@ -36,8 +36,8 @@ router.post('/users/signup', cors(corsOptions), (req, res, next) => {
       res.json(user);
     }
   });
-}
-// });
+  // }
+  // });
 });
 
 module.exports = router;
