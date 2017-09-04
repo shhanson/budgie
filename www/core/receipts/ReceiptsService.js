@@ -8,15 +8,19 @@ angular.module('budgie.services', []).service('ReceiptsService', [
 
     self.getReceipts = function getReceipts(userID) {
       return $http.get(`${API_URL}/receipts/users/${userID}`).then((response) => {
-        self.receipts = response.data;
+        self.receipts = response.data.map((r) => {
+          let date = new Date(r.date);
+          r.month = date.getMonth() + 1;
+          return r;
+        });
       }).catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
     };
 
     self.getReceipt = function getReceipt(receiptID) {
       return $http.get(`${API_URL}/receipts/${receiptID}`).catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
     }
 
@@ -30,7 +34,7 @@ angular.module('budgie.services', []).service('ReceiptsService', [
           }
         }
       }).catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
     };
 
@@ -38,7 +42,7 @@ angular.module('budgie.services', []).service('ReceiptsService', [
       $http.post(`${API_URL}/receipts/users/${userID}`, newReceipt).then((response) => {
         self.receipts.push(response.data);
       }).catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
 
     };
@@ -52,7 +56,7 @@ angular.module('budgie.services', []).service('ReceiptsService', [
           }
         }
       }).catch((err) => {
-        console.error(err);
+        // console.error(err);
       });
 
     };

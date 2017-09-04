@@ -7,6 +7,7 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   $scope.items = [];
   $scope.newReceipt = {};
   $scope.newTag = {};
+  $scope.currMonth;
   $scope.inputItems = [
     {
       input: 'Item',
@@ -35,6 +36,14 @@ angular.module('budgie.controllers', ['budgie.services', 'budgie.itemService']).
   };
 
   $scope.getReceipts();
+
+  $scope.setMonth = function(month) {
+    if ($scope.currMonth === month) {
+      $scope.currMonth = undefined;
+    } else {
+      $scope.currMonth = month;
+    }
+  };
 
   $scope.takePicture = function() {
     const options = {
