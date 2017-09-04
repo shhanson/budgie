@@ -9845,6 +9845,10 @@ a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.
     border-color: #71cddd;
     color: #71cddd; }
 
+.right {
+  float: right;
+  color: lightGrey !important; }
+
 a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
   color: #71cddd; }
   a.tab-item-activated i:hover, a.tab-item-activated i::before:hover, a.tab-item-activated i::after:hover, a.tab-item-activated span:hover, a.tab-item-activated.icon:hover {

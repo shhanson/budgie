@@ -77,7 +77,10 @@ a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.
   }
 }
 
-
+.right {
+  float: right;
+  color: lightGrey !important;
+}
 
 a.tab-item-activated i, a.tab-item-activated i::before, a.tab-item-activated i::after, a.tab-item-activated span, a.tab-item-activated.icon {
   color: $highlight;

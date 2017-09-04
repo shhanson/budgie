@@ -5,12 +5,12 @@
   <ion-content>
     <ion-list show-delete="false" can-swipe="true">
       <span class="padding button button-block button-clear button-stable" ng-if="receipts.length === 0">Click the + to add a receipt!</span>
-      <div class="calm padding" ng-repeat="(key, value) in receipts | groupBy: 'month' | toArray:true | orderBy: 'key' : true" ng-click="setMonth(value[0].month)">
-        {{value[0].date | date : 'MMMM'}}
+      <div ng-repeat="(key, value) in receipts | groupBy: 'month' | toArray:true | orderBy: 'key' : true" ng-click="setMonth(value[0].month)">
+        <ion-item class="calm">{{value[0].date | date : 'MMMM'}}</ion-item>
         <ion-item ng-repeat="receipt in value" ng-click="showItems(receipt)" ng-if="receipt.month === currMonth">
-          {{receipt.location}} <span class="dark">{{receipt.date | date : format: shortDate}}</span>
-          <!-- <ion-option-button class="button-light icon ion-heart"></ion-option-button> -->
-          <ion-option-button ng-click="deleteReceipt(receipt)" class="button-assertive icon ion-trash-a"></ion-option-button>
+          {{receipt.location}} <span class="right">{{receipt.date | date : format: shortDate}}</span>
+          <!-- <ion-option-button class=" button-light icon ion-heart "></ion-option-button> -->
+          <ion-option-button ng-click="deleteReceipt(receipt) " class="button-assertive icon ion-trash-a "></ion-option-button>
         </ion-item>
       </div>
     </ion-list>
