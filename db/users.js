@@ -29,11 +29,11 @@ const tagDefaults = [
 
 Users.createUser = (data, callback) => {
   if (data.password.length < 6) {
-    return callback('Password must be at least 6 characters.');
+    return callback('Password must be at least 6 characters');
   }
   Users().where('email', data.email).first().then((account) => {
     if (account) {
-      return callback('An account with this email already exists.');
+      return callback('An account with this email already exists');
     }
     bcrypt.genSalt(SALT_WORK_FACTOR, (e, salt) => {
       if (e) {
@@ -87,7 +87,7 @@ Users.createUser = (data, callback) => {
 Users.authenticateUser = (email, password, callback) => {
   Users().where({email}).first().then((user) => {
     if (!user) {
-      return callback('Not a valid user.');
+      return callback('Email not found - go back to sign up');
     }
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err || !isMatch) {
