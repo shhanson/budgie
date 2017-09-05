@@ -1,13 +1,4 @@
-angular.module('budgie', [
-  'ionic',
-  'budgie.controllers',
-  'budgie.graphs',
-  'budgie.itemService',
-  'budgie.services',
-  'nvd3',
-  'ngCordova',
-  'angular.filter'
-]).run(($ionicPlatform) => {
+angular.module('budgie', ['ionic', 'nvd3', 'ngCordova', 'angular.filter', 'ionic.closePopup']).run(($ionicPlatform) => {
 
   $ionicPlatform.ready(() => {
 

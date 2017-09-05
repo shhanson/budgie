@@ -5,13 +5,6 @@
     </title>
   </ion-header-bar>
   <ion-content>
-    <!-- <img id="pickedImage" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
-    <img id="example" ng-show="imgURI === undefined" ng-src="img/ReceiptSwiss.jpg">
-    <button class="button btn icon ion-ios-camera" ng-click="takePicture()">Choose an Image</button>
-    <button class="button btn" ng-click="getText()">Process Text</button> -->
-    <!-- <p value="{{recognizedText}}">Text Result</p> -->
-    <!-- <ion-icon class="button" ng-click="takePicture()" name="camera"></ion-icon> -->
-    <!-- <button class="button button-block button-positive" type="button" ng-click="getReceipts()">Get Receipts</button> -->
 
     <img ng-show="imgURI.length > 23" id="pickedImage" style="background-image:url({{imgURI}})" ng-src='{{imgURI}}'>
 
@@ -22,7 +15,7 @@
           <input class="col col-40" type="text" ng-model='newReceipt.location' placeholder='Location' style='width: 200px' required/>
           <input class="col col-40" placeholder='Date' type="date" class='date' ng-model='newReceipt.date' required></input>
           <div class="col col-20">
-            <button class="button icon ion-ios-camera button-light" ng-click="pictureAlert()" type="button"></button>
+            <button class="button icon ion-ios-camera button-light" ng-click="showPictureAlert()" type="button"></button>
           </div>
         </div>
       </div>
