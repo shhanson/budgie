@@ -1,6 +1,4 @@
 angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicModal, UserService, $state) {
-  //set initial graph state
-  // $state.go($state.current, {}, {reload: true});
   $scope.user = UserService.currentUser;
   const d = new Date;
   $scope.xMin = {
@@ -9,7 +7,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
   $scope.xminvalue = d.setDate(d.getDate() - $scope.xMin.value);
   $scope.xmaxvalue = new Date();
   $scope.xrange = d3.time.days($scope.xminvalue, $scope.xmaxvalue);
-  var tooltip = nv.models.tooltip();
+  let tooltip = nv.models.tooltip();
   tooltip.duration(0);
   $scope.options = {
     chart: {
@@ -31,29 +29,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
       legend: {
         vers: 'furious',
         dispatch: {
-          //   legendMouseover: function(o) {
-          //     if (tooltip.hidden()) {
-          //       var data = {
-          //         series: {
-          //           key: o.key,
-          //           value: o.values.reduce((a, b) => {
-          //             return a.y + b.y
-          //           })[0],
-          //           color: o.color
-          //         }
-          //       };
-          //       tooltip.data(data).hidden(false);
-          //     }
-          //     // tooltip.position({top: d3.event.pageY, left: d3.event.pageX})();
-          //   },
-          //   legendMouseout: function(o) {
-          //     tooltip.hidden(true);
-          //   }
-          // },
           legendPosition: 'right',
-          // valueFormat: function(d) {
-          //   return d;
-          // }
         }
       },
       showValues: true,
@@ -209,9 +185,10 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
     items.forEach((item) => {
       $scope.toggleSelection(item)
     });
-  }
+  };
 
   $scope.closeModal = function() {
     $scope.modal.hide();
-  }
+  };
+
 });

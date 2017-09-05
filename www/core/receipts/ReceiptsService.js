@@ -34,15 +34,8 @@ angular.module('budgie').service('ReceiptsService', [
       });
     };
 
-    self.editReceipt = function editReceipt(receiptID, editedReceipt) {
-      return $http.patch(`${API_URL}/receipts/${receiptID}`, editedReceipt).then((response) => {
-        for (let i = 0; i < self.receipts.length; i++) {
-          if (self.receipts[i].id === receiptID) {
-            self.receipts[i] = response.data;
-            return;
-          }
-        }
-      });
+    self.editReceipt = function editReceipt(receipt) {
+      return $http.patch(`${API_URL}/receipts/${receipt.id}`, receipt).then(() => {});
     };
   }
 ]);

@@ -42,13 +42,10 @@ angular.module('budgie').service('ItemsService', [
 
     self.editItem = function editItem(item) {
       return $http.patch(`${API_URL}/receipts/${item.receipt_id}/items/${item.id}`, item).then((response) => {
-        const index = self.items.indexOf(item);
-        self.items[index] = response.data;
         return;
-      }).catch((err) => {
-        console.error(err);
       });
     };
+
 
     self.getTags = function(userID) {
       return $http.get(`${API_URL}/tags/users/${userID}`).then((res) => {

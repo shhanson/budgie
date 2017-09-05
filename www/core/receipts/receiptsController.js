@@ -1,33 +1,27 @@
-angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading, CameraService) {
+angular.module('budgie').controller('ReceiptsCtrl', function  ReceiptsCtrl ($scope, $http, $ionicModal, $cordovaCamera, ReceiptsService, ItemsService, UserService, $ionicPopup, AUTH_EVENTS, $state, $ionicLoading, CameraService) {
   $scope.user = UserService.currentUser;
-  $scope.imgURI = CameraService.imgURI;
-  $scope.loading = CameraService.loading;
   $scope.receipts;
-  $scope.newItem = {};
   $scope.items = [];
-  $scope.newReceipt = {};
+  $scope.newItem = {};
   $scope.newTag = {};
   $scope.currMonth;
-  $scope.inputItems = [
-    {
-      input: 'Item',
-      price: '$0.00'
-    }
-  ];
   $scope.newReceiptItem = {
     name: '',
     price: '',
-    tag_id: null
+    tag_id: null,
   };
-  $scope.listItems = [
-    {
-      name: '',
-      price: '',
-      tag_id: null
-    }
-  ];
 
-  $scope.getReceipts = function() {
+  $scope.resetReceipt = function resetReceipt () {
+    $scope.inputItems = [{input: 'Item', price: '$0.00'}];
+    $scope.listItems = [{name: '', price: '', tag_id: null}];
+    $scope.newReceipt = {};
+    $scope.imgURI = '';
+    $scope.loading = false;
+  };
+
+  $scope.resetReceipt();
+
+  $scope.getReceipts = function getReceipts () {
     ReceiptsService.getReceipts($scope.user.id).then((res) => {
       $scope.receipts = ReceiptsService.receipts;
     });
@@ -35,7 +29,7 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
 
   $scope.getReceipts();
 
-  $scope.setMonth = function(month) {
+  $scope.setMonth = function (month) {
     if ($scope.currMonth === month) {
       $scope.currMonth = undefined;
     } else {
@@ -43,38 +37,22 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
     }
   };
 
-  $scope.showPictureAlert = function() {
-    CameraService.pictureAlert()
-    .then(fromCamera =>CameraService.takePicture(fromCamera)
-    .then((imageData)=>{
-      $scope.loading = true;
-      $scope.imgURI = 'data:image/jpeg;base64,' + imageData;
-      return imageData;
-    }))
-    .then(imageData => CameraService.postImage(imageData))
-    .then((res)=>{
-      res.forEach((item) => {
-        $scope.loading = false;
-        $scope.listItems.unshift(item);
-        $scope.inputItems.unshift(item);
-      });
-    }).catch((err)=>{
-      console.log(err);
-    })
+  // ITEM MODAL STUFF
+  $scope.getItems = function getItems(receiptID){
+    ItemsService.getItems(receiptID).then((res) => {
+      $scope.items = res;
+    });
   }
 
-  //ITEM MODAL STUFF
   $ionicModal.fromTemplateUrl('core/receipts/items.html', {
     scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
+    animation: 'slide-in-up',
+  }).then((modal) => {
     $scope.ItemsModal = modal;
   });
 
   $scope.showItems = function showItems(receipt) {
-    ItemsService.getItems(receipt.id).then((res) => {
-      $scope.items = res;
-    })
+    $scope.getItems(receipt.id);
     $scope.receipt = receipt;
     $scope.ItemsModal.show();
   };
@@ -86,8 +64,8 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
   // RECEIPT MODAL STUFF
   $ionicModal.fromTemplateUrl('core/receipts/add-receipt.html', {
     scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
+    animation: 'slide-in-up',
+  }).then((modal) => {
     $scope.receiptModal = modal;
   });
 
@@ -97,76 +75,38 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
 
   $scope.closeReceiptModal = function closeReceiptModal() {
     $scope.receiptModal.hide();
-    $scope.newReceipt = {};
-    $scope.loading = false;
-    $scope.inputItems = [
-      {
-        input: 'Item',
-        price: '$0.00'
-      }
-    ];
-    $scope.listItems = [
-      {
-        name: '',
-        price: '',
-        tag_id: null
-      }
-    ];
-    $scope.newReceipt.location = '';
-    $scope.newReceipt.date = '';
-    $scope.imgURI = '';
+    $scope.resetReceipt();
   };
 
-  $scope.addInput = function() {
+  // ADD NEW RECEIPT
+  $scope.addInput = function () {
     if ($scope.newReceiptItem.tag_id == null) {
       delete $scope.newReceiptItem.tag_id;
     }
     $scope.listItems.push($scope.newReceiptItem);
-    $scope.newReceiptItem = {
-      name: '',
-      price: '',
-      tag_id: null
-    };
-    $scope.inputItems.push({input: 'Item', price: '$0.00'});
+    $scope.newReceiptItem = { name: '', price: '', tag_id: null };
+    $scope.inputItems.push({ input: 'Item', price: '$0.00' });
   };
 
-  $scope.deleteInput = function(index) {
+  $scope.deleteInput = function (index) {
     $scope.inputItems.splice(index, 1);
     $scope.listItems.splice(index, 1);
-  }
+  };
 
-  $scope.addNewReceipt = function() {
+  $scope.addNewReceipt = function () {
     if ($scope.listItems[$scope.listItems.length - 1].name === '') {
       $scope.listItems.splice($scope.listItems.length - 1, 1);
-    };
+    }
     $scope.newReceipt.listItems = $scope.listItems;
-    ReceiptsService.addReceipt($scope.newReceipt, $scope.user.id).then(() => {
+    ReceiptsService.addReceipt($scope.newReceipt, $scope.user.id)
+    .then(() => {
       $scope.getReceipts();
-      $scope.inputItems = [
-        {
-          input: 'Item',
-          price: '$0.00'
-        }
-      ];
-      $scope.listItems = [
-        {
-          name: '',
-          price: '',
-          tag_id: null
-        }
-      ];
-      $scope.newReceipt.location = "";
-      $scope.newReceipt.date = "";
+      $scope.resetReceipt();
       $scope.closeReceiptModal();
     });
-  }
+  };
 
-  $scope.deleteReceipt = function(receipt) {
-    ReceiptsService.deleteReceipt(receipt).then(() => {
-      $scope.receipts = ReceiptsService.receipts;
-    })
-  }
-
+  // TAGS
   $scope.getTags = function getTags() {
     ItemsService.getTags($scope.user.id).then(() => {
       $scope.allTags = ItemsService.tags;
@@ -178,76 +118,61 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
   }
 
   $scope.tagHandler = function tagHandler(item) {
-    if (item.tag_id === "addNewTag") {
+    if (item.tag_id === 'addNewTag') {
       $scope.addTagAlert(item);
     }
   };
 
   $scope.addTagAlert = function addTagAlert(item) {
-    let tagPopup = $ionicPopup.show({
-      title: "Add a new tag",
+    const tagPopup = $ionicPopup.show({
+      title: 'Add a new tag',
       template: "<input type='text' ng-model='newTag.tag'>",
       scope: $scope,
       buttons: [
         {
           text: 'Cancel',
-          onTap: function(e) {
-            if ($scope.newTag.tag) {
-              $scope.newTag.tag = "";
-            }
-
-            ItemsService.getItems(item.receipt_id).then((res) => {
-              $scope.items = res;
-            });
-
-          }
+          onTap(e) {
+            $scope.newTag.tag = '';
+            $scope.getItems(item.receipt_id);
+          },
         }, {
           text: '<b>Save</b>',
           type: 'button-positive',
-          onTap: function(e) {
+          onTap(e) {
             if (!$scope.newTag.tag) {
               e.preventDefault();
               return;
             }
-            ItemsService.addTag($scope.user.id, $scope.newTag).then((response) => {
-              const patchTag = {
-                tag_id: response.id
-              };
+            ItemsService.addTag($scope.user.id, $scope.newTag)
+            .then((response) => {
               if (item.id) {
-                ItemsService.editItem(item.receipt_id, item.id, patchTag).then(() => ItemsService.getItems(item.receipt_id)).then((res) => {
+                item.tag_id = response.id;
+                ItemsService.editItem(item)
+                .then(()=>(ItemsService.getItems(item.receipt_id)))
+                .then((res)=>{
                   $scope.items = res;
-                  $scope.newTag.tag = "";
-                }).catch((err) => {
-                  console.error(err);
                 });
+                $scope.getTags();
+                $scope.newTag.tag = '';
               }
-
-              $scope.getTags();
-
-            }).catch((err) => {
-              console.error(err);
             });
-          }
-        }
-      ]
-    });
-
-    tagPopup.catch((err) => {
-      console.error(err);
+          },
+        },
+      ],
     });
   };
 
   $scope.getSelectedTag = function getSelectedTag(tagSelected, item) {
     if (tagSelected === 'addNewTag') {
       $scope.addTagAlert(item);
-    } else {
-      for (let j = 0; j < $scope.allTags.length; j++) {
-        if ($scope.allTags[j].tag === tagSelected) {
-          item.tag_id = $scope.allTags[j].id;
-          break;
-        }
-      }
+      return;
     }
+
+    $scope.allTags.forEach((t) => {
+      if (t.tag === tagSelected) {
+        item.tag_id = t.id;
+      }
+    });
 
     if (item.id) {
       delete item.tag;
@@ -255,13 +180,17 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
     }
   };
 
-  $scope.updateReceipt = function(receipt) {
-    const updated = {
-      location: receipt.location,
-      date: receipt.date
-    }
-    ReceiptsService.editReceipt(receipt.id, updated);
-  }
+  // EDIT RECEIPT
+  $scope.updateReceipt = function updateReceipt(receipt) {
+    ReceiptsService.editReceipt({id: receipt.id, location: receipt.location})
+    .then(()=>{
+      $scope.getReceipts();
+    });
+  };
+
+  $scope.deleteReceipt = function deleteReceipt(receipt) {
+    ReceiptsService.deleteReceipt(receipt).then(() => {$scope.getReceipts()});
+  };
 
   $scope.editItems = function editItems(item) {
     delete item.tag;
@@ -270,17 +199,34 @@ angular.module('budgie').controller('ReceiptsCtrl', function($scope, $http, $ion
 
   $scope.addItem = function addItem(receipt) {
     $scope.newItem.receipt_id = receipt.id;
-    ItemsService.addItem(receipt.id, $scope.newItem).then(() => {
-      ItemsService.getItems(receipt.id).then((res) => {
-        $scope.items = res;
-        $scope.newItem = {};
-      });
+    ItemsService.addItem(receipt.id, $scope.newItem)
+    .then(() => {
+      $scope.getItems()
+      $scope.newItem = {};
     });
   };
 
   $scope.deleteItem = function deleteItem(item) {
-    ItemsService.deleteItem(item).then((res) => {
-      $scope.items = ItemsService.items;
-    })
+    ItemsService.deleteItem(item).then(() => {
+      $scope.getItems();
+    });
+  };
+
+  $scope.showPictureAlert = function () {
+    CameraService.pictureAlert()
+    .then(fromCamera => CameraService.takePicture(fromCamera)
+    .then((imageData) => {
+      $scope.loading = true;
+      $scope.imgURI = `data:image/jpeg;base64,${imageData}`;
+      return imageData;
+    }))
+    .then(imageData => CameraService.postImage(imageData))
+    .then((res) => {
+      res.forEach((item) => {
+        $scope.loading = false;
+        $scope.listItems.unshift(item);
+        $scope.inputItems.unshift(item);
+      });
+    });
   };
 });
