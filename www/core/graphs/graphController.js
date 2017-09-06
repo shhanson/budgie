@@ -179,7 +179,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  //shows all items to remove from graph data
+  //shows all tags to remove from graph data
   $scope.showGraphControl = function(receipts) {
     $scope.receipts = receipts;
     $scope.modal.show();

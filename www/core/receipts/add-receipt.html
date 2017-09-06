@@ -28,10 +28,10 @@
 
       <div class="list" ng-repeat="item in inputItems">
         <div class="item item-input-inset">
-          <input class="col col-20" ng-model="listItems[$index].name" type="text" placeholder="{{item.input}}" />
+          <input class="col col-40" ng-model="listItems[$index].name" type="text" placeholder="{{item.input}}" />
           <input class="col col-20" ng-model="listItems[$index].price" type="text" placeholder="{{item.price}}" />
-          <div class="select-style col col-40">
-            <select class="item-select category" ng-model="listItems[$index].tag_id" ng-change='tagHandler(listItems[$index])'>
+          <div class="select-style col col-20">
+            <select class="ion-input-select item-select category" ng-model="listItems[$index].tag_id" ng-change='tagHandler(listItems[$index])'>
               <!-- <option value="" disabled selected>Category</option>
               <option value="{{tag.id}}" ng-repeat='tag in allTags'>{{tag.tag}}</option> -->
               <option value='' disabled selected>Tag</option>
