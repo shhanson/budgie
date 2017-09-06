@@ -3518,6 +3518,9 @@ nv.models.cumulativeLineChart = function() {
 
                 g.select('.nv-legendWrap')
                     .attr('transform', 'translate(0,' + (-margin.top) +')')
+
+document.getElementById('legendDiv').attr('class', 'nv-legendWrap').append(legend);
+
             }
 
             // Controls
@@ -8398,6 +8401,7 @@ nv.models.multiBarChart = function() {
         , showControls = true
         , controlLabels = {}
         , showLegend = true
+        , legendPosition = 'bottom'
         , showXAxis = true
         , showYAxis = true
         , rightAlignYAxis = false
@@ -8563,6 +8567,18 @@ nv.models.multiBarChart = function() {
             if (!showLegend) {
                 g.select('.nv-legendWrap').selectAll('*').remove();
             } else {
+              if (legendPosition === 'bottom') {
+                     legend.width((availableWidth - margin.right));
+
+                      g.select('.nv-legendWrap')
+                          .datum(data)
+                          .call(legend);
+
+                      margin.bottom = xAxis.height() + legend.height();
+                      availableHeight = nv.utils.availableHeight(height, container, margin);
+                      g.select('.nv-legendWrap')
+                          .attr('transform', 'translate(-20,' + (availableHeight + xAxis.height())  +')');
+                } else {
                 legend.width(availableWidth - controlWidth());
 
                 g.select('.nv-legendWrap')
@@ -8577,6 +8593,7 @@ nv.models.multiBarChart = function() {
                 g.select('.nv-legendWrap')
                     .attr('transform', 'translate(' + controlWidth() + ',' + (-margin.top) +')');
             }
+          };
 
             // Controls
             if (!showControls) {

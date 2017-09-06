@@ -14,7 +14,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
       type: 'multiBarChart',
       showControls: false,
       stacked: true,
-      height: 450,
+      height: 350,
       clipEdge: true,
       staggerLabels: false,
       margin: {
@@ -27,25 +27,28 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
         return d3.time.format('%m/%d')(new Date(d.x))
       },
       legend: {
-        vers: 'furious',
-        dispatch: {
-          legendPosition: 'right',
-        }
+        // vers: 'furious',
+        margin: {
+          top: -10,
+          right: -20,
+          left: -50
+        },
+        padding: 40
       },
+      legendPosition: 'bottom',
       showValues: true,
       showLegend: true,
       objectequality: true,
       duration: 500,
       xAxis: {
-        axisLabel: 'Date',
         showMaxMin: true,
         tickInterval: 7,
         tickFormat(d) {
-          return d3.time.format('%m/%d')(new Date(d));
+          let date = d3.time.format('%m/%d')(new Date(d));
+          return date;
         }
       },
       yAxis: {
-        axisLabel: 'Total',
         axisLabelDistance: -10,
         height: 60,
         tickFormat(d) {
@@ -57,6 +60,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
 
   $scope.data = [];
   $scope.allItems = [];
+  $scope.totalSpent;
 
   //get receipt data from server
   $scope.getReceiptData = function() {
@@ -70,6 +74,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
     });
   };
   $scope.getReceiptData();
+
   //update graph data with new range based on range control input
   $scope.updateRange = function() {
     const d = new Date;
@@ -79,10 +84,11 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
     $scope.updateGraphData();
     setInterval(function() {
       if (!$scope.run)
-        return;
+      return;
       $scope.$apply(); // update the chart
     }, 500);
   }
+
   //create and refresh graph data on change
   $scope.updateGraphData = function() {
     const data = [];
@@ -120,8 +126,8 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
     $scope.data = data.reduce((o, cur) => {
       const occurs = o.reduce((n, item, i) => {
         return (item.key === cur.key)
-          ? i
-          : n;
+        ? i
+        : n;
       }, -1);
       if (occurs > -1) {
         let values = []
@@ -141,6 +147,30 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
       }
       return o;
     }, []);
+    const calcData = JSON.parse(JSON.stringify($scope.data));
+    $scope.totalSpent = calcData.map((a) => {
+      a.values = a.values.map((b)=>{
+        return b.y;
+      });
+      return a.values.reduce((a,b)=>{
+        return a + b;
+      });
+    }).reduce((a, b)=>{
+      return a + b;
+    });
+    let dates = v.map((i) => {return i.x});
+    let saveData = JSON.parse(JSON.stringify($scope.turnedOff));
+    saveData = saveData.filter((i)=>{
+      let tempDate = d3.time.format('%m/%d/%y')(new Date(i.date));
+      if (dates.indexOf(tempDate) >= 0){
+        return i;
+      }
+    });
+    if (saveData.length > 0){
+      $scope.totalSaved = saveData.map((a) => parseInt(a.price)).reduce((a, b) => a + b);
+      return;
+    }
+    $scope.totalSaved = 0;
   }
   //create graph control modal
   $ionicModal.fromTemplateUrl('core/graphs/graphControl.html', {
@@ -156,6 +186,7 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
   };
 
   //adds or removes items from graph data based on graphControl toggle
+  $scope.turnedOff = [];
   $scope.toggleSelection = function(item) {
     let rI;
     let iI;
@@ -173,11 +204,18 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
     });
 
     if (iI > -1) {
-      $scope.selectedItems[rI].items.splice(iI, 1);
+      const offItem = $scope.selectedItems[rI].items.splice(iI, 1)[0];
+      offItem.date = $scope.selectedItems[rI].date;
+      $scope.turnedOff.push(offItem);
     } else {
+      $scope.turnedOff.forEach((i)=>{
+        if (i.id === item.id){
+          const index = $scope.turnedOff.indexOf(i);
+          $scope.turnedOff.splice(index, 1);
+        };
+      });
       $scope.selectedItems[rI].items.push(item);
     }
-
     $scope.updateGraphData();
   };
 
@@ -190,5 +228,4 @@ angular.module('budgie').controller('GraphCtrl', function($scope, $http, $ionicM
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
-
 });

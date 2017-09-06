@@ -9849,6 +9849,9 @@ a.tab-item-active i, a.tab-item-active i::before, a.tab-item-active i::after, a.
   float: right;
   color: lightGrey !important; }
 
+.center {
+  text-align: center !important; }
+
 .popup-vertical-buttons .popup-buttons {
   display: block; }
 

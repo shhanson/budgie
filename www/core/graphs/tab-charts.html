@@ -3,9 +3,8 @@
     <button class="button button-clear button-calm" ng-click="showGraphControl(receipts)"><i class="icon ion-android-options"></i></button>
   </ion-nav-buttons>
   <ion-content class="padding">
-
+    <h2 class="title calm padding center">{{totalSpent | currency}} <span ng-if="totalSaved" class="balanced">  +{{totalSaved | currency}}</span></h2>
     <nvd3 options="options" data="data" api="api"></nvd3>
-    <!-- <svg width="960" height="500"></svg> -->
     <div class="item range">
       <i class="icon ion-ios-clock-outline"></i>
       <input type="range" ng-change="updateRange()" ng-model="xMin.value" id="input" min="7" max="30">
