@@ -9,28 +9,29 @@ function Users() {
 
 const tagDefaults = [
   {
-    tag: 'dessert'
+    tag: 'dessert',
   }, {
-    tag: 'coffee'
+    tag: 'coffee',
   }, {
-    tag: 'vegetables'
+    tag: 'vegetables',
   }, {
-    tag: 'dining out'
+    tag: 'dining out',
   }, {
-    tag: 'meat'
+    tag: 'meat',
   }, {
-    tag: 'bread'
+    tag: 'bread',
   }, {
-    tag: 'fruits'
+    tag: 'fruits',
   }, {
-    tag: 'dairy'
-  }
-]
+    tag: 'dairy',
+  },
+];
 
 Users.createUser = (data, callback) => {
   if (data.password.length < 6) {
     return callback('Password must be at least 6 characters');
   }
+  data.email = data.email.toLowerCase();
   Users().where('email', data.email).first().then((account) => {
     if (account) {
       return callback('An account with this email already exists');
@@ -51,7 +52,7 @@ Users.createUser = (data, callback) => {
           });
           knex('tags').insert(tagDefaults).then(() => {
             callback(undefined, result[0]);
-          })
+          });
         }).catch((err) => {
           console.log(err);
           callback(err);
@@ -85,7 +86,8 @@ Users.createUser = (data, callback) => {
 // };
 
 Users.authenticateUser = (email, password, callback) => {
-  Users().where({email}).first().then((user) => {
+  email = email.toLowerCase();
+  Users().where({ email }).first().then((user) => {
     if (!user) {
       return callback('Email not found - go back to create an account');
     }
